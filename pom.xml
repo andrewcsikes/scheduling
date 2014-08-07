@@ -6,76 +6,375 @@
 	<packaging>war</packaging>
 	<version>1.0</version>
 	<name>scheduling</name>
-	<repositories>
-		<repository>
-			<id>eap</id>
-			<url>http://maven.repository.redhat.com/techpreview/all</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>eap</id>
-			<url>http://maven.repository.redhat.com/techpreview/all</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.6</maven.compiler.source>
-		<maven.compiler.target>1.6</maven.compiler.target>
+		<java-version>1.6</java-version>
+		<org.springframework-version>3.1.0.RELEASE</org.springframework-version>
+		<org.aspectj-version>1.6.9</org.aspectj-version>
+		<org.slf4j-version>1.5.10</org.slf4j-version>
+		<hibernate.version>4.1.6.Final</hibernate.version>
+		<tiles.version>2.2.2</tiles.version>
+		<spring-data-jpa.version>1.0.2.RELEASE</spring-data-jpa.version>
 	</properties>
 	<dependencies>
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>9.2-1003-jdbc4</version>
-		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.25</version>
-		</dependency>     
+		</dependency>
+		<!-- Spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${org.springframework-version}</version>
+			<exclusions>
+				<!-- Exclude Commons Logging in favor of SLF4j -->
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				 </exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		<dependency>
+            <groupId>commons-pool</groupId>
+            <artifactId>commons-pool</artifactId>
+            <version>1.5.6</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+		<dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.4</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-pool</groupId>
+                    <artifactId>commons-pool</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>xerces</groupId>
+                    <artifactId>xerces</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>xerces</groupId>
+                    <artifactId>xercesImpl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>xml-apis</groupId>
+                    <artifactId>xml-apis</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase.ext</groupId>
+            <artifactId>liquibase-hibernate</artifactId>
+            <version>2.0.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.liquibase</groupId>
+                    <artifactId>liquibase-maven-plugin</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+				
+		<!-- AspectJ -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${org.aspectj-version}</version>
+		</dependency>	
+		
+		<!-- Logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${org.slf4j-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${org.slf4j-version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${org.slf4j-version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.15</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.mail</groupId>
+					<artifactId>mail</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.jms</groupId>
+					<artifactId>jms</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.sun.jdmk</groupId>
+					<artifactId>jmxtools</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.sun.jmx</groupId>
+					<artifactId>jmxri</artifactId>
+				</exclusion>
+			</exclusions>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- @Inject -->
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>1</version>
+		</dependency>
+				
+		<!-- Servlet -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>3.0.1</version>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+	
+		<!-- Test -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.7</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<!--  Hibernate -->
+		<dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc6</artifactId>
+            <version>11.1.0.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.2.144</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>cglib</groupId>
+                    <artifactId>cglib</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>dom4j</groupId>
+                    <artifactId>dom4j</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.0-api</artifactId>
+            <version>1.0.0.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-envers</artifactId>
+            <version>${hibernate.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>cglib</groupId>
+                    <artifactId>cglib</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>dom4j</groupId>
+                    <artifactId>dom4j</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>4.3.0.Final</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.xml.bind</groupId>
+                    <artifactId>jaxb-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.xml.bind</groupId>
+                    <artifactId>jaxb-impl</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+        	<groupId>org.springframework.data</groupId>
+        	<artifactId>spring-data-jpa</artifactId>
+        	<version>${spring-data-jpa.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+        	<groupId>org.springframework</groupId>
+        	<artifactId>spring-core</artifactId>
+        	<version>${org.springframework-version}</version>
+        </dependency>
+        <dependency>
+        	<groupId>org.springframework</groupId>
+        	<artifactId>spring-test</artifactId>
+        	<version>${org.springframework-version}</version>
+        </dependency>
+        <dependency>
+        	<groupId>org.apache.tiles</groupId>
+        	<artifactId>tiles-core</artifactId>
+        	<version>${tiles.version}</version>
+        </dependency>
+        <dependency>
+        	<groupId>org.apache.tiles</groupId>
+        	<artifactId>tiles-jsp</artifactId>
+        	<version>${tiles.version}</version>
+        </dependency>
 	</dependencies>
-	<profiles>
-		<profile>
-			<!-- When built in OpenShift the 'openshift' profile will be used when 
-				invoking mvn. -->
-			<!-- Use this profile for any OpenShift specific customization your app 
-				will need. -->
-			<!-- By default that is to put the resulting archive into the 'webapps' 
-				folder. -->
-			<!-- http://maven.apache.org/guides/mini/guide-building-for-different-environments.html -->
-			<id>openshift</id>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <version>2.9</version>
+                <configuration>
+                    <additionalProjectnatures>
+                        <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+                    </additionalProjectnatures>
+                    <additionalBuildcommands>
+                        <buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
+                    </additionalBuildcommands>
+                    <downloadSources>true</downloadSources>
+                    <downloadJavadocs>true</downloadJavadocs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <compilerArgument>-Xlint:all</compilerArgument>
+                    <showWarnings>true</showWarnings>
+                    <showDeprecation>true</showDeprecation>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <configuration>
+                    <mainClass>org.test.int1.Main</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <profiles>
+    	<profile>
+			<id>suggested-sql</id>
+			<dependencies>
+				<dependency>
+					<groupId>javax.servlet</groupId>
+					<artifactId>servlet-api</artifactId>
+					<version>2.5</version>
+				</dependency>
+				<dependency>
+					<groupId>org.hibernate</groupId>
+					<artifactId>hibernate-tools</artifactId>
+					<version>4.0.0-CR1</version>
+				</dependency>
+			</dependencies>
 			<build>
-				<finalName>scheduling</finalName>
+				<defaultGoal>antrun:run</defaultGoal>
 				<plugins>
 					<plugin>
-						<artifactId>maven-war-plugin</artifactId>
-						<version>2.1.1</version>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.6</version>
 						<configuration>
-							<outputDirectory>webapps</outputDirectory>
-							<warName>ROOT</warName>
+							<target>
+								<taskdef classname="org.hibernate.tool.ant.EnversHibernateToolTask" classpathref="maven.runtime.classpath" name="hibernatetool"/>
+								<taskdef classpathref="maven.runtime.classpath" resource="liquibasetasks.properties"/>
+
+								<mkdir dir="target/suggested-sql"/>
+								<hibernatetool destdir="target/classes">
+									<classpath refid="maven.runtime.classpath"/>
+									<jpaconfiguration persistenceunit="persistenceUnit"/>
+									<hbm2cfgxml ejb3="true"/>
+								</hibernatetool>
+								<replaceregexp file="target/classes/hibernate.cfg.xml" flags="gm" match="^.*mapping class=&quot;null&quot;.*$" replace=""/>
+								<replaceregexp file="target/classes/hibernate.cfg.xml" flags="gm" match="^.*hibernate\.format_sql&quot;.*$" replace="&lt;property name=&quot;hibernate.format_sql&quot;&gt;false&lt;/property&gt;&lt;property name=&quot;org.hibernate.envers.audit_table_prefix&quot;&gt;a_&lt;/property&gt;&lt;property name=&quot;org.hibernate.envers.audit_table_suffix&quot;&gt;&lt;/property&gt;&lt;property name=&quot;org.hibernate.envers.revision_type_field_name&quot;&gt;operation&lt;/property&gt;&lt;property name=&quot;org.hibernate.envers.do_not_audit_optimistic_locking_field&quot;&gt;false&lt;/property&gt;"/>
+
+								<property name="compile_classpath" refid="maven.compile.classpath"/>
+								<diffDatabaseToChangeLog classpathref="maven.runtime.classpath" driver="${liquibase.db.driver}" outputFile="target/suggested-sql/changelog.xml" password="${liquibase.db.password}" referenceUrl="hibernate-envers:hibernate.cfg.xml" url="${liquibase.db.url}" username="${liquibase.db.username}"/>
+								<updateDatabase changeLogFile="target/suggested-sql/changelog.xml" classpathref="maven.runtime.classpath" driver="${liquibase.db.driver}" dropFirst="false" outputFile="target/suggested-sql/changelog.sql" password="${liquibase.db.password}" url="${liquibase.db.url}" username="${liquibase.db.username}"/>
+ 								<replaceregexp file="target/suggested-sql/changelog.sql" flags="m">
+									<regexp pattern="^-- Changeset (.*)::(\d*)-(\d*)::(.*)::(.*)$"/>
+									<substitution expression="--changeset ${liquibase.author}:\2_\3"/>
+								</replaceregexp>
+								<replaceregexp file="target/suggested-sql/changelog.sql" flags="gm" match="^.*DATABASECHANGELOG.*$" replace=""/>
+								<replaceregexp file="target/suggested-sql/changelog.sql" flags="gm" match="^-- (?!Changeset).*$" replace=""/>
+								<replaceregexp file="target/suggested-sql/changelog.sql" flags="gm" match="^-- Changeset.*$" replace=""/>
+								<replaceregexp file="target/suggested-sql/changelog.sql" flags="gm" match="^ALTER TABLE.*REFERENCES revinfo.*$" replace=""/>
+								<copy file="target/suggested-sql/changelog.sql" toFile="target/suggested-sql/suggested-sql.sql">
+									<filterchain>
+										<ignoreblank/>
+									</filterchain>
+								</copy>
+								<property name="liquibase.author" value="${user.name}"/>
+								<replaceregexp file="target/suggested-sql/suggested-sql.sql" flags="gm">
+									<regexp pattern="^-- Changeset (.*)::(\d*)-(\d*)::(.*)::(.*)$"/>
+									<substitution expression="--changeset ${liquibase.author}:\2_\3"/>
+								</replaceregexp>
+							</target>
 						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
 					</plugin>
 				</plugins>
-			</build>
+			</build>			
 		</profile>
-	</profiles>
+    </profiles>
 </project>
