@@ -1,0 +1,1 @@
+<p align="right">Copyright &copy; sikesonline.com</p>

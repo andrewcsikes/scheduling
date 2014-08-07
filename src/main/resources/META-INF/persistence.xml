@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+<persistence-unit name="persistenceUnit" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <properties>
+            <property name="hibernate.ejb.naming_strategy" value="org.hibernate.cfg.ImprovedNamingStrategy"/>
+            <property name="hibernate.id.new_generator_mappings" value="true" />
+            <!-- <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>-->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>
+            <property name="hibernate.show_sql" value="false" />
+            <property name="hibernate.format_sql" value="true" />
+            <property name="hibernate.listeners.envers.autoRegister" value="false"/>
+            <property name="org.hibernate.envers.audit_table_prefix" value="a_"/>
+            <property name="org.hibernate.envers.audit_table_suffix" value=""/>
+            <property name="org.hibernate.envers.revision_type_field_name" value="operation"/>
+            <property name="org.hibernate.envers.do_not_audit_optimistic_locking_field" value="false"/>
+        </properties>
+    </persistence-unit>
+</persistence>

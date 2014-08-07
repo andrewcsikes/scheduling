@@ -1,0 +1,85 @@
+body {
+    color: #333333;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    margin-top: 20px;
+	margin-left: 20px;
+}
+
+.header{
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+form {
+    margin: 0 0 18px;
+}
+.form-actions {
+    border-top: 1px solid #DDDDDD;
+    margin-bottom: 18px;
+    margin-top: 18px;
+    padding: 17px 20px 18px;
+}
+.control-group > legend {
+	font-size: inherit;
+	font-weight: bold;
+	margin-bottom: 5px;
+	background-color: #F3F3F3;
+}
+input, button, select, textarea {
+    font-weight: normal;
+    line-height: 18px;
+}
+
+.error{
+	color: red;	
+}
+
+a {
+    color: #0088CC;
+    text-decoration: none;
+}
+
+label {
+    color: #333333;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.loginbox {
+    background-color: #F5F5F5;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
+    margin-bottom: 20px;
+    min-height: 20px;
+    padding: 19px;
+    width: 300px;
+    float: left;
+    margin-left: 20px;
+}
+
+h3 {
+    font-size: 18px;
+    line-height: 27px;
+}
+
+table.list{
+	border: 1px solid #436f93;
+	width: 100%;
+}
+
+table.list tr.header{
+	text-align: center;
+	background-color: #436f93;
+	color:white;
+	font-weight: bold;
+	height: 30px;
+}
+
+table.list td{
+	vertical-align:bottom;
+	padding:5px;
+	border: 1px solid #436f93;
+}
