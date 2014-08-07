@@ -31,10 +31,10 @@
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	
 	<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" id="dataSource"
-		p:driverClassName="oracle.jdbc.OracleDriver"
-		p:url="jdbc:oracle:thin:@db3:1521:dairydev"
-		p:username="andrewtest"
-		p:password="andrewtest"
+		p:driverClassName="org.hibernate.dialect.MySQLDialect"
+		p:url="jdbc:mysql:@db3:3306:scheduling"
+		p:username="admin8xbeEqe"
+		p:password="Q5aY9pRyaIhw"
 		p:maxActive="60"
 		p:initialSize="5"
 		p:maxIdle="10"
