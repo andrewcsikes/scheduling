@@ -23,7 +23,9 @@
        username root and blank password. Change below if it's not the case -->
   <bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
     <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-    <property name="url" value="jdbc:mysql://127.3.244.2:3306/scheduling"/>
+    <!-- <property name="url" value="jdbc:mysql://$OPENSHIFT_MYSQL_DB_HOST:$OPENSHIFT_MYSQL_DB_PORT/scheduling"/> -->
+    <!-- <property name="url" value="jdbc:mysql://127.3.244.2:3306/scheduling"/> -->
+    <property name="url" value="mysql://admin8xbeEqe:Q5aY9pRyaIhw@127.3.244.2:3306/scheduling" />
     <property name="username" value="admin8xbeEqe"/>
     <property name="password" value="Q5aY9pRyaIhw"/>
     <property name="validationQuery" value="SELECT 1"/>
