@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.vasa.scheduling.enums.UserStatus;
+import com.vasa.scheduling.enums.UserType;
 
 @Entity
 @Table(name="user")
@@ -35,18 +36,14 @@ public class User {
 	@NotNull
 	private String emailAddress;
 	
-	@NotNull
 	private String address1;
 	
 	private String address2;
 	
-	@NotNull
 	private String city;
 	
-	@NotNull
 	private String state;
 	
-	@NotNull
 	private String postalCode;
 	
 	@NotNull
@@ -60,7 +57,16 @@ public class User {
 	@NotNull
 	private Date memberSince;
 	
+	@NotNull
+	private UserType userType;
 	
+	
+	public UserType getUserType() {
+		return userType;
+	}
+	public void setUserType(UserType userType) {
+		this.userType = userType;
+	}
 	public Integer getId() {
 		return id;
 	}

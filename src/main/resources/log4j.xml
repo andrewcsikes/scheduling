@@ -11,7 +11,7 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="com.sikesonline.cardshop">
+	<logger name="com.vasa.scheduling">
 		<level value="info" />
 	</logger>
 	

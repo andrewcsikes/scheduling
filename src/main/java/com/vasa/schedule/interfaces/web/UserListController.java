@@ -19,7 +19,7 @@ public class UserListController extends DefaultHandlerController {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(Model model) {
-		List<User> users = repository.findAll();
+		List<User> users = repository.findAll();		
 	    model.addAttribute("users", users);
 	    return "index";
 	}
