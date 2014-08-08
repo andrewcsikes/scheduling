@@ -24,8 +24,8 @@
   <bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
     <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
     <property name="url" value="jdbc:mysql://$OPENSHIFT_MYSQL_DB_HOST:$OPENSHIFT_MYSQL_DB_PORT/scheduling"/>
-    <property name="username" value="root"/>
-    <property name="password" value=""/>
+    <property name="username" value="admin8xbeEqe"/>
+    <property name="password" value="Q5aY9pRyaIhw"/>
     <property name="validationQuery" value="SELECT 1"/>
   </bean>
    
