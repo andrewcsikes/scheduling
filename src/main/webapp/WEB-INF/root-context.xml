@@ -62,6 +62,6 @@
     </bean>
     
   <jpa:repositories base-package="com.vasa.scheduling.repositiories" />
-  <context:component-scan base-package="com.vasa.scheduling.repositiories, com.vasa.scheduling.services" />
+  <context:component-scan base-package="com.vasa.scheduling.*" />
 		
 </beans>
