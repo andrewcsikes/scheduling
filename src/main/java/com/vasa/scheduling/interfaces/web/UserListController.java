@@ -1,4 +1,4 @@
-package com.vasa.schedule.interfaces.web;
+package com.vasa.scheduling.interfaces.web;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import com.vasa.scheduling.services.UserService;
 
 @Controller
 @RequestMapping("/")
-@ComponentScan("com.vasa.scheduling.services")
+//@ComponentScan("com.vasa.scheduling.services")
 public class UserListController extends DefaultHandlerController {
 
 	@Autowired private UserService service;

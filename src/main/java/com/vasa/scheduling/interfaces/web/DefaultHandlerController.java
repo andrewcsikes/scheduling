@@ -1,4 +1,4 @@
-package com.vasa.schedule.interfaces.web;
+package com.vasa.scheduling.interfaces.web;
 
 import javax.servlet.http.HttpSession;
 
