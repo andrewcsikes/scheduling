@@ -14,7 +14,7 @@ import com.vasa.scheduling.services.UserService;
 
 @Controller
 @RequestMapping("/")
-@ComponentScan("com.bd.service")
+@ComponentScan("com.vasa.scheduling.service")
 public class UserListController extends DefaultHandlerController {
 
 	@Autowired private UserService service;
