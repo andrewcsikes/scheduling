@@ -10,18 +10,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.vasa.scheduling.domain.User;
-import com.vasa.scheduling.repositiories.UserRepository;
+import com.vasa.scheduling.services.UserService;
 
 @Controller
 @RequestMapping("/")
 @ComponentScan("com.bd.service")
 public class UserListController extends DefaultHandlerController {
 
-	@Autowired private UserRepository repository;
+	@Autowired private UserService service;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(Model model) {
-		List<User> users = repository.findAll();		
+		List<User> users = service.findAll();	
 	    model.addAttribute("users", users);
 	    return "index";
 	}
