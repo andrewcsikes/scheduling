@@ -40,4 +40,6 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
+	<bean id="userService" class="com.vasa.scheduling.services.UserServiceImpl"></bean>
+	
 </beans:beans>
