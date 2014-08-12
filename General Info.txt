@@ -1,0 +1,25 @@
+SQL Database port forwarding ...
+rhc port-forward -a scheduling
+
+
+Remote URL ...
+http://scheduling-vanalstyne.rhcloud.com/
+
+
+Local URL ...
+http://localhost:8090/scheduling/
+
+
+App on OpenShift ...
+https://openshift.redhat.com/app/console/application/53e382d3500446c8bd00016d-scheduling
+
+
+Database PHP Admin ...
+https://scheduling-vanalstyne.rhcloud.com/phpmyadmin/#PMAURL-13:tbl_replace.php?db=scheduling&table=user&server=1&target=&token=bd560f82bedc879f7914185780befc41
+username: admin8xbeEqe
+password: Q5aY9pRyaIhw
+
+
+OpenShift Environment Variables ...
+https://www.openshift.com/developers/openshift-environment-variables
+http://stackoverflow.com/questions/18176185/mysql-connection-tomcat-7-on-openshift
