@@ -43,6 +43,8 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
+	<context:component-scan base-package="com.vasa.scheduling.repositiories, com.vasa.scheduling.services" />
+	
 <!-- 	<bean id="userService" class="com.vasa.scheduling.services.UserServiceImpl"></bean> -->
 	
 </beans:beans>
