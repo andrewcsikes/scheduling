@@ -6,14 +6,24 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.vasa.scheduling.enums.UserStatus;
 import com.vasa.scheduling.enums.UserType;
+import com.vasa.scheduling.services.UserService;
 
 @Entity
 @Table(name="user")
 public class User {
+
+	@Autowired
+	@Transient
+	UserService us;
 	
 	@Id
 	@GeneratedValue
@@ -91,10 +101,10 @@ public class User {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	public String getUserPassword() {
+	public String getPassword() {
 		return password;
 	}
-	public void setUserPassword(String userPassword) {
+	public void setPassword(String userPassword) {
 		this.password = userPassword;
 	}
 	public String getPasswordReminder() {
@@ -162,6 +172,10 @@ public class User {
 	}
 	public void setMemberSince(Date memberSince) {
 		this.memberSince = memberSince;
+	}
+	
+	public Team getTeam(){
+		return us.getTeam(this); 
 	}
 
 }

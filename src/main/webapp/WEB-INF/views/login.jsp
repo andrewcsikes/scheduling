@@ -3,7 +3,7 @@
 
 <html>
 <head>
-	<title>Sports Card Manager</title>
+	<title>VASA Scheduler</title>
 	
 	<link href="/scheduling/styles/style.css" rel="stylesheet" type="text/css" />
 	

@@ -83,3 +83,20 @@ table.list td{
 	padding:5px;
 	border: 1px solid #436f93;
 }
+
+table.modify{
+	border: 0px;
+}
+
+table.modify tr.header{
+	text-align: center;
+	background-color: #436f93;
+	color:white;
+	font-weight: bold;
+	height: 30px;
+}
+
+table.modify td{
+	vertical-align:bottom;
+	padding:5px;
+}
