@@ -1,9 +1,13 @@
 package com.vasa.scheduling.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -12,26 +16,27 @@ import javax.validation.constraints.NotNull;
 public class Team {
 	
 	@Id
-	@GeneratedValue
+	@SequenceGenerator(name = "TeamSequence", sequenceName = "SEQ_TEAM_PK", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TeamSequence")
 	private Integer id;
 
 	@NotNull
-	@OneToOne
+	@OneToOne(fetch = FetchType.EAGER)
 	private Sport sport;
 	
 	@NotNull
-	@OneToOne
+	@OneToOne(fetch = FetchType.EAGER)
 	private AgeGroup ageGroup;
 	
 	@NotNull
-	@OneToOne
+	@OneToOne(fetch = FetchType.EAGER)
 	private Season season;
 	
 	@NotNull
 	private String name;
 	
 	@NotNull
-	@OneToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	private User coach;
 	
 	public Sport getSport() {

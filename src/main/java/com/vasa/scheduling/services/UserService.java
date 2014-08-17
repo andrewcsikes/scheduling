@@ -11,5 +11,6 @@ public interface UserService{
 	User findByUserName(String username);
 	List<User> findAll();
 	Team getTeam(User user);
+	User findById(Integer userId);
 
 }

@@ -30,6 +30,11 @@ public class UserServiceImpl implements UserService{
 	public User findByUserName(String username) {
 		return userRepo.findByUserName(username);
 	}
+	
+	@Override
+	public User findById(Integer id) {
+		return userRepo.findById(id);
+	}
 
 	@Override
 	public List<User> findAll() {

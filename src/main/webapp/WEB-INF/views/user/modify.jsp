@@ -7,10 +7,32 @@
 <body>
 
 <form id="entry" name="entry" action="modify" method="POST">
+<input type="hidden" name="id" value="${modifyuser.id}" />
 <table class="modify">
   <tr class="header">
     <td colspan="2">User Information</td>
   </tr>
+  <c:if test="${user.userType.code==1}">
+    <tr>
+      <td>User Type:</td>
+      <td>
+        <select name="userType">
+          <option value="1" ${modifyuser.userType.code == 1 ? 'selected' : ''}>Admin</option>
+          <option value="2" ${modifyuser.userType.code == 2 ? 'selected' : ''}>Coach</option>
+          <option value="3" ${modifyuser.userType.code == 3 ? 'selected' : ''}>User</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td>User Status:</td>
+      <td>
+        <select name="status">
+          <option value="1" ${modifyuser.status.code == 1 ? 'selected' : ''}>Active</option>
+          <option value="2" ${modifyuser.status.code == 2 ? 'selected' : ''}>Inactive</option>
+        </select>
+      </td>
+    </tr>
+  </c:if>
   <tr>
     <td>First Name:</td>
     <td><input type="text" name="firstName" value="${modifyuser.firstName}" /></td>

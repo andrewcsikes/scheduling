@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.vasa.scheduling.domain.User;
-import com.vasa.scheduling.enums.UserStatus;
+import com.vasa.scheduling.enums.Status;
 import com.vasa.scheduling.services.UserService;
 
 /**
@@ -41,7 +41,7 @@ public class UserHomeController extends DefaultHandlerController{
 		
 		if(user != null){
 			if(user.getPassword().equals(password)){
-				if(user.getStatus().equals(UserStatus.ACTIVE)){
+				if(user.getStatus().equals(Status.ACTIVE)){
 					user.setLastLogin(new Date());
 					user.setLoginFailures(0);
 					mr.save(user);

@@ -2,7 +2,9 @@ package com.vasa.scheduling.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -11,7 +13,8 @@ import javax.validation.constraints.NotNull;
 public class AgeGroup {
 
 	@Id
-	@GeneratedValue
+	@SequenceGenerator(name = "AgeSequence", sequenceName = "SEQ_AGE_PK", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="AgeSequence")
 	private Integer id;
 	
 	@NotNull

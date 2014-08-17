@@ -11,5 +11,6 @@ import com.vasa.scheduling.domain.User;
 public interface UserRepository extends JpaRepository<User, Integer>{
 
 	User findByUserName(String username);
+	User findById(Integer id);
 	
 }

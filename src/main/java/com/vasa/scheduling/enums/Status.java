@@ -2,7 +2,7 @@ package com.vasa.scheduling.enums;
 
 import java.util.Map;
 
-public enum UserStatus implements CodeAndDisplayNameEnum<Integer>{
+public enum Status implements CodeAndDisplayNameEnum<Integer>{
 
 	ACTIVE(1,"Active"),
 	INACTIVE(2,"Inactive");
@@ -10,7 +10,7 @@ public enum UserStatus implements CodeAndDisplayNameEnum<Integer>{
 	private final Integer code;
 	private final String displayName;
 
-	private UserStatus(Integer code, String displayName) {
+	private Status(Integer code, String displayName) {
 		this.code = code;
 		this.displayName = displayName;
 	}
@@ -24,26 +24,26 @@ public enum UserStatus implements CodeAndDisplayNameEnum<Integer>{
 	}
 
 	public static Map<?, String> getDisplayNames() {
-		return EnumFactory.getEnumDisplayNames(UserStatus.class);
+		return EnumFactory.getEnumDisplayNames(Status.class);
 	}
 
 	public static Map<String, String> getDisplayNamesWithValue() {
-		return EnumFactory.getNameDisplayNameMap(UserStatus.class);
+		return EnumFactory.getNameDisplayNameMap(Status.class);
 	}
 
-	public static UserStatus toEnumFromCode(Integer code) {
+	public static Status toEnumFromCode(Integer code) {
 		if (code == null)
 		{
 			return null;
 		}
-		return EnumFactory.toEnumFromCode( UserStatus.class, code);
+		return EnumFactory.toEnumFromCode( Status.class, code);
 	}
 
-	public static UserStatus toEnumFromDisplayName(String displayName) {
+	public static Status toEnumFromDisplayName(String displayName) {
 		if (displayName == null || displayName.isEmpty()){
 			return null;
 		}
-		return EnumFactory.toEnumFromDisplayName(UserStatus.class, displayName);
+		return EnumFactory.toEnumFromDisplayName(Status.class, displayName);
 	}
 
   /**

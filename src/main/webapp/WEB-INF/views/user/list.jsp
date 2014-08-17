@@ -15,7 +15,8 @@
 		<th>First Name</th>
 		<th>Last Name</th>
 		<th>Username</th>
-		<th>Team<th>
+		<th>Team</th>
+		<th>Action</th>
 	</tr>
 	<c:forEach var="modifyuser" items="${users}">
 		<tr>
@@ -23,7 +24,8 @@
 			<td><c:out value="${modifyuser.firstName}" /></td>
 			<td><c:out value="${modifyuser.lastName}" /></td>
 			<td><c:out value="${modifyuser.userName}" /></td>
-			<td><c:out value="${modifyuser.team.name}" /></td>
+			<td><c:out value="${modifyuser.team.name} - ${modifyuser.team.season.name}" /></td>
+			<td><a href="modify?user=${modifyuser.id}">Edit</a></td>
 		</tr>
 	</c:forEach>
 	</table>

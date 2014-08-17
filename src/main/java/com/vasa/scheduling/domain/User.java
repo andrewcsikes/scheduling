@@ -1,32 +1,35 @@
 package com.vasa.scheduling.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import com.vasa.scheduling.enums.UserStatus;
+import com.vasa.scheduling.enums.Status;
 import com.vasa.scheduling.enums.UserType;
-import com.vasa.scheduling.services.UserService;
 
 @Entity
-@Table(name="user")
+@Table(name="USER")
 public class User {
 
-	@Autowired
-	@Transient
-	UserService us;
+	@OneToMany(fetch = FetchType.EAGER, mappedBy="coach")
+	private List<Team> team;
 	
 	@Id
-	@GeneratedValue
+	@SequenceGenerator(name = "UserSequence", sequenceName = "SEQ_USER_PK", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="UserSequence")
 	private Integer id;
 
 	@NotNull
@@ -57,14 +60,18 @@ public class User {
 	private String postalCode;
 	
 	@NotNull
-	private UserStatus status;
+	private Status status;
 	
 	@NotNull
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern="SS")
 	private Date lastLogin;
 	
 	private int loginFailures=0;
 	
 	@NotNull
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern="SS")
 	private Date memberSince;
 	
 	@NotNull
@@ -149,10 +156,10 @@ public class User {
 	public void setPostalCode(String postalCode) {
 		this.postalCode = postalCode;
 	}
-	public UserStatus getStatus() {
+	public Status getStatus() {
 		return status;
 	}
-	public void setStatus(UserStatus status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 	public Date getLastLogin() {
@@ -173,9 +180,13 @@ public class User {
 	public void setMemberSince(Date memberSince) {
 		this.memberSince = memberSince;
 	}
-	
 	public Team getTeam(){
-		return us.getTeam(this); 
+		for(Team userTeam : team){
+			if(userTeam.getSeason() != null && userTeam.getSeason().getStatus()==Status.ACTIVE){
+				return userTeam;
+			}
+		}
+		return null;
 	}
-
+	
 }
