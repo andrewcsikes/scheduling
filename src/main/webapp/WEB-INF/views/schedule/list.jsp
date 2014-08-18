@@ -166,7 +166,7 @@
 			}
 			for(String field:fields){		
 				java.util.Map<String,java.util.ArrayList<String>> week = schedule.get(field);
-				java.util.ArrayList<String> day = week.get("Sunday");
+				java.util.ArrayList<String> day = week.get(dayName);
 				
 				if(fieldCount==0){
 					out.append("<th width='70px' bgcolor='#5f8aad'><font color='#ffffff'>"+format1.format(time.getTime())+"</font></th>");
