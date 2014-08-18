@@ -26,7 +26,7 @@ public class FieldSchedule {
 	private Integer id;
 	
 	@NotNull
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.EAGER)
 	private Fields field;
 	
 	@NotNull
@@ -35,7 +35,7 @@ public class FieldSchedule {
 	private Date date;
 	
 	@NotNull
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.EAGER)
 	private Team team;
 	
 	@NotNull

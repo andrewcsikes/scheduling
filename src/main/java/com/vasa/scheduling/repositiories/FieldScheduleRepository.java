@@ -16,7 +16,11 @@ import com.vasa.scheduling.domain.FieldSchedule;
 public interface FieldScheduleRepository extends JpaRepository<FieldSchedule, Integer>{
 
 	@Query("Select s from FieldSchedule s where DATE(date)=DATE(:d) and field.name=:field ")
-	List<FieldSchedule> findByDateAndFieldName(@Param("d") Date d, @Param("field") String field);
+	List<FieldSchedule> findByDayAndFieldName(@Param("d") Date d, @Param("field") String field);
+	
 	FieldSchedule findById(Integer id);
+	
+	@Query("Select s from FieldSchedule s where date=:d and field.name=:field ")
+	FieldSchedule findByDateAndFieldName(@Param("d") Date d, @Param("field") String field);
 	
 }

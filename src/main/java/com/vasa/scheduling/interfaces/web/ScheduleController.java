@@ -1,10 +1,14 @@
 package com.vasa.scheduling.interfaces.web;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.vasa.scheduling.domain.FieldSchedule;
+import com.vasa.scheduling.domain.Fields;
 import com.vasa.scheduling.domain.User;
 import com.vasa.scheduling.services.ScheduleService;
 
@@ -27,7 +32,7 @@ public class ScheduleController extends DefaultHandlerController {
 	private ScheduleService service;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public String list(Model model, HttpServletRequest request) {
+	public String list(@RequestParam(required=false, value="date") String date, Model model, HttpServletRequest request) {
 		
 		User user = verifyUser(request.getSession());
 		model.addAttribute("user", user);
@@ -36,8 +41,18 @@ public class ScheduleController extends DefaultHandlerController {
 			return "login";
 		}
 		
-		Date startDate = new Date();
 		Calendar sunday = Calendar.getInstance();
+		Date startDate = new Date();
+		
+		if(date != null){
+			try {
+				SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+				startDate = formatter.parse(date);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		sunday.setTime(startDate);
 		sunday.set(Calendar.MINUTE, 0);
 		sunday.set(Calendar.HOUR, 0);
@@ -45,34 +60,36 @@ public class ScheduleController extends DefaultHandlerController {
 		
 		Date startOfWeek = sunday.getTime();
 		
-		ArrayList<String> fields = new ArrayList<String>();
-		fields.add("FM North");
-		fields.add("FM South");
+		List<Fields> fields = service.findAllFields();
+		
+//		ArrayList<String> fields = new ArrayList<String>();
+//		fields.add("FM North");
+//		fields.add("FM South");
 		
 		// schedule contains the entire schedule for every field
 		HashMap<String, HashMap<String,ArrayList<String>>> schedule = new HashMap<String, HashMap<String,ArrayList<String>>>();
 		
-		for(String field: fields){
+		for(Fields field: fields){
 			sunday.setTime(startDate);
 			sunday.set(Calendar.MINUTE, 0);
 			sunday.set(Calendar.HOUR, 0);
 			sunday.set(Calendar.DAY_OF_WEEK, 1);
 			// week - key is the day, value is the fields
 			HashMap<String,ArrayList<String>> week = new HashMap<String, ArrayList<String>>();
-			week.put("Sunday", getFieldDay(sunday.getTime(), field));
+			week.put("Sunday", getFieldDay(sunday.getTime(), field.getName()));
 			sunday.add(Calendar.DAY_OF_YEAR, 1);
-			week.put("Monday", getFieldDay(sunday.getTime(), field));
+			week.put("Monday", getFieldDay(sunday.getTime(), field.getName()));
 			sunday.add(Calendar.DAY_OF_YEAR, 1);
-			week.put("Tuesday", getFieldDay(sunday.getTime(), field));
+			week.put("Tuesday", getFieldDay(sunday.getTime(), field.getName()));
 			sunday.add(Calendar.DAY_OF_YEAR, 1);
-			week.put("Wednesday", getFieldDay(sunday.getTime(), field));
+			week.put("Wednesday", getFieldDay(sunday.getTime(), field.getName()));
 			sunday.add(Calendar.DAY_OF_YEAR, 1);
-			week.put("Thursday", getFieldDay(sunday.getTime(), field));
+			week.put("Thursday", getFieldDay(sunday.getTime(), field.getName()));
 			sunday.add(Calendar.DAY_OF_YEAR, 1);
-			week.put("Friday", getFieldDay(sunday.getTime(), field));
+			week.put("Friday", getFieldDay(sunday.getTime(), field.getName()));
 			sunday.add(Calendar.DAY_OF_YEAR, 1);
-			week.put("Saturday", getFieldDay(sunday.getTime(), field));
-			schedule.put(field, week);
+			week.put("Saturday", getFieldDay(sunday.getTime(), field.getName()));
+			schedule.put(field.getName(), week);
 		}
 		
 		model.addAttribute("sunday", startOfWeek);
@@ -85,9 +102,32 @@ public class ScheduleController extends DefaultHandlerController {
 	@RequestMapping(value="/add", method = RequestMethod.GET)
 	public String add(@RequestParam(required=true, value="date") String date,
 			@RequestParam(required=true, value="field") String field,
+			@RequestParam(required=false, value="date") String userId,
 			Model model, 
 			HttpServletRequest request) {
-		 return list(model, request);
+		
+		try {
+			SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+			Date calenderDay = formatter.parse(date);
+		
+			FieldSchedule schedule = service.findByDateField(calenderDay, field);
+			
+			if(schedule == null){
+				schedule = new FieldSchedule();
+				schedule.setCreationDate(new Date());
+				schedule.setDate(calenderDay);
+				schedule.setField(service.findFieldByName(field));
+				User user = verifyUser(request.getSession());
+				schedule.setTeam(user.getTeam());
+				service.save(schedule);
+			}
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return list(date, model, request);
 	}
 	
 	@RequestMapping(value="/delete", method = RequestMethod.GET)
@@ -95,12 +135,29 @@ public class ScheduleController extends DefaultHandlerController {
 			@RequestParam(required=true, value="field") String field,
 			Model model, 
 			HttpServletRequest request) {
-		 return list(model, request);
+		
+		try {
+			SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+			Date calenderDay = formatter.parse(date);
+		
+			FieldSchedule schedule = service.findByDateField(calenderDay, field);
+			User user = verifyUser(request.getSession());
+			
+			if(schedule != null && schedule.getTeam().getId().equals(user.getTeam().getId())){
+				service.delete(schedule);
+			}
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return list(date, model, request);
 	}
 
 	private ArrayList<String> getFieldDay(Date date, String field) {
 		
-		List<FieldSchedule> schedules = service.findByDateField(date, field);
+		List<FieldSchedule> schedules = service.findByDayField(date, field);
 		ArrayList<String> day = new ArrayList<String>();
 		
 		day.add(null); // 9:00
