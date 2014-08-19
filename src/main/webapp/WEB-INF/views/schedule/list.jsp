@@ -21,14 +21,17 @@ addDay.setTime((java.util.Date)request.getAttribute("sunday"));
 addDay.add(java.util.Calendar.DAY_OF_MONTH, -7);
 %>
 	
+	<div style="width: 100%; overflow: hidden;">
+    	<div style="width: 10%px; float: left;"><a href="/scheduling/schedule/list?date=<%out.println(format1.format(addDay.getTime()));%>"><b>Previous Week</b></a></div>
+    	<div style="margin-left: 80%; float: right;"><a href="/scheduling/schedule/list?date=<%out.println(format1.format(addDay.getTime()));%>"><b>Next Week</b></a></div>
+	</div>
+	
 	<table class="list">
 	<tr class="header">
-	  <th><a href="/scheduling/schedule/list?date=<%out.println(format1.format(addDay.getTime()));%>">Previous Week</a></th>
-	  <th colspan=<%out.println(fields.size()); %>>
+	  <th colspan=<%out.println(fields.size()+2); %>>
 	    Week of <% out.println(format2.format(scheduleDay.getTime())); %>
 	  </th>
 	  <% addDay.add(java.util.Calendar.DAY_OF_MONTH, 14); %>
-	  <th><a href="/scheduling/schedule/list?date=<%out.println(format1.format(addDay.getTime()));%>">Next Week</a></th>
 	</tr>
 	<tr class="header">
 		<th> </th>
@@ -192,8 +195,15 @@ addDay.add(java.util.Calendar.DAY_OF_MONTH, -7);
 				if(hour == null && (user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 						user.getUserType().equals(com.vasa.scheduling.enums.UserType.COACH))){
 					out.append("<td><a href='/scheduling/schedule/list/add?date="+format2.format(time.getTime())+"&field="+field.getName()+"'><img src='/scheduling/images/plus-icon.png' /></a></td>");
-				}else if(hour != null && hour.equals(user.getTeam().getName() + " - " + user.getLastName() + " - " + user.getTeam().getAgeGroup().getName())){
-					out.append("<td><a href='/scheduling/schedule/list/delete?date="+format2.format(time.getTime())+"&field="+field.getName()+"'><img src='/scheduling/images/minus-icon.png' /></a> "+hour+"</td>");
+				}else if(hour != null && (user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
+						user.getUserType().equals(com.vasa.scheduling.enums.UserType.COACH))){
+					if(hour.equals(user.getTeam().getName() + " - " + user.getLastName() + " - " + user.getTeam().getAgeGroup().getName())){
+						out.append("<td><a href='/scheduling/schedule/list/delete?date="+format2.format(time.getTime())+"&field="+field.getName()+"'><img src='/scheduling/images/minus-icon.png' /></a> "+hour+"</td>");
+					}else{
+						out.append("<td>"+hour+"</td>");
+					}
+				}else if(hour==null){
+					out.append("<td>&nbsp;</td>");
 				}else{
 					out.append("<td>"+hour+"</td>");
 				}
