@@ -69,6 +69,8 @@ public class UserModifyController extends DefaultHandlerController{
 			user.setStatus(Status.toEnumFromCode(Integer.valueOf(request.getParameter("status"))));
 		}
 		
+		user.setUserName(request.getParameter("username"));
+		user.setPassword(request.getParameter("password"));
 		user.setFirstName(request.getParameter("firstName"));
 		user.setLastName(request.getParameter("lastName"));
 		user.setEmailAddress(request.getParameter("emailAddress"));

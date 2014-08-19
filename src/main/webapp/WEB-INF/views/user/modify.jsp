@@ -8,9 +8,10 @@
 
 <form id="entry" name="entry" action="modify" method="POST">
 <input type="hidden" name="id" value="${modifyuser.id}" />
+
 <table class="modify">
   <tr class="header">
-    <td colspan="2">User Information</td>
+    <td colspan="2">Login Information</td>
   </tr>
   <c:if test="${user.userType.code==1}">
     <tr>
@@ -33,6 +34,21 @@
       </td>
     </tr>
   </c:if>
+  <tr>
+    <td>Username:</td>
+    <td><input type="text" name="username" value="${modifyuser.username}" /></td>
+  </tr>
+  <tr>
+    <td>Password:</td>
+    <td><input type="password" name="password" value="${modifyuser.password}" /></td>
+  </tr>
+</table>
+
+
+<table class="modify">
+  <tr class="header">
+    <td colspan="2">User Information</td>
+  </tr>
   <tr>
     <td>First Name:</td>
     <td><input type="text" name="firstName" value="${modifyuser.firstName}" /></td>
