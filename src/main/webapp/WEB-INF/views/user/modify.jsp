@@ -36,7 +36,7 @@
   </c:if>
   <tr>
     <td>Username:</td>
-    <td><input type="text" name="username" value="${modifyuser.username}" /></td>
+    <td><input type="text" name="username" value="${modifyuser.userName}" /></td>
   </tr>
   <tr>
     <td>Password:</td>
