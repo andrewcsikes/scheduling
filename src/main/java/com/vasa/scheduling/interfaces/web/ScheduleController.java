@@ -60,6 +60,18 @@ public class ScheduleController extends DefaultHandlerController {
 		
 		Date startOfWeek = sunday.getTime();
 		
+		Calendar today = Calendar.getInstance();
+		Date d = new Date();
+		today.setTime(d);
+		today.set(Calendar.MINUTE, 0);
+		today.set(Calendar.HOUR, 0);
+		today.add(Calendar.DAY_OF_YEAR, 7);
+		
+		boolean locked = false;
+		if(startOfWeek.after(today.getTime())){
+			locked = true;
+		}
+		
 		// TODO: get fields based on users sport
 		List<Fields> fields = service.findAllFields();
 		
@@ -92,6 +104,7 @@ public class ScheduleController extends DefaultHandlerController {
 		model.addAttribute("sunday", startOfWeek);
 		model.addAttribute("fields", fields);
 		model.addAttribute("schedule",schedule);
+		model.addAttribute("locked", locked);
 		
 	    return "schedule/list";
 	}

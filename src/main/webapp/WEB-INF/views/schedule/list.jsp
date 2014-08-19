@@ -10,6 +10,7 @@
 
 <%
 java.util.ArrayList<com.vasa.scheduling.domain.Fields> fields = (java.util.ArrayList<com.vasa.scheduling.domain.Fields>)request.getAttribute("fields");
+boolean locked = (Boolean)request.getAttribute("locked");
 java.text.SimpleDateFormat format1 = new java.text.SimpleDateFormat("MM/dd/yyyy");
 java.text.SimpleDateFormat format2 = new java.text.SimpleDateFormat("MMM dd, yyyy");
 
@@ -19,6 +20,9 @@ scheduleDay.setTime((java.util.Date)request.getAttribute("sunday"));
 java.util.Calendar addDay = java.util.Calendar.getInstance();
 addDay.setTime((java.util.Date)request.getAttribute("sunday"));
 addDay.add(java.util.Calendar.DAY_OF_MONTH, -7);
+
+if(locked){out.println("<p><b><font color='red'>You can only schedule 1 week in advance at this time.</font></b></p>");}
+
 %>
 	
 	<div style="width: 100%; overflow: hidden;">
@@ -48,7 +52,7 @@ addDay.add(java.util.Calendar.DAY_OF_MONTH, -7);
 	out.println("</tr><tr>");
 	
 	out.println("<th width='100px' rowspan='26'>Sunday<br />"+format1.format(scheduleDay.getTime())+"</th>");
-	out.println(printDay(user, scheduleDay, "Sunday", fields, schedule));
+	out.println(printDay(user, scheduleDay, "Sunday", fields, schedule, locked));
 	scheduleDay.add(java.util.Calendar.DAY_OF_MONTH, 1);
 	out.println("</table>");
 	
@@ -65,7 +69,7 @@ addDay.add(java.util.Calendar.DAY_OF_MONTH, -7);
 	out.println("</tr><tr>");
 	
 	out.println("<th width='100px' rowspan='26'>Monday<br />"+format1.format(scheduleDay.getTime())+"</th>");
-	out.println(printDay(user, scheduleDay, "Monday", fields, schedule));
+	out.println(printDay(user, scheduleDay, "Monday", fields, schedule, locked));
 	scheduleDay.add(java.util.Calendar.DAY_OF_MONTH, 1);
 	out.println("</table>");
 	
@@ -82,7 +86,7 @@ addDay.add(java.util.Calendar.DAY_OF_MONTH, -7);
 	out.println("</tr><tr>");
 	
 	out.println("<th width='100px' rowspan='26'>Tuesday<br />"+format1.format(scheduleDay.getTime())+"</th>");
-	out.println(printDay(user, scheduleDay, "Tuesday", fields, schedule));
+	out.println(printDay(user, scheduleDay, "Tuesday", fields, schedule, locked));
 	scheduleDay.add(java.util.Calendar.DAY_OF_MONTH, 1);
 	out.println("</table>");
 	
@@ -99,7 +103,7 @@ addDay.add(java.util.Calendar.DAY_OF_MONTH, -7);
 	out.println("</tr><tr>");
 	
 	out.println("<th width='100px' rowspan='26'>Wednesday<br />"+format1.format(scheduleDay.getTime())+"</th>");
-	out.println(printDay(user, scheduleDay, "Wednesday", fields, schedule));
+	out.println(printDay(user, scheduleDay, "Wednesday", fields, schedule, locked));
 	scheduleDay.add(java.util.Calendar.DAY_OF_MONTH, 1);
 	out.println("</table>");
 	
@@ -116,7 +120,7 @@ addDay.add(java.util.Calendar.DAY_OF_MONTH, -7);
 	out.println("</tr><tr>");
 	
 	out.println("<th width='100px' rowspan='26'>Thursday<br />"+format1.format(scheduleDay.getTime())+"</th>");
-	out.println(printDay(user, scheduleDay, "Thursday", fields, schedule));
+	out.println(printDay(user, scheduleDay, "Thursday", fields, schedule, locked));
 	scheduleDay.add(java.util.Calendar.DAY_OF_MONTH, 1);
 	out.println("</table>");
 	
@@ -133,7 +137,7 @@ addDay.add(java.util.Calendar.DAY_OF_MONTH, -7);
 	out.println("</tr><tr>");
 	
 	out.println("<th width='100px' rowspan='26'>Friday<br />"+format1.format(scheduleDay.getTime())+"</th>");
-	out.println(printDay(user, scheduleDay, "Friday", fields, schedule));
+	out.println(printDay(user, scheduleDay, "Friday", fields, schedule, locked));
 	scheduleDay.add(java.util.Calendar.DAY_OF_MONTH, 1);
 	out.println("</table>");
 	
@@ -150,7 +154,7 @@ addDay.add(java.util.Calendar.DAY_OF_MONTH, -7);
 	out.println("</tr><tr>");
 	
 	out.println("<th width='100px' rowspan='26'>Saturday<br />"+format1.format(scheduleDay.getTime())+"</th>");
-	out.println(printDay(user, scheduleDay, "Saturday", fields, schedule));
+	out.println(printDay(user, scheduleDay, "Saturday", fields, schedule, locked));
 	scheduleDay.add(java.util.Calendar.DAY_OF_MONTH, 1);
 	out.println("</table>");
 	
@@ -164,7 +168,8 @@ addDay.add(java.util.Calendar.DAY_OF_MONTH, -7);
 			java.util.Calendar time, 
 			String dayName, 
 			java.util.ArrayList<com.vasa.scheduling.domain.Fields> fields, 
-			java.util.Map<String,java.util.Map<String,java.util.ArrayList<String>>> schedule){
+			java.util.Map<String,java.util.Map<String,java.util.ArrayList<String>>> schedule,
+			boolean locked){
 
 		StringBuffer out = new StringBuffer();
 		
@@ -194,6 +199,10 @@ addDay.add(java.util.Calendar.DAY_OF_MONTH, -7);
 				String hour = day.get(x);
 				if(hour!=null && hour.equals("RESERVED FOR GAMES")){
 					out.append("<td bgcolor='yellow'>"+hour+"</td>");
+				}
+				else if(locked){
+					if(hour==null) hour="&nbsp;";
+					out.append("<td>"+hour+"</td>");
 				}
 				else if(hour == null && (user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 						user.getUserType().equals(com.vasa.scheduling.enums.UserType.COACH))){
