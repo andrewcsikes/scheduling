@@ -34,9 +34,10 @@ public class FieldSchedule {
 	@DateTimeFormat(pattern="SS")
 	private Date date;
 	
-	@NotNull
 	@OneToOne(fetch = FetchType.EAGER)
 	private Team team;
+	
+	private boolean game = false;
 	
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
@@ -81,6 +82,14 @@ public class FieldSchedule {
 
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
+	}
+	
+	public boolean getGame(){
+		return game;
+	}
+	
+	public void setGame(boolean game){
+		this.game=game;
 	}
 	
 }

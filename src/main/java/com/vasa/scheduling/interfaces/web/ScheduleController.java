@@ -60,11 +60,8 @@ public class ScheduleController extends DefaultHandlerController {
 		
 		Date startOfWeek = sunday.getTime();
 		
+		// TODO: get fields based on users sport
 		List<Fields> fields = service.findAllFields();
-		
-//		ArrayList<String> fields = new ArrayList<String>();
-//		fields.add("FM North");
-//		fields.add("FM South");
 		
 		// schedule contains the entire schedule for every field
 		HashMap<String, HashMap<String,ArrayList<String>>> schedule = new HashMap<String, HashMap<String,ArrayList<String>>>();
@@ -189,9 +186,13 @@ public class ScheduleController extends DefaultHandlerController {
 
 		for(FieldSchedule schedule: schedules){
 			int slotNumber = getHourSlotNumber(schedule.getDate());
-			day.set(slotNumber, schedule.getTeam().getName()+" - "+
+			if(schedule.getGame()){
+				day.set(slotNumber, "RESERVED FOR GAMES");
+			}else{
+				day.set(slotNumber, schedule.getTeam().getName()+" - "+
 					schedule.getTeam().getCoach().getLastName()+" - "+
 					schedule.getTeam().getAgeGroup().getName());
+			}
 		}
 		return day;
 	}

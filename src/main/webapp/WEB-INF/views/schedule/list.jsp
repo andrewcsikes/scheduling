@@ -23,6 +23,7 @@ addDay.add(java.util.Calendar.DAY_OF_MONTH, -7);
 	
 	<div style="width: 100%; overflow: hidden;">
     	<div style="width: 10%px; float: left;"><a href="/scheduling/schedule/list?date=<%out.println(format1.format(addDay.getTime()));%>"><b>Previous Week</b></a></div>
+    	 <% addDay.add(java.util.Calendar.DAY_OF_MONTH, 14); %>
     	<div style="margin-left: 80%; float: right;"><a href="/scheduling/schedule/list?date=<%out.println(format1.format(addDay.getTime()));%>"><b>Next Week</b></a></div>
 	</div>
 	
@@ -31,7 +32,6 @@ addDay.add(java.util.Calendar.DAY_OF_MONTH, -7);
 	  <th colspan=<%out.println(fields.size()+2); %>>
 	    Week of <% out.println(format2.format(scheduleDay.getTime())); %>
 	  </th>
-	  <% addDay.add(java.util.Calendar.DAY_OF_MONTH, 14); %>
 	</tr>
 	<tr class="header">
 		<th> </th>
@@ -192,7 +192,10 @@ addDay.add(java.util.Calendar.DAY_OF_MONTH, -7);
 				}
 				
 				String hour = day.get(x);
-				if(hour == null && (user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
+				if(hour!=null && hour.equals("RESERVED FOR GAMES")){
+					out.append("<td bgcolor='yellow'>"+hour+"</td>");
+				}
+				else if(hour == null && (user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 						user.getUserType().equals(com.vasa.scheduling.enums.UserType.COACH))){
 					out.append("<td><a href='/scheduling/schedule/list/add?date="+format2.format(time.getTime())+"&field="+field.getName()+"'><img src='/scheduling/images/plus-icon.png' /></a></td>");
 				}else if(hour != null && (user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
