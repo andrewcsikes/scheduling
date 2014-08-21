@@ -1,9 +1,11 @@
 package com.vasa.scheduling.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -24,6 +26,10 @@ public class Season {
 	
 	@NotNull
 	private Status status;
+	
+	@NotNull
+	@OneToOne(fetch = FetchType.EAGER)
+	private Sport sport;
 
 	public Integer getId() {
 		return id;
@@ -47,5 +53,13 @@ public class Season {
 
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+
+	public Sport getSport() {
+		return sport;
+	}
+
+	public void setSport(Sport sport) {
+		this.sport = sport;
 	}
 }

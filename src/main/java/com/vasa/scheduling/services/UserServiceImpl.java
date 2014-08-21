@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.vasa.scheduling.domain.Team;
 import com.vasa.scheduling.domain.User;
+import com.vasa.scheduling.enums.UserType;
 import com.vasa.scheduling.repositiories.TeamRepository;
 import com.vasa.scheduling.repositiories.UserRepository;
 
@@ -44,6 +45,13 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public Team getTeam(User user) {
 		return teamRepo.findByCoach(user);
+	}
+
+	@Override
+	public List<User> findAllCoaches() {
+		List <User> coaches = teamRepo.findByUserType(UserType.COACH);
+		coaches.addAll(teamRepo.findByUserType(UserType.ADMIN));
+		return coaches;
 	}
 	
 }

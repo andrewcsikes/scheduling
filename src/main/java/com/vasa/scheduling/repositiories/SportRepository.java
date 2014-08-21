@@ -1,20 +1,15 @@
 package com.vasa.scheduling.repositiories;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.vasa.scheduling.domain.Fields;
 import com.vasa.scheduling.domain.Sport;
-import com.vasa.scheduling.enums.Status;
 
 @Repository
 @Transactional(readOnly = true)
-public interface FieldRepository extends JpaRepository<Fields, Integer>{
+public interface SportRepository extends JpaRepository<Sport, Integer>{
 
-	Fields findByName(String name);
-	List<Fields> findBySport(Sport sport);
-	List<Fields> findByStatus(Status status);
+	Sport findByName(String name);
+
 }

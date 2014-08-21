@@ -8,8 +8,13 @@ import org.springframework.stereotype.Service;
 
 import com.vasa.scheduling.domain.FieldSchedule;
 import com.vasa.scheduling.domain.Fields;
+import com.vasa.scheduling.domain.Season;
+import com.vasa.scheduling.domain.Sport;
+import com.vasa.scheduling.enums.Status;
 import com.vasa.scheduling.repositiories.FieldRepository;
 import com.vasa.scheduling.repositiories.FieldScheduleRepository;
+import com.vasa.scheduling.repositiories.SeasonRepository;
+import com.vasa.scheduling.repositiories.SportRepository;
 
 @Service("scheduleService")
 public class ScheduleServiceImpl implements ScheduleService {
@@ -19,6 +24,12 @@ public class ScheduleServiceImpl implements ScheduleService {
 	
 	@Autowired
 	private FieldRepository fieldRepo;
+	
+	@Autowired
+	private SeasonRepository seasonRepo;
+	
+	@Autowired
+	private SportRepository sportRepo;
 	
 	@Override
 	public FieldSchedule save(FieldSchedule schedule) {
@@ -54,5 +65,19 @@ public class ScheduleServiceImpl implements ScheduleService {
 	public List<Fields> findAllFields() {
 		return fieldRepo.findAll();
 	}
+	
+	@Override
+	public List<Fields> findAllFields(Sport sport) {
+		return fieldRepo.findBySport(sport);
+	}
+	
+	@Override
+	public List<Season> findActiveSeasons(){
+		return seasonRepo.findByStatus(Status.ACTIVE);
+	}
 
+	@Override
+	public Sport findSportByName(String name){
+		return sportRepo.findByName(name);
+	}
 }

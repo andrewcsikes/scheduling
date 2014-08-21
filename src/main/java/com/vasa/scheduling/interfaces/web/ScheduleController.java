@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.vasa.scheduling.domain.FieldSchedule;
 import com.vasa.scheduling.domain.Fields;
+import com.vasa.scheduling.domain.Season;
+import com.vasa.scheduling.domain.Sport;
 import com.vasa.scheduling.domain.User;
 import com.vasa.scheduling.services.ScheduleService;
 
@@ -72,8 +74,42 @@ public class ScheduleController extends DefaultHandlerController {
 			locked = true;
 		}
 		
-		// TODO: get fields based on users sport
-		List<Fields> fields = service.findAllFields();
+		List<Fields> fields = null;
+		if(user.getTeam() != null){
+			Sport sport = user.getTeam().getSport();
+			fields = service.findAllFields(sport);
+			if(sport.getName().equals("Baseball")){
+				sport = service.findSportByName("Softball");
+				if(sport != null){
+					fields.addAll(service.findAllFields(sport));
+				}
+			}else if(sport.getName().equals("Softball")){
+				sport = service.findSportByName("Baseball");
+				if(sport != null){
+					fields.addAll(service.findAllFields(sport));
+				}
+			}
+		}else{
+			// Get the fields for the sport that is active
+			List<Season> activeSeason = service.findActiveSeasons();
+			if(activeSeason.size()>0){
+				Season season = activeSeason.get(0);
+				fields = service.findAllFields(season.getSport());
+				if(season.getSport().getName().equals("Baseball")){
+					Sport sport = service.findSportByName("Softball");
+					if(sport != null){
+						fields.addAll(service.findAllFields(sport));
+					}
+				}else if(season.getSport().getName().equals("Softball")){
+					Sport sport = service.findSportByName("Baseball");
+					if(sport != null){
+						fields.addAll(service.findAllFields(sport));
+					}
+				}
+			}else{
+				fields = service.findAllFields();
+			}
+		}
 		
 		// schedule contains the entire schedule for every field
 		HashMap<String, HashMap<String,ArrayList<String>>> schedule = new HashMap<String, HashMap<String,ArrayList<String>>>();

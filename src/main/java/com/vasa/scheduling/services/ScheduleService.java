@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.vasa.scheduling.domain.FieldSchedule;
 import com.vasa.scheduling.domain.Fields;
+import com.vasa.scheduling.domain.Season;
+import com.vasa.scheduling.domain.Sport;
 
 public interface ScheduleService{
 
@@ -15,5 +17,8 @@ public interface ScheduleService{
 	FieldSchedule findById(Integer id);
 	Fields findFieldByName(String field);
 	List<Fields> findAllFields();
+	List<Fields> findAllFields(Sport sport);
+	List<Season> findActiveSeasons();
+	Sport findSportByName(String string);
 
 }
