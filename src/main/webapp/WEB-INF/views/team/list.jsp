@@ -7,6 +7,42 @@
 <title>VASA Field Scheduling - Team List</title>
 </head>
 <body>
+
+<form id="entry" name="entry" action="list" method="POST">
+<table class="search">
+<tr>
+    <td valign="top">Sport:</td>
+    <td>
+      <select name="sport">
+        <option value="All">All</option>
+        <c:forEach items="${sports}" var="sport">
+          <option value="${sport.id}" ${modifyteam.sport.id == sport.id ? 'selected' : ''}>${sport.name}</option>
+        </c:forEach>
+      </select>
+    </td>
+    <td valign="top">Season:</td>
+    <td>
+      <select name="season">
+        <option value="All">All</option>
+        <c:forEach items="${seasons}" var="season">
+          <option value="${season.id}" ${modifyteam.season.id == season.id ? 'selected' : ''}>${season.name}</option>
+        </c:forEach>
+      </select>
+    </td>
+    <td valign="top">Age Group:</td>
+    <td>
+      <select name="ageGroup">
+        <option value="All">All</option>
+        <c:forEach items="${agegroups}" var="agegroup">
+          <option value="${agegroup.id}" ${modifyteam.ageGroup.id == agegroup.id ? 'selected' : ''}>${agegroup.name}</option>
+        </c:forEach>
+      </select>
+    </td>
+    <td><input type="submit" value="Search"></td>
+  </tr>
+</table>
+</form>
+
     <div style="width: 100%; overflow: hidden;">
     	<div style="width: 10%px; float: left;"><h1>List of User</h1></div>
     	<c:if test='${user.userType.displayName == "ADMIN"}'>

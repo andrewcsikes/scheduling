@@ -100,3 +100,23 @@ table.modify td{
 	vertical-align:bottom;
 	padding:5px;
 }
+
+table.search {
+    background-color: #f5f5dc;
+    border: 0 none;
+    empty-cells: show;
+    font-size: small;
+    margin: 0 0 10px;
+    min-width: 100px;
+    overflow: visible;
+    white-space: nowrap;
+}
+
+table.search td{
+	padding: 8px 2px 10px 10px;
+	font-weight: bold;
+}
+
+table.search p{
+	font-weight: bold;
+}
