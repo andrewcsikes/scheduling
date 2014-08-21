@@ -27,7 +27,9 @@
 			<td><c:out value="${team.sport.name}" /></td>
 			<td><c:out value="${team.season.name}" /></td>
 			<td><c:out value="${team.ageGroup.name}" /></td>
-			<td><a href="modify?team=${team.id}">Edit</a></td>
+			<c:if test='${user.userType.displayName == "ADMIN"}'>
+			  <td><a href="modify?team=${team.id}">Edit</a></td>
+			</c:if>
 		</tr>
 	</c:forEach>
 	</table>

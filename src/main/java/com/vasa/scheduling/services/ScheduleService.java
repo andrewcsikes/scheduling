@@ -19,6 +19,7 @@ public interface ScheduleService{
 	List<Fields> findAllFields();
 	List<Fields> findAllFields(Sport sport);
 	List<Season> findActiveSeasons();
+	Season findSeasonById(Integer id);
 	Sport findSportByName(String string);
 
 }

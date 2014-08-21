@@ -15,4 +15,6 @@ public interface SeasonRepository extends JpaRepository<Season, Integer>{
 
 	List<Season> findByStatus(Status status);
 
+	Season findById(Integer id);
+
 }

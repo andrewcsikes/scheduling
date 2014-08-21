@@ -6,9 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
+import com.vasa.scheduling.domain.AgeGroup;
+import com.vasa.scheduling.domain.Season;
 import com.vasa.scheduling.domain.Sport;
 import com.vasa.scheduling.domain.Team;
 import com.vasa.scheduling.enums.Status;
+import com.vasa.scheduling.repositiories.AgeGroupRepository;
 import com.vasa.scheduling.repositiories.SportRepository;
 import com.vasa.scheduling.repositiories.TeamRepository;
 
@@ -20,6 +23,9 @@ public class TeamServiceImpl implements TeamService{
 	
 	@Autowired
 	private SportRepository sportRepo;
+	
+	@Autowired
+	private AgeGroupRepository ageRepo;
 	
 	@Override
 	public Team save(Team member) {
@@ -49,6 +55,21 @@ public class TeamServiceImpl implements TeamService{
 	@Override
 	public List<Sport> findAllSports() {
 		return sportRepo.findAll();
+	}
+
+	@Override
+	public List<AgeGroup> findAllAgegroups() {
+		return ageRepo.findAll();
+	}
+
+	@Override
+	public Sport findSportById(Integer id) {
+		return sportRepo.findById(id);
+	}
+
+	@Override
+	public AgeGroup findAgeGroupById(Integer id) {
+		return  ageRepo.findById(id);
 	}
 	
 }

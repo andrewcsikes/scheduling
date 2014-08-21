@@ -16,6 +16,7 @@ import com.vasa.scheduling.domain.User;
 import com.vasa.scheduling.enums.State;
 import com.vasa.scheduling.enums.UserType;
 import com.vasa.scheduling.enums.Status;
+import com.vasa.scheduling.services.ScheduleService;
 import com.vasa.scheduling.services.TeamService;
 import com.vasa.scheduling.services.UserService;
 
@@ -28,6 +29,9 @@ public class TeamModifyController extends DefaultHandlerController{
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private ScheduleService scheduleService;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String modify(@RequestParam(required=true, value="team") Integer teamId,
@@ -43,6 +47,8 @@ public class TeamModifyController extends DefaultHandlerController{
 		model.addAttribute("modifyteam", service.findById(teamId));
 		model.addAttribute("coaches", userService.findAllCoaches());
 		model.addAttribute("sports", service.findAllSports());
+		model.addAttribute("seasons", scheduleService.findActiveSeasons());
+		model.addAttribute("agegroups", service.findAllAgegroups());
 		return "team/modify";
 	}
 	
@@ -62,9 +68,15 @@ public class TeamModifyController extends DefaultHandlerController{
 			team = service.findById(Integer.valueOf(request.getParameter("id")));
 		}
 		
+		team.setName(request.getParameter("name"));
+		team.setCoach(userService.findById(Integer.valueOf(request.getParameter("coach"))));
+		team.setSport(service.findSportById(Integer.valueOf(request.getParameter("sport"))));
+		team.setSeason(scheduleService.findSeasonById(Integer.valueOf(request.getParameter("season"))));
+		team.setAgeGroup(service.findAgeGroupById(Integer.valueOf(request.getParameter("ageGroup"))));
+		
 		service.save(team);
 		
-		return "user/home";
+		return "team/list";
 	}
 	
 }

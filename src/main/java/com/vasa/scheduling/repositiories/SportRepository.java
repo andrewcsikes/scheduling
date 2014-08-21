@@ -12,4 +12,6 @@ public interface SportRepository extends JpaRepository<Sport, Integer>{
 
 	Sport findByName(String name);
 
+	Sport findById(Integer id);
+
 }

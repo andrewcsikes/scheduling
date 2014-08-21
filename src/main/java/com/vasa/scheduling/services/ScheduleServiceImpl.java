@@ -80,4 +80,10 @@ public class ScheduleServiceImpl implements ScheduleService {
 	public Sport findSportByName(String name){
 		return sportRepo.findByName(name);
 	}
+	
+
+	@Override
+	public Season findSeasonById(Integer id){
+		return seasonRepo.findById(id);
+	}
 }

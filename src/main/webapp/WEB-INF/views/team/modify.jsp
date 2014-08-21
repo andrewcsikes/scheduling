@@ -34,6 +34,26 @@
       </select>
     </td>
   </tr>
+  <tr>
+    <td valign="top">Season:</td>
+    <td>
+      <select name="season">
+        <c:forEach items="${seasons}" var="season">
+          <option value="${season.id}" ${modifyteam.season.id == season.id ? 'selected' : ''}>${season.name}</option>
+        </c:forEach>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">Age Group:</td>
+    <td>
+      <select name="ageGroup">
+        <c:forEach items="${agegroups}" var="agegroup">
+          <option value="${agegroup.id}" ${modifyteam.ageGroup.id == agegroup.id ? 'selected' : ''}>${agegroup.name}</option>
+        </c:forEach>
+      </select>
+    </td>
+  </tr>
 </table>
 <input type="submit" value="Save">
 </form>
