@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -20,6 +21,7 @@
 		<th>Last Name</th>
 		<th>Username</th>
 		<th>Team</th>
+		<th>Last Login</th>
 		<th>Action</th>
 	</tr>
 	<c:forEach var="modifyuser" items="${users}">
@@ -29,6 +31,11 @@
 			<td><c:out value="${modifyuser.lastName}" /></td>
 			<td><c:out value="${modifyuser.userName}" /></td>
 			<td><c:out value="${modifyuser.team.name} - ${modifyuser.team.season.name}" /></td>
+			
+			<fmt:formatDate value="${modifyuser.lastLogin}" var="formattedDate" 
+                type="date" pattern="MM-dd-yyyy hh:mm a" />
+			
+			<td><c:out value="${formattedDate}" /></td>
 			<td><a href="modify?user=${modifyuser.id}">Edit</a></td>
 		</tr>
 	</c:forEach>

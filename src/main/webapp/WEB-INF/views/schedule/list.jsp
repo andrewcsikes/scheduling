@@ -50,8 +50,6 @@
 		<th>Date</th>
 	</tr>
 	
-	<%java.text.SimpleDateFormat format1 = new java.text.SimpleDateFormat("MM/dd/yyyy hh:mm a"); %>
-	
 	<c:forEach var="shedule_day" items="${shedule}">
 		<tr>
 		    <td><c:out value="${shedule_day.team.name}" /></td>
