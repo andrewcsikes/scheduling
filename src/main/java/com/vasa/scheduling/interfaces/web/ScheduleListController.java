@@ -37,10 +37,16 @@ public class ScheduleListController extends DefaultHandlerController {
 			return "login";
 		}
 		
+		Calendar today = Calendar.getInstance();
+		Date d = new Date();
+		int month = today.get(Calendar.MONTH);
+		
 		List<FieldSchedule> schedule = scheduleService.findByMonth(new Date());
 			
 	    model.addAttribute("shedule", schedule);
 	    model.addAttribute("teams", service.findActive());
+		model.addAttribute("filterMonth", month);
+	    
 	    
 	    return "schedule/list";
 	}
