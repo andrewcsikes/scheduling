@@ -9,7 +9,13 @@
      <li><a href='/scheduling/user/list'><span>All Users</span></a></li>
    </c:if>
    <li><a href='/scheduling/team/list'><span>Teams</span></a></li>
-   <li><a href='/scheduling/schedule/list'><span>Schedule</span></a></li>
+      <li class='has-sub'><a>Schedule</a>
+      <ul>
+         <li><a href='/scheduling/schedule/calendar'><span>Calendar</span></a></li>
+         <li><a href='/scheduling/schedule/list'><span>List By Team</span></a></li>
+      </ul>
+   </li>
+<!--    <li><a href='/scheduling/schedule/calendar'><span>Schedule</span></a></li> -->
 <!--    <li><a href='/CardShop/member/cards'><span>My Cards</span></a></li> -->
 <!--    <li><a href='/CardShop/card/sellhistory'><span>My Sells</span></a></li> -->
 <!--    <li><a href='/CardShop/card/trade'><span>My Trade Offers</span></a></li> -->

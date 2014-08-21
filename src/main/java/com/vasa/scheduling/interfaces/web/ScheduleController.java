@@ -27,7 +27,7 @@ import com.vasa.scheduling.domain.User;
 import com.vasa.scheduling.services.ScheduleService;
 
 @Controller
-@RequestMapping("/schedule/list")
+@RequestMapping("/schedule/calendar")
 public class ScheduleController extends DefaultHandlerController {
 
 	@Autowired
@@ -142,7 +142,7 @@ public class ScheduleController extends DefaultHandlerController {
 		model.addAttribute("schedule",schedule);
 		model.addAttribute("locked", locked);
 		
-	    return "schedule/list";
+	    return "schedule/calendar";
 	}
 	
 	@RequestMapping(value="/add", method = RequestMethod.GET)
@@ -200,7 +200,7 @@ public class ScheduleController extends DefaultHandlerController {
 		
 		return list(date, model, request);
 	}
-
+	
 	private ArrayList<String> getFieldDay(Date date, String field) {
 		
 		List<FieldSchedule> schedules = service.findByDayField(date, field);

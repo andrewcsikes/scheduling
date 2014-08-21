@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.vasa.scheduling.domain.FieldSchedule;
+import com.vasa.scheduling.domain.Team;
 
 @Repository
 @Transactional(readOnly = true)
@@ -22,5 +23,11 @@ public interface FieldScheduleRepository extends JpaRepository<FieldSchedule, In
 	
 	@Query("Select s from FieldSchedule s where date=:d and field.name=:field ")
 	FieldSchedule findByDateAndFieldName(@Param("d") Date d, @Param("field") String field);
+
+	@Query("Select s from FieldSchedule s where month(date)=month(:d)")
+	List<FieldSchedule> findByMonth(@Param("d") Date date);
+
+	@Query("Select s from FieldSchedule s where month(date)=month(:d) and team=:team")
+	List<FieldSchedule> findByMonthAndTeam(@Param("d") Date date, @Param("team") Team team);
 	
 }

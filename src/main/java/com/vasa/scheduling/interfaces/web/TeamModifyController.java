@@ -1,7 +1,5 @@
 package com.vasa.scheduling.interfaces.web;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.vasa.scheduling.domain.Team;
 import com.vasa.scheduling.domain.User;
-import com.vasa.scheduling.enums.State;
-import com.vasa.scheduling.enums.UserType;
-import com.vasa.scheduling.enums.Status;
 import com.vasa.scheduling.services.ScheduleService;
 import com.vasa.scheduling.services.TeamService;
 import com.vasa.scheduling.services.UserService;

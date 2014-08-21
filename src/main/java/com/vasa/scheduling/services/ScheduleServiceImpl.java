@@ -10,6 +10,7 @@ import com.vasa.scheduling.domain.FieldSchedule;
 import com.vasa.scheduling.domain.Fields;
 import com.vasa.scheduling.domain.Season;
 import com.vasa.scheduling.domain.Sport;
+import com.vasa.scheduling.domain.Team;
 import com.vasa.scheduling.enums.Status;
 import com.vasa.scheduling.repositiories.FieldRepository;
 import com.vasa.scheduling.repositiories.FieldScheduleRepository;
@@ -85,5 +86,15 @@ public class ScheduleServiceImpl implements ScheduleService {
 	@Override
 	public Season findSeasonById(Integer id){
 		return seasonRepo.findById(id);
+	}
+
+	@Override
+	public List<FieldSchedule> findByMonth(Date date) {
+		return repo.findByMonth(date);
+	}
+
+	@Override
+	public List<FieldSchedule> findByMonthAndTeam(Date date, Team team) {
+		return repo.findByMonthAndTeam(date, team);
 	}
 }
