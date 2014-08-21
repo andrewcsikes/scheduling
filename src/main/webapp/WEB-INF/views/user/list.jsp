@@ -7,7 +7,11 @@
 <title>VASA Field Scheduling - User List</title>
 </head>
 <body>
-    <h1>List of Users</h1>
+
+	<div style="width: 100%; overflow: hidden;">
+    	<div style="width: 10%px; float: left;"><h1>List of User</h1></div>
+    	<div style="margin-left: 70%; float: right;"><a href="add"><img src='/scheduling/images/plus-icon.png' />Add User</a></div>
+	</div>
     
     <table class="list">
 	<tr class="header">
