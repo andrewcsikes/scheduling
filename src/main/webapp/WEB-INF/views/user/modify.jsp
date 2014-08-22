@@ -63,7 +63,7 @@
   </tr>
   <tr>
     <td>Phone Number:</td>
-    <td><input type="text" size="40" name="phone" value="${modifyuser.emailAddress}"></td>
+    <td><input type="text" size="40" name="phone" value="${modifyuser.phone}"></td>
   </tr>
 </table>
 <table class="modify">
