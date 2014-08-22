@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.vasa.scheduling.domain.Team;
 import com.vasa.scheduling.domain.User;
+import com.vasa.scheduling.enums.Classification;
 import com.vasa.scheduling.services.ScheduleService;
 import com.vasa.scheduling.services.TeamService;
 import com.vasa.scheduling.services.UserService;
@@ -62,6 +63,17 @@ public class TeamAddController extends DefaultHandlerController{
 		team.setSport(service.findSportById(Integer.valueOf(request.getParameter("sport"))));
 		team.setSeason(scheduleService.findSeasonById(Integer.valueOf(request.getParameter("season"))));
 		team.setAgeGroup(service.findAgeGroupById(Integer.valueOf(request.getParameter("ageGroup"))));
+		String limit = request.getParameter("practiceLimit");
+		if(limit != null){
+			try{
+				team.setPracticeLimit(Integer.valueOf(limit));
+			}catch(Exception e){
+				
+			}
+		}else{
+			team.setPracticeLimit(null);
+		}
+		team.setClassification(Classification.toEnumFromCode(Integer.valueOf(request.getParameter("classification"))));
 		
 		service.save(team);
 		

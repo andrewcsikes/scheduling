@@ -11,6 +11,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.vasa.scheduling.enums.Classification;
+
 @Entity
 @Table(name="TEAM")
 public class Team {
@@ -38,6 +40,11 @@ public class Team {
 	@NotNull
 	@ManyToOne(fetch = FetchType.EAGER)
 	private User coach;
+	
+	@NotNull
+	private Classification classification;
+	
+	private Integer practiceLimit; 
 	
 	public Sport getSport() {
 		return sport;
@@ -75,6 +82,16 @@ public class Team {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
-
+	public Classification getClassification() {
+		return classification;
+	}
+	public void setClassification(Classification classification) {
+		this.classification = classification;
+	}
+	public Integer getPracticeLimit() {
+		return practiceLimit;
+	}
+	public void setPracticeLimit(Integer practiceLimit) {
+		this.practiceLimit = practiceLimit;
+	}
 }

@@ -16,7 +16,7 @@ import com.vasa.scheduling.domain.Team;
 @Transactional(readOnly = true)
 public interface FieldScheduleRepository extends JpaRepository<FieldSchedule, Integer>{
 
-	@Query("Select s from FieldSchedule s where DATE(date)=DATE(:d) and field.name=:field ")
+	@Query("Select s from FieldSchedule s where DATE(date)=DATE(:d) and field.name=:field")
 	List<FieldSchedule> findByDayAndFieldName(@Param("d") Date d, @Param("field") String field);
 	
 	FieldSchedule findById(Integer id);
@@ -24,10 +24,13 @@ public interface FieldScheduleRepository extends JpaRepository<FieldSchedule, In
 	@Query("Select s from FieldSchedule s where date=:d and field.name=:field ")
 	FieldSchedule findByDateAndFieldName(@Param("d") Date d, @Param("field") String field);
 
-	@Query("Select s from FieldSchedule s where month(date)=month(:d)")
+	@Query("Select s from FieldSchedule s where month(date)=month(:d) order by field, date, team")
 	List<FieldSchedule> findByMonth(@Param("d") Date date);
 
-	@Query("Select s from FieldSchedule s where month(date)=month(:d) and team=:team")
+	@Query("Select s from FieldSchedule s where month(date)=month(:d) and team=:team order by date")
 	List<FieldSchedule> findByMonthAndTeam(@Param("d") Date date, @Param("team") Team team);
+
+	@Query("Select s from FieldSchedule s where week(date)=week(:d) and team=:team order by date")
+	List<FieldSchedule> findScheduleForWeek(@Param("team")Team team, @Param("d")Date calendarDay);
 	
 }

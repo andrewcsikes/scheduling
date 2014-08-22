@@ -97,4 +97,9 @@ public class ScheduleServiceImpl implements ScheduleService {
 	public List<FieldSchedule> findByMonthAndTeam(Date date, Team team) {
 		return repo.findByMonthAndTeam(date, team);
 	}
+
+	@Override
+	public List<FieldSchedule> findScheduleForWeek(Team team, Date calendarDay) {
+		return repo.findScheduleForWeek(team, calendarDay);
+	}
 }

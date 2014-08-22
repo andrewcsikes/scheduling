@@ -57,7 +57,7 @@
 			<td><c:out value="${shedule_day.team.sport.name}" /></td>
 			
 			<fmt:formatDate value="${shedule_day.date}" var="formattedDate" 
-                type="date" pattern="MM-dd-yyyy hh:mm a" />
+                type="date" pattern="EEEEE, MMM dd, yyyy    hh:mm a" />
 			
 			<td><c:out value="${formattedDate}" /></td>
 		</tr>

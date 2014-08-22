@@ -7,8 +7,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,6 +21,7 @@ import com.vasa.scheduling.domain.FieldSchedule;
 import com.vasa.scheduling.domain.Fields;
 import com.vasa.scheduling.domain.Season;
 import com.vasa.scheduling.domain.Sport;
+import com.vasa.scheduling.domain.Team;
 import com.vasa.scheduling.domain.User;
 import com.vasa.scheduling.services.ScheduleService;
 
@@ -30,6 +29,9 @@ import com.vasa.scheduling.services.ScheduleService;
 @RequestMapping("/schedule/calendar")
 public class ScheduleController extends DefaultHandlerController {
 
+	// TODO: Only get Active Fields
+	// TODO: Add Error Handleing
+	
 	@Autowired
 	private ScheduleService service;
 	
@@ -152,30 +154,44 @@ public class ScheduleController extends DefaultHandlerController {
 			Model model, 
 			HttpServletRequest request) {
 		
+		User user = verifyUser(request.getSession());
+		
+		if(user== null){
+			return "login";
+		}
+		
 		try {
 			SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-			Date calenderDay = formatter.parse(date);
+			Date calendarDay = formatter.parse(date);
 		
-			FieldSchedule schedule = service.findByDateField(calenderDay, field);
+			FieldSchedule schedule = service.findByDateField(calendarDay, field);
 			
-			if(schedule == null){
+			if(schedule == null && (user.getTeam().getPracticeLimit() == null || validateRequest(model, user.getTeam(), calendarDay))){
 				schedule = new FieldSchedule();
 				schedule.setCreationDate(new Date());
-				schedule.setDate(calenderDay);
+				schedule.setDate(calendarDay);
 				schedule.setField(service.findFieldByName(field));
-				User user = verifyUser(request.getSession());
 				schedule.setTeam(user.getTeam());
 				service.save(schedule);
 			}
 			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			model.addAttribute("error", e.getMessage());
 			e.printStackTrace();
 		}
 		
 		return list(date, model, request);
 	}
 	
+	private boolean validateRequest(Model model, Team team, Date calendarDay) {
+		List<FieldSchedule> schedules = service.findScheduleForWeek(team, calendarDay);
+		if(schedules.size() > team.getPracticeLimit()){
+			model.addAttribute("error", "You are limited to "+team.getPracticeLimit()+" hour(s) per week.");
+			return false;
+		}
+		return true;
+	}
+
 	@RequestMapping(value="/delete", method = RequestMethod.GET)
 	public String delete(@RequestParam(required=true, value="date") String date,
 			@RequestParam(required=true, value="field") String field,
@@ -194,7 +210,7 @@ public class ScheduleController extends DefaultHandlerController {
 			}
 			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			model.addAttribute("error", e.getMessage());
 			e.printStackTrace();
 		}
 		

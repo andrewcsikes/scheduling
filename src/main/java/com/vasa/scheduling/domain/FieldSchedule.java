@@ -20,6 +20,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Table(name="FIELD_SCHEDULE")
 public class FieldSchedule {
 
+	// TODO: Add Repeatable entries
+	
 	@Id
 	@SequenceGenerator(name = "FieldScheduleSequence", sequenceName = "SEQ_FIELD_SCH_PK", allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="FieldScheduleSequence")

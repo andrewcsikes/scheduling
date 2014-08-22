@@ -1,6 +1,5 @@
 package com.vasa.scheduling.interfaces.web;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -18,12 +17,14 @@ import com.vasa.scheduling.domain.Team;
 import com.vasa.scheduling.domain.User;
 import com.vasa.scheduling.services.ScheduleService;
 import com.vasa.scheduling.services.TeamService;
-import com.vasa.scheduling.services.UserService;
 
 @Controller
 @RequestMapping("/schedule/list")
 public class ScheduleListController extends DefaultHandlerController {
 
+	// TODO: Add filter by team classification
+	// TODO: Only get Active Fields
+	
 	@Autowired private TeamService service;
 	@Autowired private ScheduleService scheduleService;
 	
@@ -45,7 +46,7 @@ public class ScheduleListController extends DefaultHandlerController {
 			
 	    model.addAttribute("shedule", schedule);
 	    model.addAttribute("teams", service.findActive());
-		model.addAttribute("filterMonth", month);
+		model.addAttribute("filterMonth", month+1);
 	    
 	    
 	    return "schedule/list";

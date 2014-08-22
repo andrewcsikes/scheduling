@@ -8,6 +8,10 @@
 </head>
 <body>
 
+<c:if test="${error != null}">
+  <h3><font color="red">${error}</font></h3>
+</c:if>
+
 <%
 java.util.ArrayList<com.vasa.scheduling.domain.Fields> fields = (java.util.ArrayList<com.vasa.scheduling.domain.Fields>)request.getAttribute("fields");
 boolean locked = (Boolean)request.getAttribute("locked");

@@ -14,6 +14,15 @@
     <td><input type="text" size="33" name="name" /></td>
   </tr>
   <tr>
+    <td>Classification:</td>
+    <td>
+      <select name="classification">
+        <option value="1">VASA</option>
+        <option value="2">NON-VASA</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
     <td valign="top">Coach:</td>
     <td>
       <select name="coach">
@@ -52,6 +61,10 @@
         </c:forEach>
       </select>
     </td>
+  </tr>
+  <tr>
+    <td valign="top">Practice Limit:</td>
+    <td><input type="text" size="5" name="practiceLimit" /> hours/week</td>
   </tr>
 </table>
 <input type="submit" value="Save">
