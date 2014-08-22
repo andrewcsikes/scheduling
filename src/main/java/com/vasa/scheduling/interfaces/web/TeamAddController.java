@@ -77,7 +77,7 @@ public class TeamAddController extends DefaultHandlerController{
 		
 		service.save(team);
 		
-		return "/user/home";
+		return "user/home";
 	}
 	
 }

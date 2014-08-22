@@ -185,7 +185,7 @@ public class ScheduleController extends DefaultHandlerController {
 	
 	private boolean validateRequest(Model model, Team team, Date calendarDay) {
 		List<FieldSchedule> schedules = service.findScheduleForWeek(team, calendarDay);
-		if(schedules.size() > team.getPracticeLimit()){
+		if(schedules.size() > team.getPracticeLimit()*2){
 			model.addAttribute("error", "You are limited to "+team.getPracticeLimit()+" hour(s) per week.");
 			return false;
 		}
