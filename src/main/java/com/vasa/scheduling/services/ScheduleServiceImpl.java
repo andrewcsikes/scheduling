@@ -70,7 +70,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 	
 	@Override
 	public List<Fields> findAllFields(Sport sport) {
-		return fieldRepo.findBySport(sport);
+		return fieldRepo.findBySportOrderById(sport);
 	}
 	
 	@Override
