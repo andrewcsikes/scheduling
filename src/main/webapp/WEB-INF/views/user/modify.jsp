@@ -61,6 +61,10 @@
     <td>Email Address:</td>
     <td><input type="text" size="40" name="emailAddress" value="${modifyuser.emailAddress}" /></td>
   </tr>
+  <tr>
+    <td>Phone Number:</td>
+    <td><input type="text" size="40" name="phone" value="${modifyuser.emailAddress}"></td>
+  </tr>
 </table>
 <table class="modify">
   <tr class="header">

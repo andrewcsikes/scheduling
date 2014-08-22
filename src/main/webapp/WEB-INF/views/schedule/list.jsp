@@ -20,6 +20,11 @@
           <option value="${team.id}" ${filterTeam == team.id ? 'selected' : ''}>${team.name} - ${team.coach.lastName} - ${team.ageGroup.name}</option>
         </c:forEach>
       </select>
+      <select name="class">
+        <option value="0" ${filterClass == 0 ? 'selected' : ''}>ALL</option>
+        <option value="1" ${filterClass == 1 ? 'selected' : ''}>VASA Team</option>
+        <option value="2" ${filterClass == 2 ? 'selected' : ''}>NON-VASA Team</option>
+      </select>
       <select name="month">
         <option value="1" ${filterMonth == 1 ? 'selected' : ''}>January</option>
         <option value="2" ${filterMonth == 2 ? 'selected' : ''}>February</option>

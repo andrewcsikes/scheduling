@@ -11,6 +11,7 @@ import com.vasa.scheduling.domain.Fields;
 import com.vasa.scheduling.domain.Season;
 import com.vasa.scheduling.domain.Sport;
 import com.vasa.scheduling.domain.Team;
+import com.vasa.scheduling.enums.Classification;
 import com.vasa.scheduling.enums.Status;
 import com.vasa.scheduling.repositiories.FieldRepository;
 import com.vasa.scheduling.repositiories.FieldScheduleRepository;
@@ -101,5 +102,17 @@ public class ScheduleServiceImpl implements ScheduleService {
 	@Override
 	public List<FieldSchedule> findScheduleForWeek(Team team, Date calendarDay) {
 		return repo.findScheduleForWeek(team, calendarDay);
+	}
+
+	@Override
+	public List<FieldSchedule> findByMonthAndClassification(Date calendarDay,
+			Classification classification) {
+		return repo.findScheduleByMonthAndClassification(calendarDay, classification);
+	}
+
+	@Override
+	public List<FieldSchedule> findByMonthAndTeamAndClassification(Date calendarDay,
+			Team team, Classification classification) {
+		return repo.findScheduleByMonthAndTeamAndClassification(team, calendarDay, classification);
 	}
 }

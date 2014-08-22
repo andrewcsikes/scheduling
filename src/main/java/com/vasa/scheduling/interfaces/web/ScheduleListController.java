@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.vasa.scheduling.domain.FieldSchedule;
 import com.vasa.scheduling.domain.Team;
 import com.vasa.scheduling.domain.User;
+import com.vasa.scheduling.enums.Classification;
 import com.vasa.scheduling.services.ScheduleService;
 import com.vasa.scheduling.services.TeamService;
 
@@ -22,7 +23,6 @@ import com.vasa.scheduling.services.TeamService;
 @RequestMapping("/schedule/list")
 public class ScheduleListController extends DefaultHandlerController {
 
-	// TODO: Add filter by team classification
 	// TODO: Only get Active Fields
 	
 	@Autowired private TeamService service;
@@ -64,6 +64,7 @@ public class ScheduleListController extends DefaultHandlerController {
 		
 		String teamId = request.getParameter("team");
 		String month = request.getParameter("month");
+		String filterClass = request.getParameter("class");
 		
 		Calendar today = Calendar.getInstance();
 		Date d = new Date();
@@ -74,11 +75,21 @@ public class ScheduleListController extends DefaultHandlerController {
 		List<FieldSchedule> schedule = null;
 		
 		if(teamId.equals("All")){
-			schedule = scheduleService.findByMonth(today.getTime());
+			if(filterClass.equals("0")){
+				schedule = scheduleService.findByMonth(today.getTime());
+			}else{
+				model.addAttribute("filterClass", filterClass);
+				schedule = scheduleService.findByMonthAndClassification(today.getTime(), Classification.toEnumFromCode(Integer.valueOf(filterClass)));
+			}
 		}else{
 			Team team = service.findById(Integer.valueOf(teamId));
 			model.addAttribute("filterTeam", team.getId());
-			schedule = scheduleService.findByMonthAndTeam(today.getTime(), team);
+			if(filterClass.equals("0")){
+				schedule = scheduleService.findByMonthAndTeam(today.getTime(), team);
+			}else{
+				model.addAttribute("filterClass", filterClass);
+				schedule = scheduleService.findByMonthAndTeamAndClassification(today.getTime(), team, Classification.toEnumFromCode(Integer.valueOf(filterClass)));
+			}
 		}
 		
 		model.addAttribute("filterMonth", month);

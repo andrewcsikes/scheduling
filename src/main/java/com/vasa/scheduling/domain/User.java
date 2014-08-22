@@ -59,6 +59,8 @@ public class User {
 	
 	private String postalCode;
 	
+	private String phone;
+	
 	@NotNull
 	private Status status;
 	
@@ -188,5 +190,12 @@ public class User {
 		}
 		return null;
 	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	
 	
 }

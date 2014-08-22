@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.vasa.scheduling.domain.FieldSchedule;
 import com.vasa.scheduling.domain.Team;
+import com.vasa.scheduling.enums.Classification;
 
 @Repository
 @Transactional(readOnly = true)
@@ -32,5 +33,13 @@ public interface FieldScheduleRepository extends JpaRepository<FieldSchedule, In
 
 	@Query("Select s from FieldSchedule s where week(date)=week(:d) and team=:team order by date")
 	List<FieldSchedule> findScheduleForWeek(@Param("team")Team team, @Param("d")Date calendarDay);
+
+	@Query("Select s from FieldSchedule s where month(date)=month(:d) and team.classification=:class order by date")
+	List<FieldSchedule> findScheduleByMonthAndClassification(@Param("d")Date calendarDay,
+			@Param("class")Classification classification);
+
+	@Query("Select s from FieldSchedule s where month(date)=month(:d) and team=:team and team.classification=:class order by date")
+	List<FieldSchedule> findScheduleByMonthAndTeamAndClassification(@Param("team")Team team,
+			@Param("d")Date calendarDay, @Param("class")Classification classification);
 	
 }

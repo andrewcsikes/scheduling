@@ -58,6 +58,10 @@
     <td>Email Address:</td>
     <td><input type="text" size="40" name="emailAddress" ></td>
   </tr>
+  <tr>
+    <td>Phone Number:</td>
+    <td><input type="text" size="40" name="phone" ></td>
+  </tr>
 </table>
 <table class="modify">
   <tr class="header">

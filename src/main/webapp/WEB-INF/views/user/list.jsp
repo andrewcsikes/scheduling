@@ -21,6 +21,7 @@
 		<th>Last Name</th>
 		<th>Username</th>
 		<th>Team</th>
+		<th>Phone</th>
 		<th>Last Login</th>
 		<th>Action</th>
 	</tr>
@@ -31,6 +32,7 @@
 			<td><c:out value="${modifyuser.lastName}" /></td>
 			<td><c:out value="${modifyuser.userName}" /></td>
 			<td><c:out value="${modifyuser.team.name} - ${modifyuser.team.season.name}" /></td>
+			<td><c:out value="${modifyuser.phone}" /></td>
 			
 			<fmt:formatDate value="${modifyuser.lastLogin}" var="formattedDate" 
                 type="date" pattern="MM-dd-yyyy hh:mm a" />

@@ -66,6 +66,7 @@ public class UserAddController extends DefaultHandlerController{
 		user.setAddress2(request.getParameter("address2"));
 		user.setCity(request.getParameter("city"));
 		user.setState(request.getParameter("state"));
+		user.setPhone(request.getParameter("phone"));
 		user.setPostalCode(request.getParameter("postalCode"));
 		
 		user.setLastLogin(new Date());
