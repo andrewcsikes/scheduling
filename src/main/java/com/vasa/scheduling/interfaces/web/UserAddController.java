@@ -75,7 +75,7 @@ public class UserAddController extends DefaultHandlerController{
 		
 		mr.save(user);
 		
-		return "/user/home";
+		return "user/home";
 	}
 	
 }
