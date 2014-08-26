@@ -1,5 +1,7 @@
 package com.vasa.scheduling.domain;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -30,6 +32,8 @@ public class Season {
 	@NotNull
 	@OneToOne(fetch = FetchType.EAGER)
 	private Sport sport;
+	
+	private Date startDate;
 
 	public Integer getId() {
 		return id;
@@ -61,5 +65,13 @@ public class Season {
 
 	public void setSport(Sport sport) {
 		this.sport = sport;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
 	}
 }

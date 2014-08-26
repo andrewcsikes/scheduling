@@ -65,12 +65,12 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 	@Override
 	public List<Fields> findAllFields() {
-		return fieldRepo.findAll();
+		return fieldRepo.findByStatusOrderByIdAsc(Status.ACTIVE);
 	}
 	
 	@Override
 	public List<Fields> findAllFields(Sport sport) {
-		return fieldRepo.findBySportOrderByIdAsc(sport);
+		return fieldRepo.findBySportAndStatusOrderByIdAsc(sport, Status.ACTIVE);
 	}
 	
 	@Override
@@ -114,5 +114,10 @@ public class ScheduleServiceImpl implements ScheduleService {
 	public List<FieldSchedule> findByMonthAndTeamAndClassification(Date calendarDay,
 			Team team, Classification classification) {
 		return repo.findScheduleByMonthAndTeamAndClassification(team, calendarDay, classification);
+	}
+
+	@Override
+	public Season findSeason(Sport sport) {
+		return seasonRepo.findBySportAndStatus(sport, Status.ACTIVE);
 	}
 }

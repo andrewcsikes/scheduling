@@ -41,6 +41,8 @@ public class FieldSchedule {
 	
 	private boolean game = false;
 	
+	private String gameDescription;
+	
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern="SS")
@@ -92,6 +94,14 @@ public class FieldSchedule {
 	
 	public void setGame(boolean game){
 		this.game=game;
+	}
+
+	public String getGameDescription() {
+		return gameDescription;
+	}
+
+	public void setGameDescription(String gameDescription) {
+		this.gameDescription = gameDescription;
 	}
 	
 }

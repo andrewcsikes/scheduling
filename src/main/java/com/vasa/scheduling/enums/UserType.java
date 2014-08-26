@@ -6,7 +6,8 @@ public enum UserType  implements CodeAndDisplayNameEnum<Integer>{
 
 	ADMIN(1,"ADMIN"),
 	COACH(2,"Coach"),
-	USER(3, "User");
+	USER(3, "User"),
+	COMMISSIONER(4, "Commissioner");
 
 	private final Integer code;
 	private final String displayName;

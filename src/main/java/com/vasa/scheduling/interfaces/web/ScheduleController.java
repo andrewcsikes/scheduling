@@ -29,8 +29,8 @@ import com.vasa.scheduling.services.ScheduleService;
 @RequestMapping("/schedule/calendar")
 public class ScheduleController extends DefaultHandlerController {
 
-	// TODO: Only get Active Fields
-	// TODO: Add Error Handleing
+	// TODO: Ability to Add Games
+	// TODO: Ability to Lock schedule for date forward, except current and following week. (Maybe Season StartDate)
 	
 	@Autowired
 	private ScheduleService service;
@@ -64,18 +64,6 @@ public class ScheduleController extends DefaultHandlerController {
 		
 		Date startOfWeek = sunday.getTime();
 		
-		Calendar today = Calendar.getInstance();
-		Date d = new Date();
-		today.setTime(d);
-		today.set(Calendar.MINUTE, 0);
-		today.set(Calendar.HOUR, 0);
-		today.add(Calendar.DAY_OF_YEAR, 7);
-		
-		boolean locked = false;
-		if(startOfWeek.after(today.getTime())){
-			locked = true;
-		}
-		
 		List<Fields> fields = null;
 		if(user.getTeam() != null){
 			Sport sport = user.getTeam().getSport();
@@ -92,23 +80,16 @@ public class ScheduleController extends DefaultHandlerController {
 				}
 			}
 		}else{
-			// Get the fields for the sport that is active
-			List<Season> activeSeason = service.findActiveSeasons();
-			if(activeSeason.size()>0){
-				Season season = activeSeason.get(0);
-				fields = service.findAllFields(season.getSport());
-				if(season.getSport().getName().equals("Baseball")){
-					Sport sport = service.findSportByName("Softball");
-					if(sport != null){
-						fields.addAll(service.findAllFields(sport));
-					}
-				}else if(season.getSport().getName().equals("Softball")){
-					Sport sport = service.findSportByName("Baseball");
-					if(sport != null){
-						fields.addAll(service.findAllFields(sport));
-					}
+			// Get the fields for the sport(S) that is active
+			List<Season> activeSeasons = service.findActiveSeasons();
+			for(Season season : activeSeasons){
+				if(fields==null){
+					fields = service.findAllFields(season.getSport());
+				}else{
+					fields.addAll(service.findAllFields(season.getSport()));
 				}
-			}else{
+			}
+			if(activeSeasons.size() == 0){
 				fields = service.findAllFields();
 			}
 		}
@@ -116,37 +97,75 @@ public class ScheduleController extends DefaultHandlerController {
 		// schedule contains the entire schedule for every field
 		HashMap<String, HashMap<String,ArrayList<String>>> schedule = new HashMap<String, HashMap<String,ArrayList<String>>>();
 		
+		boolean anylocked = false;
 		for(Fields field: fields){
+			
+			boolean locked = getLocked(field, startOfWeek);
+			anylocked=anylocked||locked;
+			model.addAttribute(field.getName()+"locked",locked);
+			
 			sunday.setTime(startDate);
 			sunday.set(Calendar.MINUTE, 0);
 			sunday.set(Calendar.HOUR, 0);
 			sunday.set(Calendar.DAY_OF_WEEK, 1);
 			// week - key is the day, value is the fields
 			HashMap<String,ArrayList<String>> week = new HashMap<String, ArrayList<String>>();
-			week.put("Sunday", getFieldDay(sunday.getTime(), field.getName()));
+			week.put("Sunday", getFieldDay(sunday.getTime(), field));
 			sunday.add(Calendar.DAY_OF_YEAR, 1);
-			week.put("Monday", getFieldDay(sunday.getTime(), field.getName()));
+			week.put("Monday", getFieldDay(sunday.getTime(), field));
 			sunday.add(Calendar.DAY_OF_YEAR, 1);
-			week.put("Tuesday", getFieldDay(sunday.getTime(), field.getName()));
+			week.put("Tuesday", getFieldDay(sunday.getTime(), field));
 			sunday.add(Calendar.DAY_OF_YEAR, 1);
-			week.put("Wednesday", getFieldDay(sunday.getTime(), field.getName()));
+			week.put("Wednesday", getFieldDay(sunday.getTime(), field));
 			sunday.add(Calendar.DAY_OF_YEAR, 1);
-			week.put("Thursday", getFieldDay(sunday.getTime(), field.getName()));
+			week.put("Thursday", getFieldDay(sunday.getTime(), field));
 			sunday.add(Calendar.DAY_OF_YEAR, 1);
-			week.put("Friday", getFieldDay(sunday.getTime(), field.getName()));
+			week.put("Friday", getFieldDay(sunday.getTime(), field));
 			sunday.add(Calendar.DAY_OF_YEAR, 1);
-			week.put("Saturday", getFieldDay(sunday.getTime(), field.getName()));
+			week.put("Saturday", getFieldDay(sunday.getTime(), field));
 			schedule.put(field.getName(), week);
 		}
 		
 		model.addAttribute("sunday", startOfWeek);
 		model.addAttribute("fields", fields);
 		model.addAttribute("schedule",schedule);
-		model.addAttribute("locked", locked);
+		model.addAttribute("locked", anylocked);
 		
 	    return "schedule/calendar";
 	}
 	
+	private boolean getLocked(Fields field, Date startOfWeek) {
+		
+		Season season = service.findSeason(field.getSport());
+		if(season == null){
+			return false;
+		}else if(season.getStartDate() == null){
+			return false;
+		}
+		
+		// see if the last day of the week is before the season startDate
+		Calendar today = Calendar.getInstance();
+		today.setTime(season.getStartDate());
+		today.set(Calendar.MINUTE, 0);
+		today.set(Calendar.HOUR, 0);
+		today.set(Calendar.SECOND, 0);
+		if(startOfWeek.after(today.getTime())){
+			// see if the the start week > than today + 7
+			today = Calendar.getInstance();
+			Date d = new Date();
+			today.setTime(d);
+			today.set(Calendar.MINUTE, 0);
+			today.set(Calendar.HOUR, 0);
+			today.add(Calendar.DAY_OF_YEAR, 7);
+			
+			if(startOfWeek.after(today.getTime())){
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
 	@RequestMapping(value="/add", method = RequestMethod.GET)
 	public String add(@RequestParam(required=true, value="date") String date,
 			@RequestParam(required=true, value="field") String field,
@@ -217,11 +236,131 @@ public class ScheduleController extends DefaultHandlerController {
 		return list(date, model, request);
 	}
 	
-	private ArrayList<String> getFieldDay(Date date, String field) {
+	private ArrayList<String> getFieldDay(Date date, Fields field) {
 		
-		List<FieldSchedule> schedules = service.findByDayField(date, field);
+		List<FieldSchedule> schedules = service.findByDayField(date, field.getName());
 		ArrayList<String> day = new ArrayList<String>();
 		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		
+		if(cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY){
+			if(!field.isAvailableSunday()){
+				addBlockedDay(day);
+			}else if(field.getSundayStartTime() != null){
+				addBlockedTimes(day,field.getSundayStartTime(), field.getSundayEndTime());
+			}else{
+				addBlankDay(day);
+			}
+		}else if(cal.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY){
+			if(!field.isAvailableMonday()){
+				addBlockedDay(day);
+			}else if(field.getMondayStartTime() != null){
+				addBlockedTimes(day,field.getMondayStartTime(), field.getMondayEndTime());
+			}else{
+				addBlankDay(day);
+			}
+		}else if(cal.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY){
+			if(!field.isAvailableTuesday()){
+				addBlockedDay(day);
+			}else if(field.getTuesdayStartTime() != null){
+				addBlockedTimes(day,field.getTuesdayStartTime(), field.getTuesdayEndTime());
+			}else{
+				addBlankDay(day);
+			}
+		}else if(cal.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY){
+			if(!field.isAvailableWednesday()){
+				addBlockedDay(day);
+			}else if(field.getWednesdayStartTime() != null){
+				addBlockedTimes(day,field.getWednesdayStartTime(), field.getWednesdayEndTime());
+			}else{
+				addBlankDay(day);
+			}
+		}else if(cal.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY){
+			if(!field.isAvailableThursday()){
+				addBlockedDay(day);
+			}else if(field.getThursdayStartTime() != null){
+				addBlockedTimes(day,field.getThursdayStartTime(), field.getThursdayEndTime());
+			}else{
+				addBlankDay(day);
+			}
+		}else if(cal.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY){
+			if(!field.isAvailableFriday()){
+				addBlockedDay(day);
+			}else if(field.getFridayStartTime() != null){
+				addBlockedTimes(day,field.getFridayStartTime(), field.getFridayEndTime());
+			}else{
+				addBlankDay(day);
+			}
+		}else if(cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY){
+			if(!field.isAvailableSaturday()){
+				addBlockedDay(day);
+			}else if(field.getSaturdayStartTime() != null){
+				addBlockedTimes(day,field.getSaturdayStartTime(), field.getSaturdayEndTime());
+			}else{
+				addBlankDay(day);
+			}
+		}
+		
+		for(FieldSchedule schedule: schedules){	int slotNumber = getHourSlotNumber(schedule.getDate());
+			if(schedule.getGame()){
+				day.set(slotNumber, "Reserved For "+schedule.getGameDescription());
+			}else{
+				day.set(slotNumber, schedule.getTeam().getName()+" - "+
+					schedule.getTeam().getCoach().getLastName()+" - "+
+					schedule.getTeam().getAgeGroup().getName());
+			}
+		}
+		return day;
+	}
+	
+	private void addBlockedTimes(ArrayList<String> day, Integer startTime, Integer endTime) {
+		Calendar times = Calendar.getInstance();
+		times.set(Calendar.HOUR_OF_DAY, 9);
+		times.set(Calendar.MINUTE, 0);
+		times.set(Calendar.SECOND, 0);
+		
+		for(int x=0; x<26; x++){
+			int currentHour = times.get(Calendar.HOUR_OF_DAY);
+			if(startTime<=currentHour && endTime>currentHour){
+				day.add(null);
+			}else{
+				day.add("N/A");
+			}
+			times.add(Calendar.MINUTE, 30);
+		}
+	}
+
+	private void addBlockedDay(ArrayList<String> day) {
+		day.add("N/A"); // 9:00
+		day.add("N/A"); // 9:30
+		day.add("N/A"); // 10:00
+		day.add("N/A"); // 10:30
+		day.add("N/A"); // 11:00
+		day.add("N/A"); // 11:30
+		day.add("N/A"); // 12:00
+		day.add("N/A"); // 12:30
+		day.add("N/A"); // 1:00
+		day.add("N/A"); // 1:30
+		day.add("N/A"); // 2:00
+		day.add("N/A"); // 2:30
+		day.add("N/A"); // 3:00
+		day.add("N/A"); // 3:30
+		day.add("N/A"); // 4:00
+		day.add("N/A"); // 4:30
+		day.add("N/A"); // 5:00
+		day.add("N/A"); // 5:30
+		day.add("N/A"); // 6:00
+		day.add("N/A"); // 6:30
+		day.add("N/A"); // 7:00
+		day.add("N/A"); // 7:30
+		day.add("N/A"); // 8:00
+		day.add("N/A"); // 8:30
+		day.add("N/A"); // 9:00
+		day.add("N/A"); // 9:30
+	}
+	
+	private void addBlankDay(ArrayList<String> day) {
 		day.add(null); // 9:00
 		day.add(null); // 9:30
 		day.add(null); // 10:00
@@ -248,20 +387,8 @@ public class ScheduleController extends DefaultHandlerController {
 		day.add(null); // 8:30
 		day.add(null); // 9:00
 		day.add(null); // 9:30
-
-		for(FieldSchedule schedule: schedules){
-			int slotNumber = getHourSlotNumber(schedule.getDate());
-			if(schedule.getGame()){
-				day.set(slotNumber, "RESERVED FOR GAMES");
-			}else{
-				day.set(slotNumber, schedule.getTeam().getName()+" - "+
-					schedule.getTeam().getCoach().getLastName()+" - "+
-					schedule.getTeam().getAgeGroup().getName());
-			}
-		}
-		return day;
 	}
-	
+
 	private int getHourSlotNumber(Date d){
 		
 		Calendar timeSlot = Calendar.getInstance();

@@ -24,6 +24,9 @@ import com.vasa.scheduling.services.TeamService;
 public class ScheduleListController extends DefaultHandlerController {
 
 	// TODO: Only get Active Fields
+	// TODO: Add field as a search criteria
+	// TODO: Add description for Games
+	// TODO: Add filter for games
 	
 	@Autowired private TeamService service;
 	@Autowired private ScheduleService scheduleService;
@@ -40,6 +43,7 @@ public class ScheduleListController extends DefaultHandlerController {
 		
 		Calendar today = Calendar.getInstance();
 		Date d = new Date();
+		today.setTime(d);
 		int month = today.get(Calendar.MONTH);
 		
 		List<FieldSchedule> schedule = scheduleService.findByMonth(new Date());

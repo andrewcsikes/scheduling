@@ -51,6 +51,7 @@ public class UserServiceImpl implements UserService{
 	public List<User> findAllCoaches() {
 		List <User> coaches = teamRepo.findByUserType(UserType.COACH);
 		coaches.addAll(teamRepo.findByUserType(UserType.ADMIN));
+		coaches.addAll(teamRepo.findByUserType(UserType.COMMISSIONER));
 		return coaches;
 	}
 	

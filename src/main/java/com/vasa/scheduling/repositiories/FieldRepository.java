@@ -15,6 +15,6 @@ import com.vasa.scheduling.enums.Status;
 public interface FieldRepository extends JpaRepository<Fields, Integer>{
 
 	Fields findByName(String name);
-	List<Fields> findBySportOrderByIdAsc(Sport sport);
+	List<Fields> findBySportAndStatusOrderByIdAsc(Sport sport, Status status);
 	List<Fields> findByStatusOrderByIdAsc(Status status);
 }

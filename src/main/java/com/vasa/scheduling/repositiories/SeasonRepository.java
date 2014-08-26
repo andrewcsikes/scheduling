@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.vasa.scheduling.domain.Season;
+import com.vasa.scheduling.domain.Sport;
 import com.vasa.scheduling.enums.Status;
 
 @Repository
@@ -16,5 +17,7 @@ public interface SeasonRepository extends JpaRepository<Season, Integer>{
 	List<Season> findByStatus(Status status);
 
 	Season findById(Integer id);
+
+	Season findBySportAndStatus(Sport sport, Status active);
 
 }

@@ -30,4 +30,5 @@ public interface ScheduleService{
 			Classification enumFromCode);
 	List<FieldSchedule> findByMonthAndTeamAndClassification(Date time, Team team, 
 			Classification classification);
+	Season findSeason(Sport sport);
 }

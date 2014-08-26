@@ -9,6 +9,8 @@
 </head>
 <body>
 
+<script src="/scheduling/scripts/sorttable.js"></script>
+
 <form id="entry" name="entry" action="list" method="POST">
 <table class="search">
 <tr>
@@ -52,6 +54,7 @@
 		<th>Team</th>
 		<th>Coach</th>
 		<th>Sport</th>
+		<th>Field</th>
 		<th>Date</th>
 	</tr>
 	
@@ -60,6 +63,7 @@
 		    <td><c:out value="${shedule_day.team.name}" /></td>
 			<td><c:out value="${shedule_day.team.coach.firstName}"/> <c:out value="${shedule_day.team.coach.lastName}"/></td>
 			<td><c:out value="${shedule_day.team.sport.name}" /></td>
+			<td><c:out value="${shedule_day.field.name}" /></td>
 			
 			<fmt:formatDate value="${shedule_day.date}" var="formattedDate" 
                 type="date" pattern="EEEEE, MMM dd, yyyy    hh:mm a" />

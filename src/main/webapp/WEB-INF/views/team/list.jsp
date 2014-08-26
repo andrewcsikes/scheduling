@@ -8,6 +8,8 @@
 </head>
 <body>
 
+<script src="/scheduling/scripts/sorttable.js"></script>
+
 <form id="entry" name="entry" action="list" method="POST">
 <table class="search">
 <tr>
@@ -45,12 +47,13 @@
 
     <div style="width: 100%; overflow: hidden;">
     	<div style="width: 10%px; float: left;"><h1>List of Teams</h1></div>
-    	<c:if test='${user.userType.displayName == "ADMIN"}'>
+    	<c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "COMMISSIONER"}'>
     		<div style="margin-left: 70%; float: right;"><a href="add"><img src='/scheduling/images/plus-icon.png' />Add Team</a></div>
     	</c:if>
 	</div>
     
     <table class="list">
+    <thead>
 	<tr class="header">
 		<th>Name</th>
 		<th>Coach</th>
@@ -58,10 +61,11 @@
 		<th>Season</th>
 		<th>Age Group</th>
 		<th>Classification</th>
-		<c:if test='${user.userType.displayName == "ADMIN"}'>
+		<c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "COMMISSIONER"}'>
 			<th>Action</th>
 		</c:if>
 	</tr>
+	</thead>
 	<c:forEach var="team" items="${teams}">
 		<tr>
 		    <td><c:out value="${team.name}" /></td>
@@ -70,7 +74,7 @@
 			<td><c:out value="${team.season.name}" /></td>
 			<td><c:out value="${team.ageGroup.name}" /></td>
 			<td><c:out value="${team.classification.displayName}" /></td>
-			<c:if test='${user.userType.displayName == "ADMIN"}'>
+			<c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "COMMISSIONER"}'>
 			  <td><a href="modify?team=${team.id}">Edit</a></td>
 			</c:if>
 		</tr>

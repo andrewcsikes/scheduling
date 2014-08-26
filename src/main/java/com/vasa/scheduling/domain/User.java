@@ -23,7 +23,7 @@ import com.vasa.scheduling.enums.UserType;
 @Entity
 @Table(name="USER")
 public class User {
-
+	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy="coach")
 	private List<Team> team;
 	
