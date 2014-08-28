@@ -19,6 +19,7 @@
         <option value="1">Admin</option>
         <option value="2">Coach</option>
         <option value="3">User</option>
+        <option value="4">Commissioner</option>
       </select>
     </td>
   </tr>

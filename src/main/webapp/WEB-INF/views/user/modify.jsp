@@ -21,6 +21,7 @@
           <option value="1" ${modifyuser.userType.code == 1 ? 'selected' : ''}>Admin</option>
           <option value="2" ${modifyuser.userType.code == 2 ? 'selected' : ''}>Coach</option>
           <option value="3" ${modifyuser.userType.code == 3 ? 'selected' : ''}>User</option>
+          <option value="4" ${modifyuser.userType.code == 4 ? 'selected' : ''}>Commissioner</option>
         </select>
       </td>
     </tr>
