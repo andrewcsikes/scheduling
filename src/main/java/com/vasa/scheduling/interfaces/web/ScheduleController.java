@@ -30,7 +30,6 @@ import com.vasa.scheduling.services.ScheduleService;
 public class ScheduleController extends DefaultHandlerController {
 
 	// TODO: Ability to Add Games
-	// TODO: Ability to Lock schedule for date forward, except current and following week. (Maybe Season StartDate)
 	
 	@Autowired
 	private ScheduleService service;
@@ -204,7 +203,18 @@ public class ScheduleController extends DefaultHandlerController {
 	
 	private boolean validateRequest(Model model, Team team, Date calendarDay) {
 		List<FieldSchedule> schedules = service.findScheduleForWeek(team, calendarDay);
-		if(schedules.size() >= team.getPracticeLimit()*2){
+		int blocks = 0;
+		for(FieldSchedule s: schedules){
+			if(s.getField().getName().startsWith("Batting Cage")){
+				// ignore
+			}else if(s.getGame()){
+				// ignore
+			}else{
+				blocks ++;
+			}
+			
+		}
+		if(blocks >= team.getPracticeLimit()*2){
 			model.addAttribute("error", "You are limited to "+team.getPracticeLimit()+" hour(s) per week.");
 			return false;
 		}
