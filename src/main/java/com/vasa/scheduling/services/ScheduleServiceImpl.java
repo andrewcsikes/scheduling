@@ -1,7 +1,11 @@
 package com.vasa.scheduling.services;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +25,9 @@ import com.vasa.scheduling.repositiories.SportRepository;
 @Service("scheduleService")
 public class ScheduleServiceImpl implements ScheduleService {
 
+	@PersistenceContext
+	private EntityManager em;
+	
 	@Autowired
 	private FieldScheduleRepository repo;
 	
@@ -105,19 +112,34 @@ public class ScheduleServiceImpl implements ScheduleService {
 	}
 
 	@Override
-	public List<FieldSchedule> findByMonthAndClassification(Date calendarDay,
-			Classification classification) {
-		return repo.findScheduleByMonthAndClassification(calendarDay, classification);
-	}
-
-	@Override
-	public List<FieldSchedule> findByMonthAndTeamAndClassification(Date calendarDay,
-			Team team, Classification classification) {
-		return repo.findScheduleByMonthAndTeamAndClassification(team, calendarDay, classification);
-	}
-
-	@Override
 	public Season findSeason(Sport sport) {
 		return seasonRepo.findBySportAndStatus(sport, Status.ACTIVE);
+	}
+
+	@Override
+	public List<FieldSchedule> findByFilter(Team team, Fields field, String filterClass, Boolean games, Date time) {
+		SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+		
+		String query = "Select s from FieldSchedule s where ";
+		String whereClause = "month(date)=month(STR_TO_DATE('"+sdf.format(time)+"','%m-%d-%Y'))";
+		
+		if(team != null){
+			whereClause += " and (team.id="+team.getId()+" or team2.id="+team.getId()+")";
+		}
+		if(field != null){
+			whereClause += " and field.id="+field.getId();
+		}
+//		if(filterClass != null && !filterClass.equals("0")){
+//			whereClause += " and (team is null or team.classification.code="+filterClass+")";
+//		}
+		if(games != null){
+			whereClause += " and game="+games.booleanValue();
+		}
+		
+		String orderBy = " order by date";
+		
+		List<FieldSchedule> results = (List<FieldSchedule>)em.createQuery(query+whereClause+orderBy, FieldSchedule.class).getResultList();
+		
+		return results;
 	}
 }

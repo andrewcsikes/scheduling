@@ -33,8 +33,8 @@ public class TeamServiceImpl implements TeamService{
 	}
 	
 	@Override
-	public Team findByName(String name) {
-		return teamRepo.findByName(name);
+	public Team findByNameAndAgeGroup(String name, AgeGroup ag) {
+		return teamRepo.findByNameAndAgeGroup(name, ag);
 	}
 
 	@Override
@@ -70,6 +70,11 @@ public class TeamServiceImpl implements TeamService{
 	@Override
 	public AgeGroup findAgeGroupById(Integer id) {
 		return  ageRepo.findById(id);
+	}
+	
+	@Override
+	public AgeGroup findAgeGroupByName(String name) {
+		return  ageRepo.findByName(name);
 	}
 	
 }

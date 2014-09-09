@@ -23,3 +23,6 @@ password: Q5aY9pRyaIhw
 OpenShift Environment Variables ...
 https://www.openshift.com/developers/openshift-environment-variables
 http://stackoverflow.com/questions/18176185/mysql-connection-tomcat-7-on-openshift
+
+Monitoring ...
+https://uptimerobot.com

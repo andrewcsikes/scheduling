@@ -9,9 +9,13 @@
 </head>
 <body>
 
+<div class="header">
+<img src="/scheduling/images/Sports_Cards_Banner.jpg">
+</div>
+
 <script src="/scheduling/scripts/sorttable.js"></script>
 
-<form id="entry" name="entry" action="list" method="POST">
+<form id="entry" name="entry" action="quick" method="POST">
 <table class="search">
 <tr>
     <td valign="top">Team:</td>
@@ -99,8 +103,6 @@
 					<td>Practice</td>
 				</c:otherwise>
 			</c:choose>
-			
-			
 			
 			<fmt:formatDate value="${shedule_day.date}" var="formattedDate" 
                 type="date" pattern="EEEEE, MMM dd, yyyy    hh:mm a" />

@@ -40,7 +40,7 @@ public class TeamAddController extends DefaultHandlerController{
 		}
 		
 		model.addAttribute("coaches", userService.findAllCoaches());
-		model.addAttribute("sports", service.findAllSports());
+		//model.addAttribute("sports", service.findAllSports());
 		model.addAttribute("seasons", scheduleService.findActiveSeasons());
 		model.addAttribute("agegroups", service.findAllAgegroups());
 		return "team/add";
@@ -60,8 +60,9 @@ public class TeamAddController extends DefaultHandlerController{
 		
 		team.setName(request.getParameter("name"));
 		team.setCoach(userService.findById(Integer.valueOf(request.getParameter("coach"))));
-		team.setSport(service.findSportById(Integer.valueOf(request.getParameter("sport"))));
+		//team.setSport(service.findSportById(Integer.valueOf(request.getParameter("sport"))));
 		team.setSeason(scheduleService.findSeasonById(Integer.valueOf(request.getParameter("season"))));
+		team.setSport(team.getSeason().getSport());
 		team.setAgeGroup(service.findAgeGroupById(Integer.valueOf(request.getParameter("ageGroup"))));
 		String limit = request.getParameter("practiceLimit");
 		if(limit != null){

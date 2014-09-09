@@ -1,5 +1,6 @@
 package com.vasa.scheduling.interfaces.web;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -11,11 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.vasa.scheduling.domain.FieldSchedule;
+import com.vasa.scheduling.domain.Fields;
 import com.vasa.scheduling.domain.Team;
 import com.vasa.scheduling.domain.User;
-import com.vasa.scheduling.enums.Classification;
 import com.vasa.scheduling.services.ScheduleService;
 import com.vasa.scheduling.services.TeamService;
 
@@ -23,13 +25,26 @@ import com.vasa.scheduling.services.TeamService;
 @RequestMapping("/schedule/list")
 public class ScheduleListController extends DefaultHandlerController {
 
-	// TODO: Only get Active Fields
-	// TODO: Add field as a search criteria
-	// TODO: Add description for Games
-	// TODO: Add filter for games
-	
 	@Autowired private TeamService service;
 	@Autowired private ScheduleService scheduleService;
+	
+	@RequestMapping(value="/quick", method = RequestMethod.GET)
+	public String quick(@RequestParam(required=false, value="date") String date, Model model, HttpServletRequest request) {
+		
+		Calendar today = Calendar.getInstance();
+		Date d = new Date();
+		today.setTime(d);
+		int month = today.get(Calendar.MONTH);
+		
+		List<FieldSchedule> schedule = scheduleService.findByMonth(new Date());
+			
+	    model.addAttribute("shedule", schedule);
+	    model.addAttribute("teams", service.findActive());
+	    model.addAttribute("fields", scheduleService.findAllFields());
+		model.addAttribute("filterMonth", month+1);
+		
+		return "schedule/quick-list";
+	}
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(Model model, HttpServletRequest request) {
@@ -50,6 +65,7 @@ public class ScheduleListController extends DefaultHandlerController {
 			
 	    model.addAttribute("shedule", schedule);
 	    model.addAttribute("teams", service.findActive());
+	    model.addAttribute("fields", scheduleService.findAllFields());
 		model.addAttribute("filterMonth", month+1);
 	    
 	    
@@ -67,39 +83,129 @@ public class ScheduleListController extends DefaultHandlerController {
 		}
 		
 		String teamId = request.getParameter("team");
+		
+		String game = request.getParameter("game");
+		Boolean games = null;
+		if(game.equals("2")){
+			games=true;
+		}else if(game.equals("1")){
+			games=false;
+		}
+		
 		String month = request.getParameter("month");
 		String filterClass = request.getParameter("class");
+		String fieldName = request.getParameter("field");
 		
 		Calendar today = Calendar.getInstance();
 		Date d = new Date();
 		today.setTime(d);
 		today.set(Calendar.MONTH, Integer.valueOf(month)-1);
 		
-		
 		List<FieldSchedule> schedule = null;
 		
 		if(teamId.equals("All")){
-			if(filterClass.equals("0")){
-				schedule = scheduleService.findByMonth(today.getTime());
+			if(fieldName.equals("All")){
+				schedule = scheduleService.findByFilter(null, null, filterClass, games, today.getTime());
 			}else{
-				model.addAttribute("filterClass", filterClass);
-				schedule = scheduleService.findByMonthAndClassification(today.getTime(), Classification.toEnumFromCode(Integer.valueOf(filterClass)));
+				Fields field = scheduleService.findFieldByName(fieldName);
+				model.addAttribute("filterfield", field.getName());
+				schedule = scheduleService.findByFilter(null, field, filterClass, games, today.getTime());
 			}
 		}else{
 			Team team = service.findById(Integer.valueOf(teamId));
 			model.addAttribute("filterTeam", team.getId());
-			if(filterClass.equals("0")){
-				schedule = scheduleService.findByMonthAndTeam(today.getTime(), team);
+			if(fieldName.equals("All")){
+				schedule = scheduleService.findByFilter(team, null, filterClass, games, today.getTime());
 			}else{
-				model.addAttribute("filterClass", filterClass);
-				schedule = scheduleService.findByMonthAndTeamAndClassification(today.getTime(), team, Classification.toEnumFromCode(Integer.valueOf(filterClass)));
+				Fields field = scheduleService.findFieldByName(fieldName);
+				model.addAttribute("filterfield", field.getName());
+				schedule = scheduleService.findByFilter(team, field, filterClass, games, today.getTime());
 			}
 		}
 		
+		List<FieldSchedule> returnVal = new ArrayList<FieldSchedule>();
+		if(filterClass != null && !filterClass.equals("0")){
+			for(FieldSchedule s: schedule){
+				if(s.getTeam() != null && s.getTeam().getClassification().getCode().equals(Integer.valueOf(filterClass))){
+					returnVal.add(s);
+				}
+			}
+		}else{
+			returnVal.addAll(schedule);
+		}
+		
+		model.addAttribute("filterClass", filterClass);
 		model.addAttribute("filterMonth", month);
-		model.addAttribute("shedule", schedule);
 	    model.addAttribute("teams", service.findActive());
+	    model.addAttribute("fields", scheduleService.findAllFields());
+		model.addAttribute("game", game);
+		model.addAttribute("shedule", returnVal);
 		
 	    return "schedule/list";
+	}
+	
+	@RequestMapping(value="/quick", method = RequestMethod.POST)
+	public String quickSearch(Model model, HttpServletRequest request) {
+		
+		String teamId = request.getParameter("team");
+		
+		String game = request.getParameter("game");
+		Boolean games = null;
+		if(game.equals("2")){
+			games=true;
+		}else if(game.equals("1")){
+			games=false;
+		}
+		
+		String month = request.getParameter("month");
+		String filterClass = request.getParameter("class");
+		String fieldName = request.getParameter("field");
+		
+		Calendar today = Calendar.getInstance();
+		Date d = new Date();
+		today.setTime(d);
+		today.set(Calendar.MONTH, Integer.valueOf(month)-1);
+		
+		List<FieldSchedule> schedule = null;
+		
+		if(teamId.equals("All")){
+			if(fieldName.equals("All")){
+				schedule = scheduleService.findByFilter(null, null, filterClass, games, today.getTime());
+			}else{
+				Fields field = scheduleService.findFieldByName(fieldName);
+				model.addAttribute("filterField", field.getName());
+				schedule = scheduleService.findByFilter(null, field, filterClass, games, today.getTime());
+			}
+		}else{
+			Team team = service.findById(Integer.valueOf(teamId));
+			model.addAttribute("filterTeam", team.getId());
+			if(fieldName.equals("All")){
+				schedule = scheduleService.findByFilter(team, null, filterClass, games, today.getTime());
+			}else{
+				Fields field = scheduleService.findFieldByName(fieldName);
+				model.addAttribute("filterField", field.getName());
+				schedule = scheduleService.findByFilter(team, field, filterClass, games, today.getTime());
+			}
+		}
+		
+		List<FieldSchedule> returnVal = new ArrayList<FieldSchedule>();
+		if(filterClass != null && !filterClass.equals("0")){
+			for(FieldSchedule s: schedule){
+				if(s.getTeam() != null && s.getTeam().getClassification().getCode().equals(Integer.valueOf(filterClass))){
+					returnVal.add(s);
+				}
+			}
+		}else{
+			returnVal.addAll(schedule);
+		}
+		
+		model.addAttribute("filterClass", filterClass);
+		model.addAttribute("filterMonth", month);
+	    model.addAttribute("teams", service.findActive());
+	    model.addAttribute("fields", scheduleService.findAllFields());
+		model.addAttribute("game", game);
+		model.addAttribute("shedule", returnVal);
+		
+	    return "schedule/quick-list";
 	}
 }

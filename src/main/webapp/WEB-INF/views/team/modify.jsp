@@ -33,22 +33,22 @@
       </select>
     </td>
   </tr>
-  <tr>
-    <td valign="top">Sport:</td>
-    <td>
-      <select name="sport">
-        <c:forEach items="${sports}" var="sport">
-          <option value="${sport.id}" ${modifyteam.sport.id == sport.id ? 'selected' : ''}>${sport.name}</option>
-        </c:forEach>
-      </select>
-    </td>
-  </tr>
+<!--   <tr> -->
+<!--     <td valign="top">Sport:</td> -->
+<!--     <td> -->
+<!--       <select name="sport"> -->
+<%--         <c:forEach items="${sports}" var="sport"> --%>
+<%--           <option value="${sport.id}" ${modifyteam.sport.id == sport.id ? 'selected' : ''}>${sport.name}</option> --%>
+<%--         </c:forEach> --%>
+<!--       </select> -->
+<!--     </td> -->
+<!--   </tr> -->
   <tr>
     <td valign="top">Season:</td>
     <td>
       <select name="season">
         <c:forEach items="${seasons}" var="season">
-          <option value="${season.id}" ${modifyteam.season.id == season.id ? 'selected' : ''}>${season.name}</option>
+          <option value="${season.id}" ${modifyteam.season.id == season.id ? 'selected' : ''}>${season.sport.name} - ${season.name}</option>
         </c:forEach>
       </select>
     </td>

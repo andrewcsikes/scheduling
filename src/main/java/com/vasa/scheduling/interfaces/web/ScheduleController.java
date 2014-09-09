@@ -29,10 +29,14 @@ import com.vasa.scheduling.services.ScheduleService;
 @RequestMapping("/schedule/calendar")
 public class ScheduleController extends DefaultHandlerController {
 
-	// TODO: Ability to Add Games
-	
 	@Autowired
 	private ScheduleService service;
+	
+	@RequestMapping(value="/quick", method = RequestMethod.GET)
+	public String quick(@RequestParam(required=false, value="date") String date, Model model, HttpServletRequest request) {
+		buildCalendar(date, model, null);
+		return "schedule/quick-calendar";
+	}
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(@RequestParam(required=false, value="date") String date, Model model, HttpServletRequest request) {
@@ -44,6 +48,12 @@ public class ScheduleController extends DefaultHandlerController {
 			return "login";
 		}
 		
+		buildCalendar(date, model, user);
+		
+	    return "schedule/calendar";
+	}
+
+	private void buildCalendar(String date, Model model, User user) {
 		Calendar sunday = Calendar.getInstance();
 		Date startDate = new Date();
 		
@@ -64,7 +74,7 @@ public class ScheduleController extends DefaultHandlerController {
 		Date startOfWeek = sunday.getTime();
 		
 		List<Fields> fields = null;
-		if(user.getTeam() != null){
+		if(user != null && user.getTeam() != null){
 			Sport sport = user.getTeam().getSport();
 			fields = service.findAllFields(sport);
 			if(sport.getName().equals("Baseball")){
@@ -79,7 +89,7 @@ public class ScheduleController extends DefaultHandlerController {
 				}
 			}
 		}else{
-			// Get the fields for the sport(S) that is active
+			// Get the fields for the sport(s) that is active
 			List<Season> activeSeasons = service.findActiveSeasons();
 			for(Season season : activeSeasons){
 				if(fields==null){
@@ -129,8 +139,6 @@ public class ScheduleController extends DefaultHandlerController {
 		model.addAttribute("fields", fields);
 		model.addAttribute("schedule",schedule);
 		model.addAttribute("locked", anylocked);
-		
-	    return "schedule/calendar";
 	}
 	
 	private boolean getLocked(Fields field, Date startOfWeek) {

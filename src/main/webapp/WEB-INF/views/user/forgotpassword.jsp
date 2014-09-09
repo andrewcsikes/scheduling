@@ -14,25 +14,15 @@
 <img src="/scheduling/images/Sports_Cards_Banner.jpg">
 </div>
 
-<h3 class="error">${loginerror}</h3>
-
 <div class="loginbox">
 	<h3>Welcome!</h3>
-	<form id="login" name="login" action="/scheduling/user/home" method="POST" onsubmit="return validate();">
+	<form id="login" name="login" action="/scheduling/user/forgotpassword" method="POST" onsubmit="return validate();">
 		<label for="username">Username</label>
 		<input id="username" type="text" name="username" style="width: 150px">
-		<label for="password">Password</label>
-		<input id="password" type="password" name="password" style="width: 150px" required>
-		<p><a href="/scheduling/user/forgotpassword">Forgot Password</a></p>
 		<div class="form-actions">
-			<input id="proceed" class="btn btn-primary" type="submit" value="Submit">
+			<input id="proceed" class="btn btn-primary" type="submit" value="Forgot Password">
 		</div>
 	</form>
-</div>
-
-<div class="loginbox">
-<p align="center"><a href="../schedule/calendar/quick">Schedule Calendar Quick View</a></p>
-<p align="center"><a href="../schedule/list/quick">Schedule List Quick View</a></p>
 </div>
 
 <script language="javascript">
@@ -40,9 +30,6 @@
 function validate() {
   if (document.login.username.value=="") {
 	alert("You did not fill in your Username.");
-	return false;
-  }else if (document.login.password.value=="") {
-	alert("You did not fill in your password.");
 	return false;
   }
   else {

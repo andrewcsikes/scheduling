@@ -47,6 +47,9 @@ public class FieldSchedule {
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern="SS")
 	private Date creationDate;
+	
+	@OneToOne(fetch = FetchType.EAGER)
+	private Team team2;
 
 	public Integer getId() {
 		return id;
@@ -102,6 +105,18 @@ public class FieldSchedule {
 
 	public void setGameDescription(String gameDescription) {
 		this.gameDescription = gameDescription;
+	}
+	
+	public String toString(){
+		return getField().getName() + ", " + getDate().toString() + ", " + getGameDescription();
+	}
+
+	public Team getTeam2() {
+		return team2;
+	}
+
+	public void setTeam2(Team team2) {
+		this.team2 = team2;
 	}
 	
 }

@@ -12,11 +12,35 @@
         <put-attribute name="footer" value="/WEB-INF/views/footer.jsp" />
     </definition>
     
-    <definition name="member/logout" extends="base.definition">
+    <definition name="user/logout" extends="base.definition">
         <put-attribute name="title" value="" />
         <put-attribute name="header" value="" />
         <put-attribute name="menu" value="" />
         <put-attribute name="body" value="/WEB-INF/views/member/logout.jsp" />
+        <put-attribute name="footer" value="" />
+    </definition>
+
+	<definition name="user/forgotpassword" extends="base.definition">
+        <put-attribute name="title" value="VASA Field Schedule" />
+        <put-attribute name="header" value="" />
+        <put-attribute name="menu" value="" />
+        <put-attribute name="body" value="/WEB-INF/views/user/forgotpassword.jsp" />
+        <put-attribute name="footer" value="" />
+    </definition>
+    
+    <definition name="schedule/quick-calendar" extends="base.definition">
+        <put-attribute name="title" value="VASA Field Schedule" />
+        <put-attribute name="header" value="" />
+        <put-attribute name="menu" value="" />
+        <put-attribute name="body" value="/WEB-INF/views/schedule/quick-calendar.jsp" />
+        <put-attribute name="footer" value="" />
+    </definition>
+    
+    <definition name="schedule/quick-list" extends="base.definition">
+        <put-attribute name="title" value="VASA Field Schedule" />
+        <put-attribute name="header" value="" />
+        <put-attribute name="menu" value="" />
+        <put-attribute name="body" value="/WEB-INF/views/schedule/quick-list.jsp" />
         <put-attribute name="footer" value="" />
     </definition>
     

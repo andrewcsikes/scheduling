@@ -8,6 +8,10 @@
 </head>
 <body>
 
+<div class="header">
+<img src="/scheduling/images/Sports_Cards_Banner.jpg">
+</div>
+
 <c:if test="${error != null}">
   <h3><font color="red">${error}</font></h3>
 </c:if>
@@ -26,8 +30,6 @@ addDay.setTime((java.util.Date)request.getAttribute("sunday"));
 addDay.add(java.util.Calendar.DAY_OF_MONTH, -7);
 
 for(com.vasa.scheduling.domain.Fields field:fields){
-	boolean locked = (Boolean)request.getAttribute(field.getName()+"locked");
-	if(locked){out.println("<p><b><font color='red'>You can only schedule 1 week in advance at this time for "+field.getName()+"</font></b></p>");}
 }
 %>
 	
@@ -37,7 +39,7 @@ for(com.vasa.scheduling.domain.Fields field:fields){
     	<div style="margin-left: 80%; float: right;"><a href="/scheduling/schedule/calendar?date=<%out.println(format1.format(addDay.getTime()));%>"><b>Next Week</b></a></div>
 	</div>
 	
-	<table class="list">
+	<table class="list" width="100%">
 	<tr class="header">
 	  <th colspan=<%out.println(fields.size()+2); %>>
 	    Week of <% out.println(format2.format(scheduleDay.getTime())); %>
@@ -49,7 +51,6 @@ for(com.vasa.scheduling.domain.Fields field:fields){
 	
 	<%
 	java.util.Map<String,java.util.Map<String,java.util.ArrayList<String>>> schedule = (java.util.Map<String,java.util.Map<String,java.util.ArrayList<String>>>)request.getAttribute("schedule");
-	com.vasa.scheduling.domain.User user = (com.vasa.scheduling.domain.User)request.getAttribute("user"); 
 	
 	for(com.vasa.scheduling.domain.Fields field:fields){
 		out.println("<th>"+field.getName()+"</th>");
@@ -58,7 +59,7 @@ for(com.vasa.scheduling.domain.Fields field:fields){
 	out.println("</tr><tr>");
 	
 	out.println("<th width='100px' rowspan='26'>Sunday<br />"+format1.format(scheduleDay.getTime())+"</th>");
-	out.println(printDay(user, scheduleDay, "Sunday", fields, schedule, request));
+	out.println(printDay(scheduleDay, "Sunday", fields, schedule, request));
 	scheduleDay.add(java.util.Calendar.DAY_OF_MONTH, 1);
 	out.println("</table>");
 	
@@ -75,7 +76,7 @@ for(com.vasa.scheduling.domain.Fields field:fields){
 	out.println("</tr><tr>");
 	
 	out.println("<th width='100px' rowspan='26'>Monday<br />"+format1.format(scheduleDay.getTime())+"</th>");
-	out.println(printDay(user, scheduleDay, "Monday", fields, schedule, request));
+	out.println(printDay(scheduleDay, "Monday", fields, schedule, request));
 	scheduleDay.add(java.util.Calendar.DAY_OF_MONTH, 1);
 	out.println("</table>");
 	
@@ -92,7 +93,7 @@ for(com.vasa.scheduling.domain.Fields field:fields){
 	out.println("</tr><tr>");
 	
 	out.println("<th width='100px' rowspan='26'>Tuesday<br />"+format1.format(scheduleDay.getTime())+"</th>");
-	out.println(printDay(user, scheduleDay, "Tuesday", fields, schedule, request));
+	out.println(printDay(scheduleDay, "Tuesday", fields, schedule, request));
 	scheduleDay.add(java.util.Calendar.DAY_OF_MONTH, 1);
 	out.println("</table>");
 	
@@ -109,7 +110,7 @@ for(com.vasa.scheduling.domain.Fields field:fields){
 	out.println("</tr><tr>");
 	
 	out.println("<th width='100px' rowspan='26'>Wednesday<br />"+format1.format(scheduleDay.getTime())+"</th>");
-	out.println(printDay(user, scheduleDay, "Wednesday", fields, schedule, request));
+	out.println(printDay(scheduleDay, "Wednesday", fields, schedule, request));
 	scheduleDay.add(java.util.Calendar.DAY_OF_MONTH, 1);
 	out.println("</table>");
 	
@@ -126,7 +127,7 @@ for(com.vasa.scheduling.domain.Fields field:fields){
 	out.println("</tr><tr>");
 	
 	out.println("<th width='100px' rowspan='26'>Thursday<br />"+format1.format(scheduleDay.getTime())+"</th>");
-	out.println(printDay(user, scheduleDay, "Thursday", fields, schedule, request));
+	out.println(printDay(scheduleDay, "Thursday", fields, schedule, request));
 	scheduleDay.add(java.util.Calendar.DAY_OF_MONTH, 1);
 	out.println("</table>");
 	
@@ -143,7 +144,7 @@ for(com.vasa.scheduling.domain.Fields field:fields){
 	out.println("</tr><tr>");
 	
 	out.println("<th width='100px' rowspan='26'>Friday<br />"+format1.format(scheduleDay.getTime())+"</th>");
-	out.println(printDay(user, scheduleDay, "Friday", fields, schedule, request));
+	out.println(printDay(scheduleDay, "Friday", fields, schedule, request));
 	scheduleDay.add(java.util.Calendar.DAY_OF_MONTH, 1);
 	out.println("</table>");
 	
@@ -160,7 +161,7 @@ for(com.vasa.scheduling.domain.Fields field:fields){
 	out.println("</tr><tr>");
 	
 	out.println("<th width='100px' rowspan='26'>Saturday<br />"+format1.format(scheduleDay.getTime())+"</th>");
-	out.println(printDay(user, scheduleDay, "Saturday", fields, schedule, request));
+	out.println(printDay(scheduleDay, "Saturday", fields, schedule, request));
 	scheduleDay.add(java.util.Calendar.DAY_OF_MONTH, 1);
 	out.println("</table>");
 	
@@ -170,8 +171,7 @@ for(com.vasa.scheduling.domain.Fields field:fields){
 	
 	
 	<%!
-	private StringBuffer printDay(com.vasa.scheduling.domain.User user, 
-			java.util.Calendar time, 
+	private StringBuffer printDay(java.util.Calendar time, 
 			String dayName, 
 			java.util.ArrayList<com.vasa.scheduling.domain.Fields> fields, 
 			java.util.Map<String,java.util.Map<String,java.util.ArrayList<String>>> schedule,
@@ -195,7 +195,6 @@ for(com.vasa.scheduling.domain.Fields field:fields){
 				time.add(java.util.Calendar.MINUTE, 30);
 			}
 			for(com.vasa.scheduling.domain.Fields field:fields){
-				boolean locked = (Boolean)request.getAttribute(field.getName()+"locked");
 				java.util.Map<String,java.util.ArrayList<String>> week = schedule.get(field.getName());
 				java.util.ArrayList<String> day = week.get(dayName);
 				
@@ -209,23 +208,6 @@ for(com.vasa.scheduling.domain.Fields field:fields){
 				}
 				else if(hour!=null && hour.startsWith("N/A")){
 					out.append("<td bgcolor='gray'>"+hour+"</td>");
-				}
-				else if(locked){
-					if(hour==null) hour="&nbsp;";
-					out.append("<td>"+hour+"</td>");
-				}
-				else if(hour == null && (user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
-						user.getUserType().equals(com.vasa.scheduling.enums.UserType.COACH) ||
-						user.getUserType().equals(com.vasa.scheduling.enums.UserType.COMMISSIONER))){
-					out.append("<td><a href='/scheduling/schedule/calendar/add?date="+format2.format(time.getTime())+"&field="+field.getName()+"'><img src='/scheduling/images/plus-icon.png' /></a></td>");
-				}else if(hour != null && (user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
-						user.getUserType().equals(com.vasa.scheduling.enums.UserType.COACH) ||
-						user.getUserType().equals(com.vasa.scheduling.enums.UserType.COMMISSIONER))){
-					if(hour.equals(user.getTeam().getName() + " - " + user.getLastName() + " - " + user.getTeam().getAgeGroup().getName())){
-						out.append("<td><a href='/scheduling/schedule/calendar/delete?date="+format2.format(time.getTime())+"&field="+field.getName()+"'><img src='/scheduling/images/minus-icon.png' /></a> "+hour+"</td>");
-					}else{
-						out.append("<td>"+hour+"</td>");
-					}
 				}else if(hour==null){
 					out.append("<td>&nbsp;</td>");
 				}else{

@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.vasa.scheduling.domain.AgeGroup;
 import com.vasa.scheduling.domain.Team;
 import com.vasa.scheduling.domain.User;
 import com.vasa.scheduling.enums.Status;
@@ -18,7 +19,7 @@ import com.vasa.scheduling.enums.UserType;
 public interface TeamRepository extends JpaRepository<Team, Integer>{
 
 	Team findByCoach(User user);
-	Team findByName(String name);
+	Team findByNameAndAgeGroup(String name, AgeGroup ag);
 	List<Team> findBySeasonStatus(Status status);
 	Team findById(Integer teamId);
 	
