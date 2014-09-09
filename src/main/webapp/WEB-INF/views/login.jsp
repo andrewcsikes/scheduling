@@ -31,8 +31,8 @@
 </div>
 
 <div class="loginbox">
-<p align="center"><a href="../schedule/calendar/quick">Schedule Calendar Quick View</a></p>
-<p align="center"><a href="../schedule/list/quick">Schedule List Quick View</a></p>
+<p align="center"><a href="../schedule/calendar/quick">Schedule Calendar View</a></p>
+<p align="center"><a href="../schedule/list/quick">Schedule List View</a></p>
 </div>
 
 <script language="javascript">
