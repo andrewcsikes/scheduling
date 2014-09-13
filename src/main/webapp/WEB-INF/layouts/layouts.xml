@@ -44,6 +44,14 @@
         <put-attribute name="footer" value="" />
     </definition>
     
+    <definition name="files/home" extends="base.definition">
+        <put-attribute name="title" value="VASA Field Schedule" />
+        <put-attribute name="header" value="" />
+        <put-attribute name="menu" value="" />
+        <put-attribute name="body" value="/WEB-INF/views/files/home.jsp" />
+        <put-attribute name="footer" value="" />
+    </definition>
+    
     <definition extends="base.definition" name="*/*">
     	<put-attribute name="title" value="{1} {2}" />
 		<put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp" />
