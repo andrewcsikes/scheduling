@@ -23,12 +23,14 @@ import com.vasa.scheduling.services.ScheduleService;
 @RequestMapping("/game/add")
 @Controller
 public class GameAddController extends DefaultHandlerController{
+
+	// TODO: Add Home Team and Away Team
 	
 	@Autowired
 	private ScheduleService service;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public String modify(Model model, HttpServletRequest request) {
+	public String add(Model model, HttpServletRequest request) {
 		
 		User user = verifyUser(request.getSession());
 		model.addAttribute("user", user);

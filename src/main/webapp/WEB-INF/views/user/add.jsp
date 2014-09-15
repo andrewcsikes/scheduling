@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<form id="entry" name="entry" action="add" method="POST">
+<form id="entry" name="entry" action="add" method="POST"  onsubmit="return validate();">
 
 <table class="modify">
   <tr class="header">
@@ -97,6 +97,26 @@
 </table>
 <input type="submit" value="Save">
 </form>
+
+<script language="javascript">
+function validate() {
+  if (document.entry.username.value=="") {
+	alert("Username is required.");
+	return false;
+  }else if (document.entry.password.value=="") {
+		alert("Password is required.");
+		return false;
+  }else if (document.entry.firstName.value=="") {
+		alert("First Name is required.");
+		return false;
+  }else if (document.entry.lastName.value=="") {
+		alert("Last Name is required.");
+		return false;
+  }else {
+	return true;
+  }
+}
+</script>
 
 </body>
 </html>

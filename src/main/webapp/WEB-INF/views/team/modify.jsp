@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<form id="entry" name="entry" action="modify" method="POST">
+<form id="entry" name="entry" action="modify" method="POST"  onsubmit="return validate();">
 <input type="hidden" name="id" value="${modifyteam.id}" />
 
 <table class="modify">
@@ -74,6 +74,19 @@
 </table>
 <input type="submit" value="Save">
 </form>
+
+<script language="javascript">
+
+function validate() {
+  if (document.entry.name.value=="") {
+	alert("Team name is required.");
+	return false;
+  }else {
+	return true;
+  }
+}
+
+</script>
 
 </body>
 </html>

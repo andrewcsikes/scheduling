@@ -17,7 +17,7 @@ $( "#datepicker" ).datepicker();
 </head>
 <body>
 
-<form id="entry" name="entry" action="add" method="POST">
+<form id="entry" name="entry" action="add" method="POST" onsubmit="return validate();">
 
 <table class="modify">
   <tr>
@@ -49,6 +49,28 @@ $( "#datepicker" ).datepicker();
 </table>
 <input type="submit" value="Save">
 </form>
+
+<script language="javascript">
+
+function validate() {
+  if (document.entry.date.value=="") {
+	alert("Date is required.");
+	return false;
+  }else if (document.entry.hour.value=="") {
+	alert("Hour is required.");
+	return false;
+  }else if (document.entry.minute.value=="") {
+		alert("Minute is required.");
+		return false;
+  }else if (document.entry.duration.value=="") {
+		alert("Duration is required.");
+		return false;
+  }else {
+	return true;
+  }
+}
+
+</script>
 
 </body>
 </html>
