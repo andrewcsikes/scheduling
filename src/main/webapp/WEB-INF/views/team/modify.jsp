@@ -65,7 +65,11 @@
   </tr>
   <tr>
     <td valign="top">Practice Limit:</td>
-    <td><input type="text" size="5" name="practiceLimit" value="${modifyteam.practiceLimit}" /> hours/week</td>
+    <td><input type="text" size="5" name="practiceLimit" value="${modifyteam.practiceLimit}" /> hours/day</td>
+  </tr>
+  <tr>
+    <td valign="top">Weekly Practice Limit:</td>
+    <td><input type="text" size="5" name="weeklyPracticeLimit" value="${modifyteam.weeklyPracticeLimit}" /> hours/week</td>
   </tr>
 </table>
 <input type="submit" value="Save">

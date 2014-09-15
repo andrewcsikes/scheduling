@@ -110,6 +110,11 @@ public class ScheduleServiceImpl implements ScheduleService {
 	public List<FieldSchedule> findScheduleForWeek(Team team, Date calendarDay) {
 		return repo.findScheduleForWeek(team, calendarDay);
 	}
+	
+	@Override
+	public List<FieldSchedule> findScheduleForDay(Team team, Date calendarDay) {
+		return repo.findScheduleForDay(team, calendarDay);
+	}
 
 	@Override
 	public Season findSeason(Sport sport) {

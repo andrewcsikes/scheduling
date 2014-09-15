@@ -49,8 +49,8 @@
       <td>
         <p style="font-weight:bold;">Leagues Or Teams - Usage more than 2 days/week</p>
         <p style="font-weight:normal;">(Price does not include $25 light usage fee for evening games.)</p></td>
-      <td>$500 a month per League<br />(non refundable)</td>
       <td>$350 a month per Team<br />(non refundable)</td>
+      <td>$500 a month per Team<br />(non refundable)</td>
     </tr>
     <tr>
       <td>

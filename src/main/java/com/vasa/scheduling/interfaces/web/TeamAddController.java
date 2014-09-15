@@ -30,7 +30,7 @@ public class TeamAddController extends DefaultHandlerController{
 	private ScheduleService scheduleService;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public String modify(Model model, HttpServletRequest request) {
+	public String add(Model model, HttpServletRequest request) {
 		
 		User user = verifyUser(request.getSession());
 		model.addAttribute("user", user);
@@ -73,6 +73,17 @@ public class TeamAddController extends DefaultHandlerController{
 			}
 		}else{
 			team.setPracticeLimit(null);
+		}
+		
+		limit = request.getParameter("weeklyPracticeLimit");
+		if(limit != null){
+			try{
+				team.setWeeklyPracticeLimit(Integer.valueOf(limit));
+			}catch(Exception e){
+				
+			}
+		}else{
+			team.setWeeklyPracticeLimit(null);
 		}
 		team.setClassification(Classification.toEnumFromCode(Integer.valueOf(request.getParameter("classification"))));
 		

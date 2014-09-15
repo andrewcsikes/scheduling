@@ -25,6 +25,7 @@ public interface ScheduleService{
 	List<FieldSchedule> findByMonth(Date date);
 	List<FieldSchedule> findByMonthAndTeam(Date date, Team team);
 	List<FieldSchedule> findScheduleForWeek(Team team, Date calendarDay);
+	List<FieldSchedule> findScheduleForDay(Team team, Date calendarDay);
 	Season findSeason(Sport sport);
 	List<FieldSchedule> findByFilter(Team team, Fields field, String filterClass, Boolean games, Date time);
 }

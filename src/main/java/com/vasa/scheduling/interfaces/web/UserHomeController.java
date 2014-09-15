@@ -24,6 +24,8 @@ import com.vasa.scheduling.services.UserService;
 @Controller
 public class UserHomeController extends DefaultHandlerController{
 	
+	// TODO: Add request for Account
+	
 	@Autowired
 	private UserService mr;
 	

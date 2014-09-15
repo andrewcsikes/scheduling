@@ -21,6 +21,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class FieldSchedule {
 
 	// TODO: Add Repeatable entries
+	// TODO: Create Game class that extends FieldSchedule
 	
 	@Id
 	@SequenceGenerator(name = "FieldScheduleSequence", sequenceName = "SEQ_FIELD_SCH_PK", allocationSize=1)

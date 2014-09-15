@@ -80,6 +80,18 @@ public class TeamModifyController extends DefaultHandlerController{
 		}else{
 			team.setPracticeLimit(null);
 		}
+		
+		limit = request.getParameter("weeklyPracticeLimit");
+		if(limit != null){
+			try{
+				team.setWeeklyPracticeLimit(Integer.valueOf(limit));
+			}catch(Exception e){
+				
+			}
+		}else{
+			team.setWeeklyPracticeLimit(null);
+		}
+		
 		team.setClassification(Classification.toEnumFromCode(Integer.valueOf(request.getParameter("classification"))));
 		
 		service.save(team);

@@ -221,7 +221,9 @@ for(com.vasa.scheduling.domain.Fields field:fields){
 				}else if(hour != null && (user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 						user.getUserType().equals(com.vasa.scheduling.enums.UserType.COACH) ||
 						user.getUserType().equals(com.vasa.scheduling.enums.UserType.COMMISSIONER))){
-					if(hour.equals(user.getTeam().getName() + " - " + user.getLastName() + " - " + user.getTeam().getAgeGroup().getName())){
+					if(user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) || 
+							user.getUserType().equals(com.vasa.scheduling.enums.UserType.COMMISSIONER) || 
+							hour.equals(user.getTeam().getName() + " - " + user.getLastName() + " - " + user.getTeam().getAgeGroup().getName())){
 						out.append("<td><a href='/scheduling/schedule/calendar/delete?date="+format2.format(time.getTime())+"&field="+field.getName()+"'><img src='/scheduling/images/minus-icon.png' /></a> "+hour+"</td>");
 					}else{
 						out.append("<td>"+hour+"</td>");

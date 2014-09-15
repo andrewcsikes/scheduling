@@ -34,6 +34,9 @@ public class Season {
 	private Sport sport;
 	
 	private Date startDate;
+	
+	@NotNull
+	private boolean applySchedulingRules=false;
 
 	public Integer getId() {
 		return id;
@@ -73,5 +76,13 @@ public class Season {
 
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
+	}
+
+	public boolean isApplySchedulingRules() {
+		return applySchedulingRules;
+	}
+
+	public void setApplySchedulingRules(boolean applySchedulingRules) {
+		this.applySchedulingRules = applySchedulingRules;
 	}
 }

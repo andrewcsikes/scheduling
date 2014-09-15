@@ -44,7 +44,9 @@ public class Team {
 	@NotNull
 	private Classification classification;
 	
-	private Integer practiceLimit; 
+	private Integer practiceLimit;
+	
+	private Integer weeklyPracticeLimit;
 	
 	public Sport getSport() {
 		return sport;
@@ -93,5 +95,11 @@ public class Team {
 	}
 	public void setPracticeLimit(Integer practiceLimit) {
 		this.practiceLimit = practiceLimit;
+	}
+	public Integer getWeeklyPracticeLimit() {
+		return weeklyPracticeLimit;
+	}
+	public void setWeeklyPracticeLimit(Integer weeklyPracticeLimit) {
+		this.weeklyPracticeLimit = weeklyPracticeLimit;
 	}
 }

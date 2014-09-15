@@ -23,12 +23,17 @@ import com.vasa.scheduling.domain.Season;
 import com.vasa.scheduling.domain.Sport;
 import com.vasa.scheduling.domain.Team;
 import com.vasa.scheduling.domain.User;
+import com.vasa.scheduling.enums.Classification;
+import com.vasa.scheduling.enums.UserType;
 import com.vasa.scheduling.services.ScheduleService;
 
 @Controller
 @RequestMapping("/schedule/calendar")
 public class ScheduleController extends DefaultHandlerController {
 
+	// TODO: If time removed and current week, send email out to all coaches for the sport
+	// TODO: If ADMIN removed time, send email out to coach
+	
 	@Autowired
 	private ScheduleService service;
 	
@@ -109,7 +114,7 @@ public class ScheduleController extends DefaultHandlerController {
 		boolean anylocked = false;
 		for(Fields field: fields){
 			
-			boolean locked = getLocked(field, startOfWeek);
+			boolean locked = getLocked(user.getTeam(), field, startOfWeek);
 			anylocked=anylocked||locked;
 			model.addAttribute(field.getName()+"locked",locked);
 			
@@ -141,12 +146,113 @@ public class ScheduleController extends DefaultHandlerController {
 		model.addAttribute("locked", anylocked);
 	}
 	
-	private boolean getLocked(Fields field, Date startOfWeek) {
+	private boolean getLocked(Team team, Fields field, Date startOfWeek) {
 		
 		Season season = service.findSeason(field.getSport());
 		if(season == null){
 			return false;
-		}else if(season.getStartDate() == null){
+		}else if(season.getSport() != null){
+			if(lockSport(team, season, field, startOfWeek)){
+				return true;
+			}
+		}
+		return false;
+	}
+		
+	private boolean lockSport(Team team, Season season, Fields field, Date startOfWeek) {
+		if(!season.isApplySchedulingRules()){
+			return false;
+		}
+		
+		boolean lock = lockSeason(season, startOfWeek);
+		if(lock){
+			return true;
+		}
+		
+		if(team != null && team.getClassification().equals(Classification.NON_VASA)){
+			return lockNonVasa(startOfWeek);
+		}
+		if(team !=null && team.getSport().getName().equals("Baseball")){
+			return lockBaseball(startOfWeek);
+		}
+		else if(team !=null && team.getSport().getName().equals("Softball")){
+			//return lockSoftball(startOfWeek);
+		}
+		return false;
+	}
+	
+	private boolean lockNonVasa(Date startOfWeek) {
+		Calendar today = Calendar.getInstance();
+		Calendar week = Calendar.getInstance();
+		week.setTime(startOfWeek);
+		
+		// This week
+		if(today.compareTo(week)>0){
+			return false;
+		}
+		
+		// The week before
+		if(today.compareTo(week)<0){
+			if(today.get(Calendar.DAY_OF_WEEK)<Calendar.SATURDAY){
+				// Lock if before Thursday
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	private boolean lockBaseball(Date startOfWeek) {
+		Calendar today = Calendar.getInstance();
+		Calendar week = Calendar.getInstance();
+		week.setTime(startOfWeek);
+		
+		// This week
+		if(today.compareTo(week)>0){
+			return false;
+		}
+		
+		// The week before
+		if(today.compareTo(week)<0){
+			if(today.get(Calendar.DAY_OF_WEEK)<Calendar.THURSDAY){
+				// Lock if before Thursday
+				return true;
+			}else if(today.get(Calendar.DAY_OF_WEEK)==Calendar.FRIDAY){
+				// Lock if Friday
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	private boolean lockSoftball(Date startOfWeek) {
+		Calendar today = Calendar.getInstance();
+		Calendar week = Calendar.getInstance();
+		week.setTime(startOfWeek);
+		
+		// This week
+		if(today.compareTo(week)>0){
+			return false;
+		}
+		
+		// The week before
+		if(today.compareTo(week)<0){
+			if(today.get(Calendar.DAY_OF_WEEK)<Calendar.WEDNESDAY){
+				// Lock if before Thursday
+				return true;
+			}else if(today.get(Calendar.DAY_OF_WEEK)==Calendar.THURSDAY ||
+					today.get(Calendar.DAY_OF_WEEK)==Calendar.FRIDAY){
+				// Lock if Friday
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
+	private boolean lockSeason(Season season, Date startOfWeek){
+		if(season.getStartDate() == null){
 			return false;
 		}
 		
@@ -192,7 +298,7 @@ public class ScheduleController extends DefaultHandlerController {
 		
 			FieldSchedule schedule = service.findByDateField(calendarDay, field);
 			
-			if(schedule == null && (user.getTeam().getPracticeLimit() == null || validateRequest(model, user.getTeam(), calendarDay))){
+			if(schedule == null && validateRequest(model, user.getTeam(), calendarDay)){
 				schedule = new FieldSchedule();
 				schedule.setCreationDate(new Date());
 				schedule.setDate(calendarDay);
@@ -210,6 +316,17 @@ public class ScheduleController extends DefaultHandlerController {
 	}
 	
 	private boolean validateRequest(Model model, Team team, Date calendarDay) {
+		boolean validate = validateWeeklyPracticeLimit(model, team, calendarDay);
+		if(validate){
+			validate = validateDailyPracticeLimit(model, team, calendarDay);
+		}
+		return validate;
+	}
+
+	private boolean validateWeeklyPracticeLimit(Model model, Team team, Date calendarDay) {
+		if(team.getWeeklyPracticeLimit()==null){
+			return true;
+		}
 		List<FieldSchedule> schedules = service.findScheduleForWeek(team, calendarDay);
 		int blocks = 0;
 		for(FieldSchedule s: schedules){
@@ -222,8 +339,31 @@ public class ScheduleController extends DefaultHandlerController {
 			}
 			
 		}
+		if(blocks >= team.getWeeklyPracticeLimit()*2){
+			model.addAttribute("error", "You are limited to "+team.getWeeklyPracticeLimit()+" hour(s) per week.");
+			return false;
+		}
+		return true;
+	}
+	
+	private boolean validateDailyPracticeLimit(Model model, Team team, Date calendarDay) {
+		if(team.getPracticeLimit()==null){
+			return true;
+		}
+		List<FieldSchedule> schedules = service.findScheduleForDay(team, calendarDay);
+		int blocks = 0;
+		for(FieldSchedule s: schedules){
+			if(s.getField().getName().startsWith("Batting Cage")){
+				// ignore
+			}else if(s.getGame()){
+				// ignore
+			}else{
+				blocks ++;
+			}
+			
+		}
 		if(blocks >= team.getPracticeLimit()*2){
-			model.addAttribute("error", "You are limited to "+team.getPracticeLimit()+" hour(s) per week.");
+			model.addAttribute("error", "You are limited to "+team.getPracticeLimit()+" hour(s) per day.");
 			return false;
 		}
 		return true;
@@ -242,7 +382,10 @@ public class ScheduleController extends DefaultHandlerController {
 			FieldSchedule schedule = service.findByDateField(calenderDay, field);
 			User user = verifyUser(request.getSession());
 			
-			if(schedule != null && schedule.getTeam().getId().equals(user.getTeam().getId())){
+			if(schedule != null && 
+					(schedule.getTeam().getId().equals(user.getTeam().getId())) ||
+					user.getUserType().equals(UserType.ADMIN) ||
+					user.getUserType().equals(UserType.COMMISSIONER)){
 				service.delete(schedule);
 			}
 			

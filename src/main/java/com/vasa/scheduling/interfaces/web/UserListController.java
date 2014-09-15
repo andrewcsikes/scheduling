@@ -15,7 +15,6 @@ import com.vasa.scheduling.domain.User;
 import com.vasa.scheduling.services.UserService;
 
 // TODO: Add ability to select current sport
-// TODO: Forgot Password
 
 @Controller
 @RequestMapping("/user/list")

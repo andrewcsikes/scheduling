@@ -31,9 +31,9 @@
 </div>
 
 <div class="loginbox">
-<p align="center"><a href="schedule/calendar/quick">Schedule Calendar View</a></p>
-<p align="center"><a href="schedule/list/quick">Schedule List View</a></p>
-<p align="center"><a href="files/home">Facility Usage Fees</a></p>
+<p align="center"><a href="/scheduling/schedule/calendar/quick">Schedule Calendar View</a></p>
+<p align="center"><a href="/scheduling/schedule/list/quick">Schedule List View</a></p>
+<p align="center"><a href="/scheduling/files/home">Facility Usage Fees</a></p>
 </div>
 
 <script language="javascript">
