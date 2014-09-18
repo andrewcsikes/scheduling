@@ -2,6 +2,7 @@ package com.vasa.scheduling.services;
 
 import java.util.List;
 
+import com.vasa.scheduling.domain.Sport;
 import com.vasa.scheduling.domain.Team;
 import com.vasa.scheduling.domain.User;
 

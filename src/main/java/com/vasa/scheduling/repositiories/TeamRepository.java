@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.vasa.scheduling.domain.AgeGroup;
+import com.vasa.scheduling.domain.Sport;
 import com.vasa.scheduling.domain.Team;
 import com.vasa.scheduling.domain.User;
 import com.vasa.scheduling.enums.Status;
@@ -22,6 +23,7 @@ public interface TeamRepository extends JpaRepository<Team, Integer>{
 	Team findByNameAndAgeGroup(String name, AgeGroup ag);
 	List<Team> findBySeasonStatus(Status status);
 	Team findById(Integer teamId);
+	List<Team> findBySport(Sport sport);
 	
 	@Query("Select u from User u where userType=:type ")
 	List<User> findByUserType(@Param("type")UserType type);

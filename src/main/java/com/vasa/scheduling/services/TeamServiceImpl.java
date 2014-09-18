@@ -76,5 +76,10 @@ public class TeamServiceImpl implements TeamService{
 	public AgeGroup findAgeGroupByName(String name) {
 		return  ageRepo.findByName(name);
 	}
+
+	@Override
+	public List<Team> findTeamsBySport(Sport sport) {
+		return teamRepo.findBySport(sport);
+	}
 	
 }

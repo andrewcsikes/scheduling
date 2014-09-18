@@ -7,7 +7,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +34,17 @@ import com.vasa.scheduling.domain.User;
 import com.vasa.scheduling.enums.Classification;
 import com.vasa.scheduling.enums.UserType;
 import com.vasa.scheduling.services.ScheduleService;
+import com.vasa.scheduling.services.TeamService;
 
 @Controller
 @RequestMapping("/schedule/calendar")
 public class ScheduleController extends DefaultHandlerController {
 
-	// TODO: If time removed and current week, send email out to all coaches for the sport
-	// TODO: If ADMIN removed time, send email out to coach
-	
 	@Autowired
 	private ScheduleService service;
+	
+	@Autowired
+	private TeamService teamService;
 	
 	@RequestMapping(value="/quick", method = RequestMethod.GET)
 	public String quick(@RequestParam(required=false, value="date") String date, Model model, HttpServletRequest request) {
@@ -124,19 +133,20 @@ public class ScheduleController extends DefaultHandlerController {
 			sunday.set(Calendar.DAY_OF_WEEK, 1);
 			// week - key is the day, value is the fields
 			HashMap<String,ArrayList<String>> week = new HashMap<String, ArrayList<String>>();
-			week.put("Sunday", getFieldDay(sunday.getTime(), field));
+			Team team = user.getTeam();
+			week.put("Sunday", getFieldDay(sunday.getTime(), field, team));
 			sunday.add(Calendar.DAY_OF_YEAR, 1);
-			week.put("Monday", getFieldDay(sunday.getTime(), field));
+			week.put("Monday", getFieldDay(sunday.getTime(), field, team));
 			sunday.add(Calendar.DAY_OF_YEAR, 1);
-			week.put("Tuesday", getFieldDay(sunday.getTime(), field));
+			week.put("Tuesday", getFieldDay(sunday.getTime(), field, team));
 			sunday.add(Calendar.DAY_OF_YEAR, 1);
-			week.put("Wednesday", getFieldDay(sunday.getTime(), field));
+			week.put("Wednesday", getFieldDay(sunday.getTime(), field, team));
 			sunday.add(Calendar.DAY_OF_YEAR, 1);
-			week.put("Thursday", getFieldDay(sunday.getTime(), field));
+			week.put("Thursday", getFieldDay(sunday.getTime(), field, team));
 			sunday.add(Calendar.DAY_OF_YEAR, 1);
-			week.put("Friday", getFieldDay(sunday.getTime(), field));
+			week.put("Friday", getFieldDay(sunday.getTime(), field, team));
 			sunday.add(Calendar.DAY_OF_YEAR, 1);
-			week.put("Saturday", getFieldDay(sunday.getTime(), field));
+			week.put("Saturday", getFieldDay(sunday.getTime(), field, team));
 			schedule.put(field.getName(), week);
 		}
 		
@@ -383,10 +393,42 @@ public class ScheduleController extends DefaultHandlerController {
 			User user = verifyUser(request.getSession());
 			
 			if(schedule != null && 
-					(schedule.getTeam().getId().equals(user.getTeam().getId())) ||
-					user.getUserType().equals(UserType.ADMIN) ||
-					user.getUserType().equals(UserType.COMMISSIONER)){
+					schedule.getTeam().getId().equals(user.getTeam().getId())){
 				service.delete(schedule);
+				
+				// If date is current week, email league coaches.
+				Calendar today = Calendar.getInstance();
+				Calendar week = Calendar.getInstance();
+				week.setTime(schedule.getDate());
+				week.set(Calendar.DAY_OF_WEEK,1);
+				if(today.compareTo(week)>0){
+					try{
+						// loop through all the coaches for the sport
+						for(Team t : teamService.findTeamsBySport(schedule.getField().getSport())){
+							User u = t.getCoach();
+							String message = "The practice spot for "+schedule.getField().getName()+" at "+formatter.format(schedule.getDate())+" was previously scheduled, but is now available.";
+							String emailAddress = u.getEmailAddress();
+							if(emailAddress != null){
+								sendEmail(emailAddress, message);
+							}
+						}
+					}catch(Exception e){
+						model.addAttribute("error", e.getCause() +": "+e.getMessage());
+					}
+				}
+			}else if(schedule != null && (user.getUserType().equals(UserType.ADMIN) ||
+					user.getUserType().equals(UserType.COMMISSIONER))){
+				service.delete(schedule);
+				// email coach
+				try{
+					String message = "Your practice for "+schedule.getField().getName()+" at "+formatter.format(schedule.getDate())+" was removed by the "+user.getFirstName()+" "+user.getLastName();
+					String emailAddress = schedule.getTeam().getCoach().getEmailAddress();
+					if(emailAddress != null){
+						sendEmail(emailAddress, message);
+					}
+				}catch(Exception e){
+					model.addAttribute("error", e.getCause() +": "+e.getMessage());
+				}
 			}
 			
 		} catch (ParseException e) {
@@ -397,7 +439,7 @@ public class ScheduleController extends DefaultHandlerController {
 		return list(date, model, request);
 	}
 	
-	private ArrayList<String> getFieldDay(Date date, Fields field) {
+	private ArrayList<String> getFieldDay(Date date, Fields field, Team team) {
 		
 		List<FieldSchedule> schedules = service.findByDayField(date, field.getName());
 		ArrayList<String> day = new ArrayList<String>();
@@ -463,7 +505,11 @@ public class ScheduleController extends DefaultHandlerController {
 			}
 		}
 		
-		for(FieldSchedule schedule: schedules){	int slotNumber = getHourSlotNumber(schedule.getDate());
+		setBlockedTimesBasedOnRules(field, team, date, day);
+		
+		for(FieldSchedule schedule: schedules){
+			int slotNumber = getHourSlotNumber(schedule.getDate());
+			
 			if(schedule.getGame()){
 				day.set(slotNumber, "Reserved For "+schedule.getGameDescription());
 			}else{
@@ -475,6 +521,72 @@ public class ScheduleController extends DefaultHandlerController {
 		return day;
 	}
 	
+	private void setBlockedTimesBasedOnRules(Fields field, Team team, Date date, ArrayList<String> day) {
+		Calendar today = Calendar.getInstance();
+		
+		Calendar calDay = Calendar.getInstance();
+		calDay.setTime(date);
+		
+		Calendar week = Calendar.getInstance();
+		week.setTime(date);
+		week.set(Calendar.DAY_OF_WEEK, 1);
+		
+		if(today.compareTo(week)>0){
+			// This week, do nothing
+		}else{
+			if(field.getSport().getName().equals("Baseball") && team.getSeason().isApplySchedulingRules()){
+				// run baseball rules
+				if(calDay.get(Calendar.DAY_OF_WEEK)==Calendar.SUNDAY
+						|| calDay.get(Calendar.DAY_OF_WEEK)==Calendar.SATURDAY){
+					// No rules apply
+				}else if(today.get(Calendar.DAY_OF_WEEK)==Calendar.THURSDAY){
+					// don't allow older teams to schedule anything before 7:00
+					if(field.getName().contains("FM") &&
+							(team.getAgeGroup().getName().equals("10U") 
+								|| team.getAgeGroup().getName().equals("12U")
+								|| team.getAgeGroup().getName().equals("14U"))){
+						day.set(16, "Reserved For Younger Teams.");
+						day.set(17, "Reserved For Younger Teams.");
+						day.set(18, "Reserved For Younger Teams.");
+						day.set(19, "Reserved For Younger Teams.");
+					}
+				}
+			}else if(field.getSport().getName().equals("Softball") && team.getSeason().isApplySchedulingRules()){
+				if(calDay.get(Calendar.DAY_OF_WEEK)==Calendar.SUNDAY
+						|| calDay.get(Calendar.DAY_OF_WEEK)==Calendar.SATURDAY){
+					// No rules apply
+				}else if(today.get(Calendar.DAY_OF_WEEK)==Calendar.WEDNESDAY){
+					// don't allow older teams to schedule little east
+					if(field.getName().contains("Little") &&
+							(team.getAgeGroup().getName().equals("10U") 
+								|| team.getAgeGroup().getName().equals("12U")
+								|| team.getAgeGroup().getName().equals("14U"))){
+						day.set(16, "Reserved For Younger Teams.");
+						day.set(17, "Reserved For Younger Teams.");
+						day.set(18, "Reserved For Younger Teams.");
+						day.set(19, "Reserved For Younger Teams.");
+						day.set(20, "Reserved For Younger Teams.");
+						day.set(21, "Reserved For Younger Teams.");
+						day.set(22, "Reserved For Younger Teams.");
+						day.set(23, "Reserved For Younger Teams.");
+					}else if(field.getName().contains("Big") &&
+							(team.getAgeGroup().getName().equals("6U") 
+								|| team.getAgeGroup().getName().equals("8U"))){
+						day.set(16, "Reserved For Older Teams.");
+						day.set(17, "Reserved For Older Teams.");
+						day.set(18, "Reserved For Older Teams.");
+						day.set(19, "Reserved For Older Teams.");
+						day.set(20, "Reserved For Older Teams.");
+						day.set(21, "Reserved For Older Teams.");
+						day.set(22, "Reserved For Older Teams.");
+						day.set(23, "Reserved For Older Teams.");
+					}
+				}
+			}
+		}
+		
+	}
+
 	private void addBlockedTimes(ArrayList<String> day, Integer startTime, Integer endTime) {
 		Calendar times = Calendar.getInstance();
 		times.set(Calendar.HOUR_OF_DAY, 9);
@@ -565,5 +677,37 @@ public class ScheduleController extends DefaultHandlerController {
 		}
 		
 		return x;
+	}
+	
+	private void sendEmail(String emailAddress, String emailMessage) throws AddressException, MessagingException {
+		// Get system properties
+		Properties properties = System.getProperties();
+
+		// Setup mail server
+		properties.setProperty("mail.smtp.host", "smtp");
+
+		// Get the default Session object.
+		Session session = Session.getDefaultInstance(properties);
+
+		// Create a default MimeMessage object.
+		MimeMessage message = new MimeMessage(session);
+
+		// Set From: header field of the header.
+		message.setFrom(new InternetAddress("scheduling@vasayouthsports.com"));
+
+		// Set To: header field of the header.
+		message.addRecipient(Message.RecipientType.TO, new InternetAddress(
+				emailAddress));
+
+		// Set Subject: header field
+		message.setSubject("VASA Field Scheduling");
+
+		// Now set the actual message
+		message.setText(emailMessage);
+
+		// Send message
+		Transport.send(message);
+		//System.out.println("Sent message successfully....");
+
 	}
 }

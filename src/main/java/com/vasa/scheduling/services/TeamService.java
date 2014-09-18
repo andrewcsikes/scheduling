@@ -3,7 +3,6 @@ package com.vasa.scheduling.services;
 import java.util.List;
 
 import com.vasa.scheduling.domain.AgeGroup;
-import com.vasa.scheduling.domain.Season;
 import com.vasa.scheduling.domain.Sport;
 import com.vasa.scheduling.domain.Team;
 
@@ -19,5 +18,6 @@ public interface TeamService{
 	Sport findSportById(Integer id);
 	AgeGroup findAgeGroupById(Integer id);
 	AgeGroup findAgeGroupByName(String name);
+	List<Team> findTeamsBySport(Sport sport);
 
 }

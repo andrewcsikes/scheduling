@@ -203,10 +203,10 @@ for(com.vasa.scheduling.domain.Fields field:fields){
 				}
 				
 				String hour = day.get(x);
-				if(hour!=null && hour.startsWith("Reserved For")){
+				if(hour!=null && hour.contains("Game")){
 					out.append("<td bgcolor='yellow'>"+hour+"</td>");
 				}
-				else if(hour!=null && hour.startsWith("N/A")){
+				else if(hour!=null && (hour.startsWith("N/A") || hour.startsWith("Reserved"))){
 					out.append("<td bgcolor='gray'>"+hour+"</td>");
 				}else if(hour==null){
 					out.append("<td>&nbsp;</td>");

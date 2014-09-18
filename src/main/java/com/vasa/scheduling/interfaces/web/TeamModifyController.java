@@ -1,5 +1,7 @@
 package com.vasa.scheduling.interfaces.web;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,6 +98,12 @@ public class TeamModifyController extends DefaultHandlerController{
 		
 		service.save(team);
 		
+		List<Team> teams = service.findActive();
+		model.addAttribute("teams", teams);
+		model.addAttribute("coaches", userService.findAllCoaches());
+		model.addAttribute("sports", service.findAllSports());
+		model.addAttribute("seasons", scheduleService.findActiveSeasons());
+		model.addAttribute("agegroups", service.findAllAgegroups());
 		return "team/list";
 	}
 	
