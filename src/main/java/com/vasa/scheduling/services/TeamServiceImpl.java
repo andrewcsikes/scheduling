@@ -3,11 +3,9 @@ package com.vasa.scheduling.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
 import com.vasa.scheduling.domain.AgeGroup;
-import com.vasa.scheduling.domain.Season;
 import com.vasa.scheduling.domain.Sport;
 import com.vasa.scheduling.domain.Team;
 import com.vasa.scheduling.enums.Status;
