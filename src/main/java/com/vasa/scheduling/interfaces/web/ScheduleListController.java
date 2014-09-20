@@ -150,7 +150,7 @@ public class ScheduleListController extends DefaultHandlerController {
 		}
 		
 		List<FieldSchedule> returnVal = new ArrayList<FieldSchedule>();
-		if(filterClass != null && !filterClass.equals("0")){
+		if(filterClass != null && !filterClass.equals("0") && schedule != null){
 			for(FieldSchedule s: schedule){
 				if(s.getTeam() != null && s.getTeam().getClassification().getCode().equals(Integer.valueOf(filterClass))){
 					returnVal.add(s);
