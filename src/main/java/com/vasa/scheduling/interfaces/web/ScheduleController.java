@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.vasa.scheduling.domain.FieldSchedule;
 import com.vasa.scheduling.domain.Fields;
+import com.vasa.scheduling.domain.Game;
 import com.vasa.scheduling.domain.Season;
 import com.vasa.scheduling.domain.Sport;
 import com.vasa.scheduling.domain.Team;
@@ -342,8 +343,6 @@ public class ScheduleController extends DefaultHandlerController {
 		for(FieldSchedule s: schedules){
 			if(s.getField().getName().startsWith("Batting Cage")){
 				// ignore
-			}else if(s.getGame()){
-				// ignore
 			}else{
 				blocks ++;
 			}
@@ -364,8 +363,6 @@ public class ScheduleController extends DefaultHandlerController {
 		int blocks = 0;
 		for(FieldSchedule s: schedules){
 			if(s.getField().getName().startsWith("Batting Cage")){
-				// ignore
-			}else if(s.getGame()){
 				// ignore
 			}else{
 				blocks ++;
@@ -441,7 +438,6 @@ public class ScheduleController extends DefaultHandlerController {
 	
 	private ArrayList<String> getFieldDay(Date date, Fields field, Team team) {
 		
-		List<FieldSchedule> schedules = service.findByDayField(date, field.getName());
 		ArrayList<String> day = new ArrayList<String>();
 		
 		Calendar cal = Calendar.getInstance();
@@ -507,16 +503,39 @@ public class ScheduleController extends DefaultHandlerController {
 		
 		setBlockedTimesBasedOnRules(field, team, date, day);
 		
+		List<FieldSchedule> schedules = service.findByDayField(date, field.getName());
+		List<Game> games = service.findGamesByDayField(date, field.getName());
+		
 		for(FieldSchedule schedule: schedules){
 			int slotNumber = getHourSlotNumber(schedule.getDate());
 			
-			if(schedule.getGame()){
-				day.set(slotNumber, "Reserved For "+schedule.getGameDescription());
-			}else{
-				day.set(slotNumber, schedule.getTeam().getName()+" - "+
-					schedule.getTeam().getCoach().getLastName()+" - "+
-					schedule.getTeam().getAgeGroup().getName());
+			if(schedule.getTeam()==null)continue;
+			
+			day.set(slotNumber, schedule.getTeam().getName()+" - "+
+				schedule.getTeam().getCoach().getLastName()+" - "+
+				schedule.getTeam().getAgeGroup().getName());
+		}
+		
+		for(Game g: games){
+			int slotNumber = getHourSlotNumber(g.getDate());
+			
+			String duration = g.getDuration();
+			int multiple = 0;
+			if(duration.indexOf("h")>0){
+				String hours = duration.substring(0, duration.indexOf("h")).trim();
+				multiple = Integer.valueOf(hours) * 2;
 			}
+			if(duration.indexOf("m")>0){
+				multiple += 1;
+			}
+			
+			for(int x=0; x<multiple; x++){
+				if(x==0)
+					day.set(slotNumber+x, g.getAgeGroup().getName()+" Game: "+g.getHomeTeam()+" vs "+g.getAwayTeam());
+				else
+					day.set(slotNumber+x, "Game");
+			}
+			
 		}
 		return day;
 	}
@@ -534,7 +553,9 @@ public class ScheduleController extends DefaultHandlerController {
 		if(today.compareTo(week)>0){
 			// This week, do nothing
 		}else{
-			if(field.getSport().getName().equals("Baseball") && team.getSeason().isApplySchedulingRules()){
+			if(field.getSport().getName().equals("Baseball") && 
+					team != null && 
+					team.getSeason().isApplySchedulingRules()){
 				// run baseball rules
 				if(calDay.get(Calendar.DAY_OF_WEEK)==Calendar.SUNDAY
 						|| calDay.get(Calendar.DAY_OF_WEEK)==Calendar.SATURDAY){
@@ -551,11 +572,13 @@ public class ScheduleController extends DefaultHandlerController {
 						day.set(19, "Reserved For Younger Teams.");
 					}
 				}
-			}else if(field.getSport().getName().equals("Softball") && team.getSeason().isApplySchedulingRules()){
+			}else if(field.getSport().getName().equals("Softball") && 
+					team != null && 
+					team.getSeason().isApplySchedulingRules()){
 				if(calDay.get(Calendar.DAY_OF_WEEK)==Calendar.SUNDAY
 						|| calDay.get(Calendar.DAY_OF_WEEK)==Calendar.SATURDAY){
 					// No rules apply
-				}else if(today.get(Calendar.DAY_OF_WEEK)==Calendar.WEDNESDAY){
+				}else if(today.get(Calendar.DAY_OF_WEEK)<=Calendar.WEDNESDAY){
 					// don't allow older teams to schedule little east
 					if(field.getName().contains("Little") &&
 							(team.getAgeGroup().getName().equals("10U") 

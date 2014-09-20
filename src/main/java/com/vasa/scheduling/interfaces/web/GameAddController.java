@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.vasa.scheduling.domain.FieldSchedule;
+import com.vasa.scheduling.domain.Game;
 import com.vasa.scheduling.domain.User;
 import com.vasa.scheduling.services.ScheduleService;
 
@@ -24,7 +25,7 @@ import com.vasa.scheduling.services.ScheduleService;
 @Controller
 public class GameAddController extends DefaultHandlerController{
 
-	// TODO: Add Home Team and Away Team
+	// TODO: Add AgeGroup
 	
 	@Autowired
 	private ScheduleService service;
@@ -68,40 +69,15 @@ public class GameAddController extends DefaultHandlerController{
 		date.set(Calendar.HOUR_OF_DAY, Integer.valueOf(request.getParameter("hour")));
 		date.set(Calendar.MINUTE, Integer.valueOf(request.getParameter("minute")));
 		
-		String duration = request.getParameter("duration");
-		int multiple = 0;
-		
-		if(duration.indexOf("h")>0){
-			String hours = duration.substring(0, duration.indexOf("h")).trim();
-			multiple = Integer.valueOf(hours) * 2;
-		}
-		if(duration.indexOf("m")>0){
-			multiple += 1;
-		}
-		
-		if(multiple>0){
-			date.add(Calendar.MINUTE, -30);
-			for(int x=0; x<multiple; x++){
-				FieldSchedule schedule = new FieldSchedule();
-				schedule.setCreationDate(new Date());
-				schedule.setField(service.findFieldByName(request.getParameter("field")));
-				date.add(Calendar.MINUTE, 30);
-				schedule.setDate(date.getTime());
-				schedule.setGame(true);
-				schedule.setGameDescription(request.getParameter("description"));
-				service.save(schedule);
-			}
-		}else{
-			FieldSchedule schedule = new FieldSchedule();
-			schedule.setCreationDate(new Date());
-			schedule.setDate(date.getTime());
-			schedule.setGame(true);
-			schedule.setGameDescription(request.getParameter("description"));
-			schedule.setField(service.findFieldByName(request.getParameter("field")));
-			service.save(schedule);
-		}
-		
-		
+		Game schedule = new Game();
+		schedule.setCreationDate(new Date());
+		schedule.setField(service.findFieldByName(request.getParameter("field")));
+		schedule.setDate(date.getTime());
+		schedule.setDuration(request.getParameter("duration"));
+		schedule.setHomeTeam(request.getParameter("homeTeam"));
+		schedule.setAwayTeam(request.getParameter("awayTeam"));
+		service.save(schedule);
+				
 		return "user/home";
 	}
 	

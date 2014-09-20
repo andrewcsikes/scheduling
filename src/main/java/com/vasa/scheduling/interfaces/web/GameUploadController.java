@@ -3,17 +3,13 @@ package com.vasa.scheduling.interfaces.web;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,13 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.vasa.scheduling.converters.CsvToFieldSchedule;
-import com.vasa.scheduling.domain.FieldSchedule;
-import com.vasa.scheduling.domain.Team;
+import com.vasa.scheduling.domain.Game;
 import com.vasa.scheduling.domain.User;
-import com.vasa.scheduling.enums.Classification;
 import com.vasa.scheduling.services.ScheduleService;
 import com.vasa.scheduling.services.TeamService;
-import com.vasa.scheduling.services.UserService;
 
 @RequestMapping("/game/upload")
 @Controller
@@ -94,8 +87,8 @@ public class GameUploadController extends DefaultHandlerController{
 	            ArrayList<String> errors = new ArrayList<String>();
 	            
 	            try{
-	            	List<FieldSchedule> schedules = converter.readCsv(scheduleService, teamService, br, errors);
-	            	for(FieldSchedule s : schedules){
+	            	List<Game> schedules = converter.readCsv(scheduleService, teamService, br, errors);
+	            	for(Game s : schedules){
 	            		try{
 	            			scheduleService.save(s);
 	            		}catch(Exception e){

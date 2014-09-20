@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.vasa.scheduling.domain.FieldSchedule;
 import com.vasa.scheduling.domain.Fields;
+import com.vasa.scheduling.domain.Game;
 import com.vasa.scheduling.domain.Team;
 import com.vasa.scheduling.domain.User;
 import com.vasa.scheduling.services.ScheduleService;
@@ -37,8 +38,10 @@ public class ScheduleListController extends DefaultHandlerController {
 		int month = today.get(Calendar.MONTH);
 		
 		List<FieldSchedule> schedule = scheduleService.findByMonth(new Date());
+		List<Game> games = scheduleService.findGameByMonth(new Date());
 			
 	    model.addAttribute("shedule", schedule);
+	    model.addAttribute("games", games);
 	    model.addAttribute("teams", service.findActive());
 	    model.addAttribute("fields", scheduleService.findAllFields());
 		model.addAttribute("filterMonth", month+1);
@@ -62,8 +65,10 @@ public class ScheduleListController extends DefaultHandlerController {
 		int month = today.get(Calendar.MONTH);
 		
 		List<FieldSchedule> schedule = scheduleService.findByMonth(new Date());
+		List<Game> games = scheduleService.findGameByMonth(new Date());
 			
 	    model.addAttribute("shedule", schedule);
+	    model.addAttribute("games", games);
 	    model.addAttribute("teams", service.findActive());
 	    model.addAttribute("fields", scheduleService.findAllFields());
 		model.addAttribute("filterMonth", month+1);
@@ -85,11 +90,11 @@ public class ScheduleListController extends DefaultHandlerController {
 		String teamId = request.getParameter("team");
 		
 		String game = request.getParameter("game");
-		Boolean games = null;
+		Boolean gamesOnly = null;
 		if(game.equals("2")){
-			games=true;
+			gamesOnly=true;
 		}else if(game.equals("1")){
-			games=false;
+			gamesOnly=false;
 		}
 		
 		String month = request.getParameter("month");
@@ -102,24 +107,45 @@ public class ScheduleListController extends DefaultHandlerController {
 		today.set(Calendar.MONTH, Integer.valueOf(month)-1);
 		
 		List<FieldSchedule> schedule = null;
+		List<Game> games = null;
 		
 		if(teamId.equals("All")){
 			if(fieldName.equals("All")){
-				schedule = scheduleService.findByFilter(null, null, filterClass, games, today.getTime());
+				if(gamesOnly == null || !gamesOnly){
+					schedule = scheduleService.findByFilter(null, null, filterClass, today.getTime());
+				}
+				if(gamesOnly == null || gamesOnly){
+					games = scheduleService.findGamesByFilter(null, null, filterClass, today.getTime());
+				}
 			}else{
 				Fields field = scheduleService.findFieldByName(fieldName);
 				model.addAttribute("filterfield", field.getName());
-				schedule = scheduleService.findByFilter(null, field, filterClass, games, today.getTime());
+				if(gamesOnly == null || !gamesOnly){
+					schedule = scheduleService.findByFilter(null, field, filterClass, today.getTime());
+				}
+				if(gamesOnly == null || gamesOnly){
+					games = scheduleService.findGamesByFilter(null, field, filterClass, today.getTime());
+				}
 			}
 		}else{
 			Team team = service.findById(Integer.valueOf(teamId));
 			model.addAttribute("filterTeam", team.getId());
 			if(fieldName.equals("All")){
-				schedule = scheduleService.findByFilter(team, null, filterClass, games, today.getTime());
+				if(gamesOnly == null || !gamesOnly){
+					schedule = scheduleService.findByFilter(team, null, filterClass, today.getTime());
+				}
+				if(gamesOnly == null || gamesOnly){
+					games = scheduleService.findGamesByFilter(team, null, filterClass, today.getTime());
+				}
 			}else{
 				Fields field = scheduleService.findFieldByName(fieldName);
 				model.addAttribute("filterfield", field.getName());
-				schedule = scheduleService.findByFilter(team, field, filterClass, games, today.getTime());
+				if(gamesOnly == null || !gamesOnly){
+					schedule = scheduleService.findByFilter(team, field, filterClass, today.getTime());
+				}
+				if(gamesOnly == null || gamesOnly){
+					games = scheduleService.findGamesByFilter(team, field, filterClass, today.getTime());
+				}
 			}
 		}
 		
@@ -130,7 +156,7 @@ public class ScheduleListController extends DefaultHandlerController {
 					returnVal.add(s);
 				}
 			}
-		}else{
+		}else if(schedule != null && schedule.size()>0){
 			returnVal.addAll(schedule);
 		}
 		
@@ -140,6 +166,7 @@ public class ScheduleListController extends DefaultHandlerController {
 	    model.addAttribute("fields", scheduleService.findAllFields());
 		model.addAttribute("game", game);
 		model.addAttribute("shedule", returnVal);
+		model.addAttribute("games", games);
 		
 	    return "schedule/list";
 	}
@@ -150,11 +177,11 @@ public class ScheduleListController extends DefaultHandlerController {
 		String teamId = request.getParameter("team");
 		
 		String game = request.getParameter("game");
-		Boolean games = null;
+		Boolean gamesOnly = null;
 		if(game.equals("2")){
-			games=true;
+			gamesOnly=true;
 		}else if(game.equals("1")){
-			games=false;
+			gamesOnly=false;
 		}
 		
 		String month = request.getParameter("month");
@@ -167,24 +194,45 @@ public class ScheduleListController extends DefaultHandlerController {
 		today.set(Calendar.MONTH, Integer.valueOf(month)-1);
 		
 		List<FieldSchedule> schedule = null;
+		List<Game> games = null;
 		
 		if(teamId.equals("All")){
 			if(fieldName.equals("All")){
-				schedule = scheduleService.findByFilter(null, null, filterClass, games, today.getTime());
+				if(gamesOnly == null || !gamesOnly){
+					schedule = scheduleService.findByFilter(null, null, filterClass, today.getTime());
+				}
+				if(gamesOnly == null || gamesOnly){
+					games = scheduleService.findGamesByFilter(null, null, filterClass, today.getTime());
+				}
 			}else{
 				Fields field = scheduleService.findFieldByName(fieldName);
-				model.addAttribute("filterField", field.getName());
-				schedule = scheduleService.findByFilter(null, field, filterClass, games, today.getTime());
+				model.addAttribute("filterfield", field.getName());
+				if(gamesOnly == null || !gamesOnly){
+					schedule = scheduleService.findByFilter(null, field, filterClass, today.getTime());
+				}
+				if(gamesOnly == null || gamesOnly){
+					games = scheduleService.findGamesByFilter(null, field, filterClass, today.getTime());
+				}
 			}
 		}else{
 			Team team = service.findById(Integer.valueOf(teamId));
 			model.addAttribute("filterTeam", team.getId());
 			if(fieldName.equals("All")){
-				schedule = scheduleService.findByFilter(team, null, filterClass, games, today.getTime());
+				if(gamesOnly == null || !gamesOnly){
+					schedule = scheduleService.findByFilter(team, null, filterClass, today.getTime());
+				}
+				if(gamesOnly == null || gamesOnly){
+					games = scheduleService.findGamesByFilter(team, null, filterClass, today.getTime());
+				}
 			}else{
 				Fields field = scheduleService.findFieldByName(fieldName);
-				model.addAttribute("filterField", field.getName());
-				schedule = scheduleService.findByFilter(team, field, filterClass, games, today.getTime());
+				model.addAttribute("filterfield", field.getName());
+				if(gamesOnly == null || !gamesOnly){
+					schedule = scheduleService.findByFilter(team, field, filterClass, today.getTime());
+				}
+				if(gamesOnly == null || gamesOnly){
+					games = scheduleService.findGamesByFilter(team, field, filterClass, today.getTime());
+				}
 			}
 		}
 		
@@ -205,6 +253,7 @@ public class ScheduleListController extends DefaultHandlerController {
 	    model.addAttribute("fields", scheduleService.findAllFields());
 		model.addAttribute("game", game);
 		model.addAttribute("shedule", returnVal);
+		model.addAttribute("games", games);
 		
 	    return "schedule/quick-list";
 	}

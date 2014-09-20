@@ -31,8 +31,12 @@ $( "#datepicker" ).datepicker();
     </td>
   </tr>
   <tr>
-    <td valign="top">Description:</td>
-    <td><input name="description" type="text" size="40" /></td>
+    <td valign="top">Home Team:</td>
+    <td><input name="homeTeam" type="text" size="40" /></td>
+  </tr>
+  <tr>
+    <td valign="top">Away Team:</td>
+    <td><input name="awayTeam" type="text" size="40" /></td>
   </tr>
   <tr>
     <td valign="top">Date:</td>
@@ -56,6 +60,12 @@ function validate() {
   if (document.entry.date.value=="") {
 	alert("Date is required.");
 	return false;
+  }else if (document.entry.homeTeam.value=="") {
+		alert("Home Team is required.");
+		return false;
+  }else if (document.entry.awayTeam.value=="") {
+		alert("Away Team is required.");
+		return false;
   }else if (document.entry.hour.value=="") {
 	alert("Hour is required.");
 	return false;

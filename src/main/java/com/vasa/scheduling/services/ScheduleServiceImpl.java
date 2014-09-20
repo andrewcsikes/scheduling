@@ -12,13 +12,14 @@ import org.springframework.stereotype.Service;
 
 import com.vasa.scheduling.domain.FieldSchedule;
 import com.vasa.scheduling.domain.Fields;
+import com.vasa.scheduling.domain.Game;
 import com.vasa.scheduling.domain.Season;
 import com.vasa.scheduling.domain.Sport;
 import com.vasa.scheduling.domain.Team;
-import com.vasa.scheduling.enums.Classification;
 import com.vasa.scheduling.enums.Status;
 import com.vasa.scheduling.repositiories.FieldRepository;
 import com.vasa.scheduling.repositiories.FieldScheduleRepository;
+import com.vasa.scheduling.repositiories.GameRepository;
 import com.vasa.scheduling.repositiories.SeasonRepository;
 import com.vasa.scheduling.repositiories.SportRepository;
 
@@ -33,6 +34,9 @@ public class ScheduleServiceImpl implements ScheduleService {
 	
 	@Autowired
 	private FieldRepository fieldRepo;
+	
+	@Autowired
+	private GameRepository gameRepo;
 	
 	@Autowired
 	private SeasonRepository seasonRepo;
@@ -122,14 +126,14 @@ public class ScheduleServiceImpl implements ScheduleService {
 	}
 
 	@Override
-	public List<FieldSchedule> findByFilter(Team team, Fields field, String filterClass, Boolean games, Date time) {
+	public List<FieldSchedule> findByFilter(Team team, Fields field, String filterClass, Date time) {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
 		
 		String query = "Select s from FieldSchedule s where ";
 		String whereClause = "month(date)=month(STR_TO_DATE('"+sdf.format(time)+"','%m-%d-%Y'))";
 		
 		if(team != null){
-			whereClause += " and (team.id="+team.getId()+" or team2.id="+team.getId()+")";
+			whereClause += " and team.id="+team.getId();
 		}
 		if(field != null){
 			whereClause += " and field.id="+field.getId();
@@ -137,14 +141,50 @@ public class ScheduleServiceImpl implements ScheduleService {
 //		if(filterClass != null && !filterClass.equals("0")){
 //			whereClause += " and (team is null or team.classification.code="+filterClass+")";
 //		}
-		if(games != null){
-			whereClause += " and game="+games.booleanValue();
-		}
 		
 		String orderBy = " order by date";
 		
 		List<FieldSchedule> results = (List<FieldSchedule>)em.createQuery(query+whereClause+orderBy, FieldSchedule.class).getResultList();
 		
 		return results;
+	}
+
+	@Override
+	public List<Game> findGamesByDayField(Date date, String field) {
+		return gameRepo.findByDayAndFieldName(date, field);
+	}
+
+	@Override
+	public List<Game> findGameByMonth(Date date) {
+		return gameRepo.findByMonth(date);
+	}
+
+	@Override
+	public List<Game> findGamesByFilter(Team team, Fields field, String filterClass, Date time) {
+		SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+		
+		String query = "Select s from Game s where ";
+		String whereClause = "month(date)=month(STR_TO_DATE('"+sdf.format(time)+"','%m-%d-%Y'))";
+		
+		if(team != null){
+			whereClause += " and (homeTeam='"+team.getName()+"' or awayTeam='"+team.getName()+"')";
+		}
+		if(field != null){
+			whereClause += " and field.id="+field.getId();
+		}
+//		if(filterClass != null && !filterClass.equals("0")){
+//			whereClause += " and (team is null or team.classification.code="+filterClass+")";
+//		}
+		
+		String orderBy = " order by date";
+		
+		List<Game> results = (List<Game>)em.createQuery(query+whereClause+orderBy, Game.class).getResultList();
+		
+		return results;
+	}
+
+	@Override
+	public Game save(Game schedule) {
+		return gameRepo.save(schedule);
 	}
 }

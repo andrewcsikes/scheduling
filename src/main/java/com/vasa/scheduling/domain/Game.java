@@ -17,32 +17,39 @@ import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-@Table(name="FIELD_SCHEDULE")
-public class FieldSchedule {
+@Table(name = "GAME")
+public class Game {
 
-	// TODO: Add Repeatable entries
-	
 	@Id
-	@SequenceGenerator(name = "FieldScheduleSequence", sequenceName = "SEQ_FIELD_SCH_PK", allocationSize=1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="FieldScheduleSequence")
+	@SequenceGenerator(name = "GameSequence", sequenceName = "SEQ_GAME_PK", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GameSequence")
 	private Integer id;
-	
+
 	@NotNull
 	@OneToOne(fetch = FetchType.EAGER)
 	private Fields field;
-	
+
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern="SS")
+	@DateTimeFormat(pattern = "SS")
 	private Date date;
-	
-	@OneToOne(fetch = FetchType.EAGER)
-	private Team team;
-	
+
+	@NotNull
+	private String homeTeam;
+
+	@NotNull
+	private String awayTeam;
+
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern="SS")
+	@DateTimeFormat(pattern = "SS")
 	private Date creationDate;
+
+	private String duration;
+	
+	@NotNull
+	@OneToOne(fetch = FetchType.EAGER)
+	private AgeGroup ageGroup;
 
 	public Integer getId() {
 		return id;
@@ -68,12 +75,20 @@ public class FieldSchedule {
 		this.date = date;
 	}
 
-	public Team getTeam() {
-		return team;
+	public String getHomeTeam() {
+		return homeTeam;
 	}
 
-	public void setTeam(Team team) {
-		this.team = team;
+	public void setHomeTeam(String homeTeam) {
+		this.homeTeam = homeTeam;
+	}
+
+	public String getAwayTeam() {
+		return awayTeam;
+	}
+
+	public void setAwayTeam(String awayTeam) {
+		this.awayTeam = awayTeam;
 	}
 
 	public Date getCreationDate() {
@@ -83,9 +98,21 @@ public class FieldSchedule {
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
 	}
-	
-	public String toString(){
-		return getField().getName() + ", " + getTeam().getName() + ", " + getDate().toString();
+
+	public String getDuration() {
+		return duration;
+	}
+
+	public void setDuration(String duration) {
+		this.duration = duration;
+	}
+
+	public AgeGroup getAgeGroup() {
+		return ageGroup;
+	}
+
+	public void setAgeGroup(AgeGroup ageGroup) {
+		this.ageGroup = ageGroup;
 	}
 	
 }
