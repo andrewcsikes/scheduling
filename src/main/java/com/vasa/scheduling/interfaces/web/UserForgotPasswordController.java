@@ -71,7 +71,7 @@ public class UserForgotPasswordController extends DefaultHandlerController{
 		MimeMessage message = new MimeMessage(session);
 
 		// Set From: header field of the header.
-		message.setFrom(new InternetAddress("scheduling@vasayouthsports.com"));
+		message.setFrom(new InternetAddress("andrewcsikes@gmail.com"));
 
 		// Set To: header field of the header.
 		message.addRecipient(Message.RecipientType.TO, new InternetAddress(

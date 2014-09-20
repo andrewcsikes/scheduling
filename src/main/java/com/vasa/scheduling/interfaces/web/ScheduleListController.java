@@ -150,12 +150,15 @@ public class ScheduleListController extends DefaultHandlerController {
 		}
 		
 		List<FieldSchedule> returnVal = new ArrayList<FieldSchedule>();
-		if(filterClass != null && !filterClass.equals("0") && schedule != null){
-			for(FieldSchedule s: schedule){
-				if(s.getTeam() != null && s.getTeam().getClassification().getCode().equals(Integer.valueOf(filterClass))){
-					returnVal.add(s);
+		if(filterClass != null && !filterClass.equals("0")){
+			if(schedule != null){
+				for(FieldSchedule s: schedule){
+					if(s.getTeam() != null && s.getTeam().getClassification().getCode().equals(Integer.valueOf(filterClass))){
+						returnVal.add(s);
+					}
 				}
 			}
+			games = null;
 		}else if(schedule != null && schedule.size()>0){
 			returnVal.addAll(schedule);
 		}
