@@ -78,7 +78,7 @@ public class Season {
 		this.startDate = startDate;
 	}
 
-	public boolean isApplySchedulingRules() {
+	public boolean getApplySchedulingRules() {
 		return applySchedulingRules;
 	}
 

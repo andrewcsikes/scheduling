@@ -20,15 +20,17 @@ import com.vasa.scheduling.domain.FieldSchedule;
 import com.vasa.scheduling.domain.Game;
 import com.vasa.scheduling.domain.User;
 import com.vasa.scheduling.services.ScheduleService;
+import com.vasa.scheduling.services.TeamService;
 
 @RequestMapping("/game/add")
 @Controller
 public class GameAddController extends DefaultHandlerController{
 
-	// TODO: Add AgeGroup
-	
 	@Autowired
 	private ScheduleService service;
+	
+	@Autowired
+	private TeamService teamService;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String add(Model model, HttpServletRequest request) {
@@ -41,6 +43,7 @@ public class GameAddController extends DefaultHandlerController{
 		}
 		
 		model.addAttribute("fields", service.findAllFields());
+		model.addAttribute("agegroups", teamService.findAllAgegroups());
 		
 		return "game/add";
 	}
@@ -72,6 +75,7 @@ public class GameAddController extends DefaultHandlerController{
 		Game schedule = new Game();
 		schedule.setCreationDate(new Date());
 		schedule.setField(service.findFieldByName(request.getParameter("field")));
+		schedule.setAgeGroup(teamService.findAgeGroupById(Integer.valueOf(request.getParameter("agegroup"))));
 		schedule.setDate(date.getTime());
 		schedule.setDuration(request.getParameter("duration"));
 		schedule.setHomeTeam(request.getParameter("homeTeam"));

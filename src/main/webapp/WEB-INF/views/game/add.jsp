@@ -31,6 +31,16 @@ $( "#datepicker" ).datepicker();
     </td>
   </tr>
   <tr>
+    <td valign="top">Age Group:</td>
+    <td>
+      <select name="ageGroup">
+        <c:forEach items="${agegroups}" var="agegroup">
+          <option value="${agegroup.id}">${agegroup.name}</option>
+        </c:forEach>
+      </select>
+    </td>
+  </tr>
+  <tr>
     <td valign="top">Home Team:</td>
     <td><input name="homeTeam" type="text" size="40" /></td>
   </tr>

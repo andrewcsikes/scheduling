@@ -34,6 +34,7 @@ import com.vasa.scheduling.domain.Team;
 import com.vasa.scheduling.domain.User;
 import com.vasa.scheduling.enums.Classification;
 import com.vasa.scheduling.enums.UserType;
+import com.vasa.scheduling.services.EmailService;
 import com.vasa.scheduling.services.ScheduleService;
 import com.vasa.scheduling.services.TeamService;
 
@@ -41,6 +42,9 @@ import com.vasa.scheduling.services.TeamService;
 @RequestMapping("/schedule/calendar")
 public class ScheduleController extends DefaultHandlerController {
 
+	@Autowired
+	private EmailService es;
+	
 	@Autowired
 	private ScheduleService service;
 	
@@ -171,13 +175,13 @@ public class ScheduleController extends DefaultHandlerController {
 	}
 		
 	private boolean lockSport(Team team, Season season, Fields field, Date startOfWeek) {
-		if(!season.isApplySchedulingRules()){
-			return false;
-		}
-		
 		boolean lock = lockSeason(season, startOfWeek);
 		if(lock){
 			return true;
+		}
+		
+		if(!season.getApplySchedulingRules()){
+			return false;
 		}
 		
 		if(team != null && team.getClassification().equals(Classification.NON_VASA)){
@@ -406,7 +410,7 @@ public class ScheduleController extends DefaultHandlerController {
 							String message = "The practice spot for "+schedule.getField().getName()+" at "+formatter.format(schedule.getDate())+" was previously scheduled, but is now available.";
 							String emailAddress = u.getEmailAddress();
 							if(emailAddress != null){
-								//sendEmail(emailAddress, message);
+								es.sendEmail(emailAddress, message);
 							}
 						}
 					}catch(Exception e){
@@ -416,12 +420,12 @@ public class ScheduleController extends DefaultHandlerController {
 			}else if(schedule != null && (user.getUserType().equals(UserType.ADMIN) ||
 					user.getUserType().equals(UserType.COMMISSIONER))){
 				service.delete(schedule);
-				// email coach
+				// email coach, ADMIN deleted his schedule
 				try{
 					String message = "Your practice for "+schedule.getField().getName()+" at "+formatter.format(schedule.getDate())+" was removed by the "+user.getFirstName()+" "+user.getLastName();
 					String emailAddress = schedule.getTeam().getCoach().getEmailAddress();
 					if(emailAddress != null){
-						//sendEmail(emailAddress, message);
+						es.sendEmail(emailAddress, message);
 					}
 				}catch(Exception e){
 					model.addAttribute("error", e.getCause() +": "+e.getMessage());
@@ -555,7 +559,7 @@ public class ScheduleController extends DefaultHandlerController {
 		}else{
 			if(field.getSport().getName().equals("Baseball") && 
 					team != null && 
-					team.getSeason().isApplySchedulingRules()){
+					team.getSeason().getApplySchedulingRules()){
 				// run baseball rules
 				if(calDay.get(Calendar.DAY_OF_WEEK)==Calendar.SUNDAY
 						|| calDay.get(Calendar.DAY_OF_WEEK)==Calendar.SATURDAY){
@@ -574,7 +578,7 @@ public class ScheduleController extends DefaultHandlerController {
 				}
 			}else if(field.getSport().getName().equals("Softball") && 
 					team != null && 
-					team.getSeason().isApplySchedulingRules()){
+					team.getSeason().getApplySchedulingRules()){
 				if(calDay.get(Calendar.DAY_OF_WEEK)==Calendar.SUNDAY
 						|| calDay.get(Calendar.DAY_OF_WEEK)==Calendar.SATURDAY){
 					// No rules apply
@@ -700,37 +704,5 @@ public class ScheduleController extends DefaultHandlerController {
 		}
 		
 		return x;
-	}
-	
-	private void sendEmail(String emailAddress, String emailMessage) throws AddressException, MessagingException {
-		// Get system properties
-		Properties properties = System.getProperties();
-
-		// Setup mail server
-		properties.setProperty("mail.smtp.host", "smtp");
-
-		// Get the default Session object.
-		Session session = Session.getDefaultInstance(properties);
-
-		// Create a default MimeMessage object.
-		MimeMessage message = new MimeMessage(session);
-
-		// Set From: header field of the header.
-		message.setFrom(new InternetAddress("scheduling@vasayouthsports.com"));
-
-		// Set To: header field of the header.
-		message.addRecipient(Message.RecipientType.TO, new InternetAddress(
-				emailAddress));
-
-		// Set Subject: header field
-		message.setSubject("VASA Field Scheduling");
-
-		// Now set the actual message
-		message.setText(emailMessage);
-
-		// Send message
-		Transport.send(message);
-		//System.out.println("Sent message successfully....");
-
 	}
 }

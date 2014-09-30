@@ -26,8 +26,6 @@ import com.vasa.scheduling.services.TeamService;
 @Controller
 public class SeasonModifyController extends DefaultHandlerController{
 	
-	// TODO: Apple Scheduling Rules
-	
 	@Autowired
 	private SeasonService service;
 	
@@ -96,6 +94,13 @@ public class SeasonModifyController extends DefaultHandlerController{
 				season.setStartDate(date.getTime());
 			}else{
 				season.setStartDate(null);
+			}
+			
+			String apply = request.getParameter("applyRules");
+			if(apply != null && apply.equals("True")){
+				season.setApplySchedulingRules(true);
+			}else{
+				season.setApplySchedulingRules(false);
 			}
 			
 			service.save(season);

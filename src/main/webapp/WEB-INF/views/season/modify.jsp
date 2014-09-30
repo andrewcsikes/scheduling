@@ -49,6 +49,17 @@ $( "#datepicker" ).datepicker();
     <td valign="top">Start Date:</td>
     <td><input name="startDate" type="text" id="datepicker" size="10" value="${formattedDate}"></td>
   </tr>
+  <tr>
+    <td valign="top">Apply Scheduling Rules:</td>
+    <c:choose>
+    <c:when test="${modifyseason.applySchedulingRules}">
+    	<td><input name="applyRules" type="checkbox" value="True" checked></td>
+    </c:when>
+    <c:otherwise>
+    	<td><input name="applyRules" type="checkbox" value="True"></td>
+    </c:otherwise>
+    </c:choose>
+  </tr>
 </table>
 <input type="submit" value="Save"> <input type="submit" name="delete" value="Delete">
 </form>

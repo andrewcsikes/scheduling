@@ -25,6 +25,7 @@
 		<th>Status</th>
 		<th>Sport</th>
 		<th>Start Date</th>
+		<th>Follow Rules</th>
 		<c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "COMMISSIONER"}'>
 			<th>Action</th>
 		</c:if>
@@ -40,6 +41,17 @@
                 type="date" pattern="EEEEE, MMM dd, yyyy" />
 		    
 		    <td><c:out value="${formattedDate}" /></td>
+		    
+		    <c:choose>
+		    <c:when test="${season.applySchedulingRules}">
+		    	<td>Yes</td>
+		    </c:when>
+		    <c:otherwise>
+		    	<td>No</td>
+		    </c:otherwise>
+		    </c:choose>
+		    
+		    
 			<c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "COMMISSIONER"}'>
 			  <td><a href="modify?season=${season.id}">Edit</a></td>
 			</c:if>
