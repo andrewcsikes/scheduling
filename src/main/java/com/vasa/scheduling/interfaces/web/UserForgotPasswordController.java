@@ -41,7 +41,7 @@ public class UserForgotPasswordController extends DefaultHandlerController{
 			String emailAddress = user.getEmailAddress();
 			String message = "You are receiving this email because someone submitted the forgot password form on the VASA Scheduling website. Your username is "+user.getUserName()+" and your password is "+user.getPassword();
 			try{
-				es.sendEmail(emailAddress, message);
+				es.sendEmail(emailAddress, "Forgot Password", message);
 				model.addAttribute("loginerror", "Your Password has been emailed to "+emailAddress);
 			}catch(Exception e){
 				model.addAttribute("loginerror", e.getCause() +": "+e.getMessage());

@@ -410,7 +410,7 @@ public class ScheduleController extends DefaultHandlerController {
 							String message = "The practice spot for "+schedule.getField().getName()+" at "+formatter.format(schedule.getDate())+" was previously scheduled, but is now available.";
 							String emailAddress = u.getEmailAddress();
 							if(emailAddress != null){
-								es.sendEmail(emailAddress, message);
+								es.sendEmail(emailAddress, "Time Slot has been made Available", message);
 							}
 						}
 					}catch(Exception e){
@@ -425,7 +425,7 @@ public class ScheduleController extends DefaultHandlerController {
 					String message = "Your practice for "+schedule.getField().getName()+" at "+formatter.format(schedule.getDate())+" was removed by the "+user.getFirstName()+" "+user.getLastName();
 					String emailAddress = schedule.getTeam().getCoach().getEmailAddress();
 					if(emailAddress != null){
-						es.sendEmail(emailAddress, message);
+						es.sendEmail(emailAddress, "Practice removed", message);
 					}
 				}catch(Exception e){
 					model.addAttribute("error", e.getCause() +": "+e.getMessage());

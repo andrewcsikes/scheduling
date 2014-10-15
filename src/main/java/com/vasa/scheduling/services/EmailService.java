@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service("emailService")
 public class EmailService {
 
-	public void sendEmail(String emailAddress, String emailMessage) throws AddressException, MessagingException {
+	public void sendEmail(String emailAddress, String subject, String emailMessage) throws AddressException, MessagingException {
 //		// Get system properties
 //		Properties properties = System.getProperties();
 //
@@ -69,7 +69,7 @@ public class EmailService {
  
         message.setContent(multipart);
         message.setFrom(new InternetAddress("scheduling@vasayouthsports.com"));
-        message.setSubject("VASA Field Scheduling - Forgot Password");
+        message.setSubject("VASA Field Scheduling - "+subject);
         message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailAddress));
  
         transport.connect();
