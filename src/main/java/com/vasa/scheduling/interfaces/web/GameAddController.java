@@ -75,7 +75,7 @@ public class GameAddController extends DefaultHandlerController{
 		Game schedule = new Game();
 		schedule.setCreationDate(new Date());
 		schedule.setField(service.findFieldByName(request.getParameter("field")));
-		schedule.setAgeGroup(teamService.findAgeGroupById(Integer.valueOf(request.getParameter("agegroup"))));
+		schedule.setAgeGroup(teamService.findAgeGroupById(Integer.valueOf(request.getParameter("ageGroup"))));
 		schedule.setDate(date.getTime());
 		schedule.setDuration(request.getParameter("duration"));
 		schedule.setHomeTeam(request.getParameter("homeTeam"));
