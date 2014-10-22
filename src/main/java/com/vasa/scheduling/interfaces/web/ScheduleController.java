@@ -316,6 +316,24 @@ public class ScheduleController extends DefaultHandlerController {
 	}
 	
 	private boolean validateRequest(Model model, Team team, Date calendarDay) {
+		
+		Calendar today = Calendar.getInstance();
+		Calendar week = Calendar.getInstance();
+		week.setTime(calendarDay);
+		week.set(Calendar.DAY_OF_WEEK,1);
+		
+		// This week
+		if(today.compareTo(week)>0){
+			return true;
+		}
+		
+		// The week before
+		if(today.compareTo(week)<0){
+			if(today.get(Calendar.DAY_OF_WEEK)>Calendar.FRIDAY){
+				return true;
+			}
+		}
+		
 		boolean validate = validateWeeklyPracticeLimit(model, team, calendarDay);
 		if(validate){
 			validate = validateDailyPracticeLimit(model, team, calendarDay);
