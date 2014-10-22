@@ -1,6 +1,7 @@
 package com.vasa.scheduling.interfaces.web;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.vasa.scheduling.domain.Season;
 import com.vasa.scheduling.domain.User;
 import com.vasa.scheduling.enums.Status;
+import com.vasa.scheduling.services.SeasonService;
 import com.vasa.scheduling.services.UserService;
 
 /**
@@ -26,8 +29,8 @@ public class UserHomeController extends DefaultHandlerController{
 	
 	// TODO: Add request for Account
 	
-	@Autowired
-	private UserService mr;
+	@Autowired private UserService mr;
+	@Autowired private SeasonService seasonService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(UserHomeController.class);
 	
@@ -48,6 +51,10 @@ public class UserHomeController extends DefaultHandlerController{
 					user.setLoginFailures(0);
 					mr.save(user);
 					request.getSession().setAttribute("user", user);
+					
+					List<Season> season = seasonService.findAll();
+				    model.addAttribute("seasons", season);
+					
 					return "user/home";
 				}else{
 					model.addAttribute("loginerror", "user "+username+" is not active." );
@@ -74,6 +81,8 @@ public class UserHomeController extends DefaultHandlerController{
 			return "login";
 		}
 		
+		List<Season> season = seasonService.findAll();
+	    model.addAttribute("seasons", season);
 		model.addAttribute("user", user);
 		return "user/home";
 	}

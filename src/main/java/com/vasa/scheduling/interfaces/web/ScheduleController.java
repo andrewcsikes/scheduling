@@ -7,15 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Properties;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -191,7 +183,7 @@ public class ScheduleController extends DefaultHandlerController {
 			return lockBaseball(startOfWeek);
 		}
 		else if(team !=null && team.getSport().getName().equals("Softball")){
-			//return lockSoftball(startOfWeek);
+			return lockSoftball(startOfWeek);
 		}
 		return false;
 	}
@@ -209,7 +201,7 @@ public class ScheduleController extends DefaultHandlerController {
 		// The week before
 		if(today.compareTo(week)<0){
 			if(today.get(Calendar.DAY_OF_WEEK)<Calendar.SATURDAY){
-				// Lock if before Thursday
+				// Lock if before Saturday
 				return true;
 			}
 		}
@@ -232,9 +224,6 @@ public class ScheduleController extends DefaultHandlerController {
 			if(today.get(Calendar.DAY_OF_WEEK)<Calendar.THURSDAY){
 				// Lock if before Thursday
 				return true;
-			}else if(today.get(Calendar.DAY_OF_WEEK)==Calendar.FRIDAY){
-				// Lock if Friday
-				return true;
 			}
 		}
 		
@@ -255,10 +244,6 @@ public class ScheduleController extends DefaultHandlerController {
 		if(today.compareTo(week)<0){
 			if(today.get(Calendar.DAY_OF_WEEK)<Calendar.WEDNESDAY){
 				// Lock if before Thursday
-				return true;
-			}else if(today.get(Calendar.DAY_OF_WEEK)==Calendar.THURSDAY ||
-					today.get(Calendar.DAY_OF_WEEK)==Calendar.FRIDAY){
-				// Lock if Friday
 				return true;
 			}
 		}
@@ -505,7 +490,10 @@ public class ScheduleController extends DefaultHandlerController {
 			}
 		}
 		
-		setBlockedTimesBasedOnRules(field, team, date, day);
+		Season season = service.findSeason(field.getSport());
+		if(season.getApplySchedulingRules()){
+			setBlockedTimesBasedOnRules(field, team, date, day);
+		}
 		
 		List<FieldSchedule> schedules = service.findByDayField(date, field.getName());
 		List<Game> games = service.findGamesByDayField(date, field.getName());
