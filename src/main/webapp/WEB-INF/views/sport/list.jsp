@@ -12,7 +12,7 @@
 
     <div style="width: 100%; overflow: hidden;">
     	<div style="width: 10%px; float: left;"><h1>List of Sports</h1></div>
-    	<c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "COMMISSIONER"}'>
+    	<c:if test='${user.userType.displayName == "ADMIN"}'>
     		<div style="margin-left: 70%; float: right;"><a href="add"><img src='/scheduling/images/plus-icon.png' />Add Sport</a></div>
     	</c:if>
 	</div>
@@ -21,7 +21,7 @@
     <thead>
 	<tr class="header">
 		<th>Name</th>
-		<c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "COMMISSIONER"}'>
+		<c:if test='${user.userType.displayName == "ADMIN"}'>
 			<th>Action</th>
 		</c:if>
 	</tr>
@@ -29,7 +29,7 @@
 	<c:forEach var="sport" items="${sports}">
 		<tr>
 		    <td><c:out value="${sport.name}" /></td>
-			<c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "COMMISSIONER"}'>
+			<c:if test='${user.userType.displayName == "ADMIN"}'>
 			  <td><a href="modify?sport=${sport.id}">Edit</a></td>
 			</c:if>
 		</tr>

@@ -13,7 +13,7 @@
 
     <div style="width: 100%; overflow: hidden;">
     	<div style="width: 10%px; float: left;"><h1>List of Seasons</h1></div>
-    	<c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "COMMISSIONER"}'>
+    	<c:if test='${user.userType.displayName == "ADMIN"}'>
     		<div style="margin-left: 70%; float: right;"><a href="add"><img src='/scheduling/images/plus-icon.png' />Add Season</a></div>
     	</c:if>
 	</div>
@@ -26,7 +26,7 @@
 		<th>Sport</th>
 		<th>Start Date</th>
 		<th>Follow Rules</th>
-		<c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "COMMISSIONER"}'>
+		<c:if test='${user.userType.displayName == "ADMIN""}'>
 			<th>Action</th>
 		</c:if>
 	</tr>
@@ -52,7 +52,7 @@
 		    </c:choose>
 		    
 		    
-			<c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "COMMISSIONER"}'>
+			<c:if test='${user.userType.displayName == "ADMIN"}'>
 			  <td><a href="modify?season=${season.id}">Edit</a></td>
 			</c:if>
 		</tr>

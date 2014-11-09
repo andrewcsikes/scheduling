@@ -47,7 +47,7 @@
 
     <div style="width: 100%; overflow: hidden;">
     	<div style="width: 10%px; float: left;"><h1>List of Teams</h1></div>
-    	<c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "COMMISSIONER"}'>
+    	<c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "Commissioner"}'>
     		<div style="margin-left: 70%; float: right;"><a href="add"><img src='/scheduling/images/plus-icon.png' />Add Team</a></div>
     	</c:if>
 	</div>
@@ -61,7 +61,7 @@
 		<th>Season</th>
 		<th>Age Group</th>
 		<th>Classification</th>
-		<c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "COMMISSIONER"}'>
+		<c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "Commissioner"}'>
 			<th>Action</th>
 		</c:if>
 	</tr>
@@ -74,7 +74,7 @@
 			<td><c:out value="${team.season.name}" /></td>
 			<td><c:out value="${team.ageGroup.name}" /></td>
 			<td><c:out value="${team.classification.displayName}" /></td>
-			<c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "COMMISSIONER"}'>
+			<c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "Commissioner"}'>
 			  <td><a href="modify?team=${team.id}">Edit</a></td>
 			</c:if>
 		</tr>
