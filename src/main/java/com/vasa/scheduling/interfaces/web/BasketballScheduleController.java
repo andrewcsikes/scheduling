@@ -27,13 +27,14 @@ import com.vasa.scheduling.domain.User;
 import com.vasa.scheduling.enums.Classification;
 import com.vasa.scheduling.enums.Status;
 import com.vasa.scheduling.enums.UserType;
+import com.vasa.scheduling.repositiories.SportRepository;
 import com.vasa.scheduling.services.EmailService;
 import com.vasa.scheduling.services.ScheduleService;
 import com.vasa.scheduling.services.TeamService;
 
 @Controller
-@RequestMapping("/schedule/calendar")
-public class ScheduleController extends DefaultHandlerController {
+@RequestMapping("/schedule/basketball")
+public class BasketballScheduleController extends DefaultHandlerController {
 
 	@Autowired
 	private EmailService es;
@@ -43,12 +44,6 @@ public class ScheduleController extends DefaultHandlerController {
 	
 	@Autowired
 	private TeamService teamService;
-	
-	@RequestMapping(value="/quick", method = RequestMethod.GET)
-	public String quick(@RequestParam(required=false, value="date") String date, Model model, HttpServletRequest request) {
-		buildCalendar(date, model, null);
-		return "schedule/quick-calendar";
-	}
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(@RequestParam(required=false, value="date") String date, Model model, HttpServletRequest request) {
@@ -62,7 +57,7 @@ public class ScheduleController extends DefaultHandlerController {
 		
 		buildCalendar(date, model, user);
 		
-	    return "schedule/calendar";
+	    return "schedule/basketball";
 	}
 
 	private void buildCalendar(String date, Model model, User user) {
@@ -86,34 +81,8 @@ public class ScheduleController extends DefaultHandlerController {
 		Date startOfWeek = sunday.getTime();
 		
 		List<Fields> fields = null;
-		if(user != null && user.getTeam() != null){
-			Sport sport = user.getTeam().getSport();
-			fields = service.findAllFields(sport);
-			if(sport.getName().equals("Baseball")){
-				sport = service.findSportByName("Softball");
-				if(sport != null){
-					fields.addAll(service.findAllFields(sport));
-				}
-			}else if(sport.getName().equals("Softball")){
-				sport = service.findSportByName("Baseball");
-				if(sport != null){
-					fields.addAll(service.findAllFields(sport));
-				}
-			}
-		}else{
-			// Get the fields for the sport(s) that is active
-			List<Season> activeSeasons = service.findActiveSeasons();
-			for(Season season : activeSeasons){
-				if(fields==null){
-					fields = service.findAllFields(season.getSport());
-				}else{
-					fields.addAll(service.findAllFields(season.getSport()));
-				}
-			}
-			if(activeSeasons.size() == 0){
-				fields = service.findAllFields();
-			}
-		}
+		Sport sport = teamService.findSportById(3);
+		fields = service.findAllFields(sport);
 		
 		// schedule contains the entire schedule for every field
 		HashMap<String, HashMap<String,ArrayList<String>>> schedule = new HashMap<String, HashMap<String,ArrayList<String>>>();
@@ -140,7 +109,7 @@ public class ScheduleController extends DefaultHandlerController {
 			// week - key is the day, value is the fields
 			HashMap<String,ArrayList<String>> week = new HashMap<String, ArrayList<String>>();
 			Team team = user==null ? null : user.getTeam();
-			week.put("Sunday", getFieldDay(sunday.getTime(), field, team));
+			//week.put("Sunday", getFieldDay(sunday.getTime(), field, team));
 			sunday.add(Calendar.DAY_OF_YEAR, 1);
 			week.put("Monday", getFieldDay(sunday.getTime(), field, team));
 			sunday.add(Calendar.DAY_OF_YEAR, 1);
@@ -152,7 +121,7 @@ public class ScheduleController extends DefaultHandlerController {
 			sunday.add(Calendar.DAY_OF_YEAR, 1);
 			week.put("Friday", getFieldDay(sunday.getTime(), field, team));
 			sunday.add(Calendar.DAY_OF_YEAR, 1);
-			week.put("Saturday", getFieldDay(sunday.getTime(), field, team));
+			//week.put("Saturday", getFieldDay(sunday.getTime(), field, team));
 			schedule.put(field.getName(), week);
 		}
 		
@@ -463,7 +432,15 @@ public class ScheduleController extends DefaultHandlerController {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		
-		if(cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY){
+		if(cal.get(Calendar.DAY_OF_YEAR)>327 && cal.get(Calendar.DAY_OF_YEAR)<333){
+			addBlockedDay(day);
+		}else if(cal.get(Calendar.DAY_OF_YEAR)>355 && cal.get(Calendar.DAY_OF_YEAR)<366){
+			addBlockedDay(day);
+		}else if(cal.get(Calendar.DAY_OF_YEAR)>=1 && cal.get(Calendar.DAY_OF_YEAR)<4){
+			addBlockedDay(day);
+		}else if(cal.get(Calendar.DAY_OF_YEAR)>67 && cal.get(Calendar.DAY_OF_YEAR)<73){
+				addBlockedDay(day);
+		}else if(cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY){
 			if(!field.isAvailableSunday()){
 				addBlockedDay(day);
 			}else if(field.getSundayStartTime() != null){
@@ -635,11 +612,11 @@ public class ScheduleController extends DefaultHandlerController {
 
 	private void addBlockedTimes(ArrayList<String> day, Integer startTime, Integer endTime) {
 		Calendar times = Calendar.getInstance();
-		times.set(Calendar.HOUR_OF_DAY, 9);
+		times.set(Calendar.HOUR_OF_DAY, 18);
 		times.set(Calendar.MINUTE, 0);
 		times.set(Calendar.SECOND, 0);
 		
-		for(int x=0; x<26; x++){
+		for(int x=0; x<6; x++){
 			int currentHour = times.get(Calendar.HOUR_OF_DAY);
 			if(startTime<=currentHour && endTime>currentHour){
 				day.add(null);
@@ -651,24 +628,24 @@ public class ScheduleController extends DefaultHandlerController {
 	}
 
 	private void addBlockedDay(ArrayList<String> day) {
-		day.add("N/A"); // 9:00
-		day.add("N/A"); // 9:30
-		day.add("N/A"); // 10:00
-		day.add("N/A"); // 10:30
-		day.add("N/A"); // 11:00
-		day.add("N/A"); // 11:30
-		day.add("N/A"); // 12:00
-		day.add("N/A"); // 12:30
-		day.add("N/A"); // 1:00
-		day.add("N/A"); // 1:30
-		day.add("N/A"); // 2:00
-		day.add("N/A"); // 2:30
-		day.add("N/A"); // 3:00
-		day.add("N/A"); // 3:30
-		day.add("N/A"); // 4:00
-		day.add("N/A"); // 4:30
-		day.add("N/A"); // 5:00
-		day.add("N/A"); // 5:30
+		//day.add("N/A"); // 9:00
+		//day.add("N/A"); // 9:30
+		//day.add("N/A"); // 10:00
+		//day.add("N/A"); // 10:30
+		//day.add("N/A"); // 11:00
+		//day.add("N/A"); // 11:30
+		//day.add("N/A"); // 12:00
+		//day.add("N/A"); // 12:30
+		//day.add("N/A"); // 1:00
+		//day.add("N/A"); // 1:30
+		//day.add("N/A"); // 2:00
+		//day.add("N/A"); // 2:30
+		//day.add("N/A"); // 3:00
+		//day.add("N/A"); // 3:30
+		//day.add("N/A"); // 4:00
+		//day.add("N/A"); // 4:30
+		//day.add("N/A"); // 5:00
+		//day.add("N/A"); // 5:30
 		day.add("N/A"); // 6:00
 		day.add("N/A"); // 6:30
 		day.add("N/A"); // 7:00
@@ -680,6 +657,7 @@ public class ScheduleController extends DefaultHandlerController {
 	}
 	
 	private void addBlankDay(ArrayList<String> day) {
+		/**
 		day.add(null); // 9:00
 		day.add(null); // 9:30
 		day.add(null); // 10:00
@@ -698,6 +676,7 @@ public class ScheduleController extends DefaultHandlerController {
 		day.add(null); // 4:30
 		day.add(null); // 5:00
 		day.add(null); // 5:30
+		***/
 		day.add(null); // 6:00
 		day.add(null); // 6:30
 		day.add(null); // 7:00
@@ -713,7 +692,7 @@ public class ScheduleController extends DefaultHandlerController {
 		Calendar timeSlot = Calendar.getInstance();
 		timeSlot.setTime(d);
 		timeSlot.set(Calendar.MINUTE, 0);
-		timeSlot.set(Calendar.HOUR_OF_DAY, 9);
+		timeSlot.set(Calendar.HOUR_OF_DAY, 18);
 		
 		int x = 0;
 		
