@@ -65,7 +65,7 @@ public class ScheduleController extends DefaultHandlerController {
 	    return "schedule/calendar";
 	}
 
-	private void buildCalendar(String date, Model model, User user) {
+	protected void buildCalendar(String date, Model model, User user) {
 		Calendar sunday = Calendar.getInstance();
 		Date startDate = new Date();
 		
@@ -85,35 +85,7 @@ public class ScheduleController extends DefaultHandlerController {
 		
 		Date startOfWeek = sunday.getTime();
 		
-		List<Fields> fields = null;
-		if(user != null && user.getTeam() != null){
-			Sport sport = user.getTeam().getSport();
-			fields = service.findAllFields(sport);
-			if(sport.getName().equals("Baseball")){
-				sport = service.findSportByName("Softball");
-				if(sport != null){
-					fields.addAll(service.findAllFields(sport));
-				}
-			}else if(sport.getName().equals("Softball")){
-				sport = service.findSportByName("Baseball");
-				if(sport != null){
-					fields.addAll(service.findAllFields(sport));
-				}
-			}
-		}else{
-			// Get the fields for the sport(s) that is active
-			List<Season> activeSeasons = service.findActiveSeasons();
-			for(Season season : activeSeasons){
-				if(fields==null){
-					fields = service.findAllFields(season.getSport());
-				}else{
-					fields.addAll(service.findAllFields(season.getSport()));
-				}
-			}
-			if(activeSeasons.size() == 0){
-				fields = service.findAllFields();
-			}
-		}
+		List<Fields> fields = getFields(user);
 		
 		// schedule contains the entire schedule for every field
 		HashMap<String, HashMap<String,ArrayList<String>>> schedule = new HashMap<String, HashMap<String,ArrayList<String>>>();
@@ -125,8 +97,24 @@ public class ScheduleController extends DefaultHandlerController {
 			if(user==null){
 				locked = true;
 			}
-			else if(user.getUserType().equals(UserType.ADMIN)){
+			else if(user.getUserType().equals(UserType.ADMIN) || 
+					user.getUserType().equals(UserType.COMMISSIONER)){
 				locked=false;
+				
+				if(user.getTeam() != null && user.getTeam().getSport() != null){
+					Sport s = user.getTeam().getSport();
+					if(s.getName().equals("Baseball") || s.getName().equals("Softball")){
+						s = service.findSportByName("Baseball");
+						List<Team> teams = teamService.findTeamsBySport(s);
+						s = service.findSportByName("Softball");
+						teams.addAll(teamService.findTeamsBySport(s));
+						model.addAttribute("teams", teams);
+					}else{
+						model.addAttribute("teams", teamService.findTeamsBySport(s));
+					}
+				}else{
+					model.addAttribute("teams", teamService.findActive());
+				}
 			}else{
 				locked = getLocked(user.getTeam(), field, startOfWeek);
 			}
@@ -162,7 +150,17 @@ public class ScheduleController extends DefaultHandlerController {
 		model.addAttribute("locked", anylocked);
 	}
 	
-	private boolean getLocked(Team team, Fields field, Date startOfWeek) {
+	protected List<Fields> getFields(User user) {
+		List<Fields> fields = null;
+		Sport sport = teamService.findSportById(1);
+		fields=service.findAllFields(sport);
+	
+		sport = teamService.findSportById(2);
+		fields.addAll(service.findAllFields(sport));
+		return fields;
+	}
+
+	protected boolean getLocked(Team team, Fields field, Date startOfWeek) {
 		
 		Season season = service.findSeason(field.getSport());
 		if(season == null){
@@ -179,7 +177,7 @@ public class ScheduleController extends DefaultHandlerController {
 		return false;
 	}
 		
-	private boolean lockSport(Team team, Season season, Fields field, Date startOfWeek) {
+	protected boolean lockSport(Team team, Season season, Fields field, Date startOfWeek) {
 		boolean lock = lockSeason(season, startOfWeek);
 		if(lock){
 			return true;
@@ -201,7 +199,7 @@ public class ScheduleController extends DefaultHandlerController {
 		return false;
 	}
 	
-	private boolean lockNonVasa(Date startOfWeek) {
+	protected boolean lockNonVasa(Date startOfWeek) {
 		Calendar today = Calendar.getInstance();
 		Calendar week = Calendar.getInstance();
 		week.setTime(startOfWeek);
@@ -222,7 +220,7 @@ public class ScheduleController extends DefaultHandlerController {
 		return false;
 	}
 	
-	private boolean lockBaseball(Date startOfWeek) {
+	protected boolean lockBaseball(Date startOfWeek) {
 		Calendar today = Calendar.getInstance();
 		Calendar week = Calendar.getInstance();
 		week.setTime(startOfWeek);
@@ -243,7 +241,7 @@ public class ScheduleController extends DefaultHandlerController {
 		return false;
 	}
 	
-	private boolean lockSoftball(Date startOfWeek) {
+	protected boolean lockSoftball(Date startOfWeek) {
 		Calendar today = Calendar.getInstance();
 		Calendar week = Calendar.getInstance();
 		week.setTime(startOfWeek);
@@ -264,7 +262,7 @@ public class ScheduleController extends DefaultHandlerController {
 		return false;
 	}
 
-	private boolean lockSeason(Season season, Date startOfWeek){
+	protected boolean lockSeason(Season season, Date startOfWeek){
 		if(season.getStartDate() == null){
 			return false;
 		}
@@ -292,10 +290,10 @@ public class ScheduleController extends DefaultHandlerController {
 		return false;
 	}
 
-	@RequestMapping(value="/add", method = RequestMethod.GET)
+	@RequestMapping(value="/add")
 	public String add(@RequestParam(required=true, value="date") String date,
 			@RequestParam(required=true, value="field") String field,
-			@RequestParam(required=false, value="date") String userId,
+			@RequestParam(required=false, value="team") String teamId,
 			Model model, 
 			HttpServletRequest request) {
 		
@@ -303,6 +301,11 @@ public class ScheduleController extends DefaultHandlerController {
 		
 		if(user== null){
 			return "login";
+		}
+		
+		Team t = null;
+		if(teamId != null){
+			t=teamService.findById(Integer.valueOf(teamId));
 		}
 		
 		try {
@@ -316,7 +319,11 @@ public class ScheduleController extends DefaultHandlerController {
 				schedule.setCreationDate(new Date());
 				schedule.setDate(calendarDay);
 				schedule.setField(service.findFieldByName(field));
-				schedule.setTeam(user.getTeam());
+				if(t!=null){
+					schedule.setTeam(t);
+				}else{
+					schedule.setTeam(user.getTeam());
+				}
 				service.save(schedule);
 			}
 			
@@ -328,7 +335,7 @@ public class ScheduleController extends DefaultHandlerController {
 		return list(date, model, request);
 	}
 	
-	private boolean validateRequest(Model model, Team team, Date calendarDay) {
+	protected boolean validateRequest(Model model, Team team, Date calendarDay) {
 		
 		Calendar today = Calendar.getInstance();
 		Calendar week = Calendar.getInstance();
@@ -354,7 +361,7 @@ public class ScheduleController extends DefaultHandlerController {
 		return validate;
 	}
 
-	private boolean validateWeeklyPracticeLimit(Model model, Team team, Date calendarDay) {
+	protected boolean validateWeeklyPracticeLimit(Model model, Team team, Date calendarDay) {
 		if(team.getWeeklyPracticeLimit()==null){
 			return true;
 		}
@@ -375,7 +382,7 @@ public class ScheduleController extends DefaultHandlerController {
 		return true;
 	}
 	
-	private boolean validateDailyPracticeLimit(Model model, Team team, Date calendarDay) {
+	protected boolean validateDailyPracticeLimit(Model model, Team team, Date calendarDay) {
 		if(team.getPracticeLimit()==null){
 			return true;
 		}
@@ -456,7 +463,7 @@ public class ScheduleController extends DefaultHandlerController {
 		return list(date, model, request);
 	}
 	
-	private ArrayList<String> getFieldDay(Date date, Fields field, Team team) {
+	protected ArrayList<String> getFieldDay(Date date, Fields field, Team team) {
 		
 		ArrayList<String> day = new ArrayList<String>();
 		
@@ -563,7 +570,7 @@ public class ScheduleController extends DefaultHandlerController {
 		return day;
 	}
 	
-	private void setBlockedTimesBasedOnRules(Fields field, Team team, Date date, ArrayList<String> day) {
+	protected void setBlockedTimesBasedOnRules(Fields field, Team team, Date date, ArrayList<String> day) {
 		Calendar today = Calendar.getInstance();
 		
 		Calendar calDay = Calendar.getInstance();
@@ -633,7 +640,7 @@ public class ScheduleController extends DefaultHandlerController {
 		
 	}
 
-	private void addBlockedTimes(ArrayList<String> day, Integer startTime, Integer endTime) {
+	protected void addBlockedTimes(ArrayList<String> day, Integer startTime, Integer endTime) {
 		Calendar times = Calendar.getInstance();
 		times.set(Calendar.HOUR_OF_DAY, 9);
 		times.set(Calendar.MINUTE, 0);
@@ -650,7 +657,7 @@ public class ScheduleController extends DefaultHandlerController {
 		}
 	}
 
-	private void addBlockedDay(ArrayList<String> day) {
+	protected void addBlockedDay(ArrayList<String> day) {
 		day.add("N/A"); // 9:00
 		day.add("N/A"); // 9:30
 		day.add("N/A"); // 10:00
@@ -679,7 +686,7 @@ public class ScheduleController extends DefaultHandlerController {
 		day.add("N/A"); // 9:30
 	}
 	
-	private void addBlankDay(ArrayList<String> day) {
+	protected void addBlankDay(ArrayList<String> day) {
 		day.add(null); // 9:00
 		day.add(null); // 9:30
 		day.add(null); // 10:00
@@ -708,7 +715,7 @@ public class ScheduleController extends DefaultHandlerController {
 		day.add(null); // 9:30
 	}
 
-	private int getHourSlotNumber(Date d){
+	protected int getHourSlotNumber(Date d){
 		
 		Calendar timeSlot = Calendar.getInstance();
 		timeSlot.setTime(d);

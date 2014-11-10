@@ -182,10 +182,10 @@ for(com.vasa.scheduling.domain.Fields field:fields){
 		java.text.SimpleDateFormat format1 = new java.text.SimpleDateFormat("hh:mm aa");
 		java.text.SimpleDateFormat format2 = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm");
 		
-		time.set(java.util.Calendar.HOUR_OF_DAY, 17);
+		time.set(java.util.Calendar.HOUR_OF_DAY, 16);
 		time.set(java.util.Calendar.MINUTE, 30);
 		
-		for(int x=0; x<6; x++){
+		for(int x=0; x<10; x++){
 			int fieldCount=0;
 			if(x>0){
 				out.append("<tr>");
@@ -219,7 +219,21 @@ for(com.vasa.scheduling.domain.Fields field:fields){
 				else if(hour == null && (user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 						user.getUserType().equals(com.vasa.scheduling.enums.UserType.COACH) ||
 						user.getUserType().equals(com.vasa.scheduling.enums.UserType.COMMISSIONER))){
-					out.append("<td><a href='/scheduling/schedule/basketball/add?date="+format2.format(time.getTime())+"&field="+field.getName()+"'><img src='/scheduling/images/plus-icon.png' /></a></td>");
+					out.append("<td><a href='/scheduling/schedule/basketball/add?date="+format2.format(time.getTime())+"&field="+field.getName()+"'><img src='/scheduling/images/plus-icon.png' /></a>");
+					if((user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
+							user.getUserType().equals(com.vasa.scheduling.enums.UserType.COMMISSIONER))){
+						
+						java.util.List<com.vasa.scheduling.domain.Team> teams = (java.util.List<com.vasa.scheduling.domain.Team>)request.getAttribute("teams");
+						out.append("<form id='entry' name='entry' action='basketball/add' method='POST'><select name='team'>");
+						for(com.vasa.scheduling.domain.Team t:teams){
+							out.append("<option value='"+t.getId()+"'>"+t.getName()+" - "+t.getCoach().getLastName()+"</option>");
+						}
+						out.append("</select>");
+						out.append("<input type='hidden' name='date' value='"+format2.format(time.getTime())+"'>");
+						out.append("<input type='hidden' name='field' value='"+field.getName()+"'>");
+						out.append("<input type='submit' value='Add'>");
+						out.append("</form></td>");	
+					}
 				}else if(hour != null && (user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 						user.getUserType().equals(com.vasa.scheduling.enums.UserType.COACH) ||
 						user.getUserType().equals(com.vasa.scheduling.enums.UserType.COMMISSIONER))){

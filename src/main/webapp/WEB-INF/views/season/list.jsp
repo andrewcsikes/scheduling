@@ -26,7 +26,7 @@
 		<th>Sport</th>
 		<th>Start Date</th>
 		<th>Follow Rules</th>
-		<c:if test='${user.userType.displayName == "ADMIN""}'>
+		<c:if test='${user.userType.displayName == "ADMIN"}'>
 			<th>Action</th>
 		</c:if>
 	</tr>
