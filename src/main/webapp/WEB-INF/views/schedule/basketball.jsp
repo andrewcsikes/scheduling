@@ -224,7 +224,7 @@ for(com.vasa.scheduling.domain.Fields field:fields){
 							user.getUserType().equals(com.vasa.scheduling.enums.UserType.COMMISSIONER))){
 						
 						java.util.List<com.vasa.scheduling.domain.Team> teams = (java.util.List<com.vasa.scheduling.domain.Team>)request.getAttribute("teams");
-						out.append("<form id='entry' name='entry' action='basketball/add' method='POST'><select name='team'>");
+						out.append("<form id='entry' name='entry' action='/scheduling/schedule/basketball/add' method='POST'><select name='team'>");
 						for(com.vasa.scheduling.domain.Team t:teams){
 							out.append("<option value='"+t.getId()+"'>"+t.getName()+" - "+t.getCoach().getLastName()+"</option>");
 						}
