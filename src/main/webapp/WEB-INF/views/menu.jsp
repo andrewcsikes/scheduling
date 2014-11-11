@@ -33,6 +33,7 @@ if(userAgent.contains("iPhone") || userAgent.contains("Android")){
    <c:if test='${user.userType.displayName == "ADMIN"}'>
      <li><a href='/scheduling/sport/list'><span>Sports</span></a></li>
      <li><a href='/scheduling/season/list'><span>Seasons</span></a></li>
+     <li><a href='/scheduling/fields/list'><span>Fields</span></a></li>
    </c:if>
    <li><a href='/scheduling/user/modify'><span>My Account</span></a></li>
 </ul>
@@ -83,6 +84,7 @@ if(userAgent.contains("iPhone") || userAgent.contains("Android")){
            <li><a href='/scheduling/team/list'><span>Teams</span></a></li>
            <li><a href='/scheduling/sport/list'><span>Sports</span></a></li>
            <li><a href='/scheduling/season/list'><span>Seasons</span></a></li>
+           <li><a href='/scheduling/fields/list'><span>Fields</span></a></li>
          </ul>
        </li>
      </c:when>
