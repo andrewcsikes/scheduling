@@ -23,7 +23,7 @@ public interface TeamRepository extends JpaRepository<Team, Integer>{
 	Team findByNameAndAgeGroup(String name, AgeGroup ag);
 	List<Team> findBySeasonStatus(Status status);
 	Team findById(Integer teamId);
-	List<Team> findBySport(Sport sport);
+	List<Team> findBySportAndSeasonStatus(Sport sport, Status status);
 	
 	@Query("Select u from User u where userType=:type ")
 	List<User> findByUserType(@Param("type")UserType type);

@@ -35,7 +35,7 @@ public class TeamListController extends DefaultHandlerController {
 			return "login";
 		}
 		
-		List<Team> teams = service.findActive();	
+		List<Team> teams = service.findActive();
 	    model.addAttribute("teams", teams);
 	    
 	    model.addAttribute("coaches", userService.findAllCoaches());

@@ -77,7 +77,7 @@ public class TeamServiceImpl implements TeamService{
 
 	@Override
 	public List<Team> findTeamsBySport(Sport sport) {
-		return teamRepo.findBySport(sport);
+		return teamRepo.findBySportAndSeasonStatus(sport, Status.ACTIVE);
 	}
 	
 }
