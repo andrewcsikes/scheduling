@@ -31,6 +31,7 @@
         <select name="status">
           <option value="1" ${modifyuser.status.code == 1 ? 'selected' : ''}>Active</option>
           <option value="2" ${modifyuser.status.code == 2 ? 'selected' : ''}>Inactive</option>
+          <option value="3" ${modifyuser.status.code == 3 ? 'selected' : ''}>Request</option>
         </select>
       </td>
     </tr>

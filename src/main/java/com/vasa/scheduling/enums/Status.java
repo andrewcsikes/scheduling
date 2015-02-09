@@ -5,7 +5,8 @@ import java.util.Map;
 public enum Status implements CodeAndDisplayNameEnum<Integer>{
 
 	ACTIVE(1,"Active"),
-	INACTIVE(2,"Inactive");
+	INACTIVE(2,"Inactive"),
+	REQUEST(3,"Request");
 
 	private final Integer code;
 	private final String displayName;

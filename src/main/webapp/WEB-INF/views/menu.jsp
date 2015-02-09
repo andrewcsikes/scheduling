@@ -17,6 +17,7 @@ if(userAgent.contains("iPhone") || userAgent.contains("Android")){
      <li><a href='/scheduling/user/list'><span>All Users</span></a></li>
    </c:if>
    <li><a href='/scheduling/team/list'><span>Teams</span></a></li>
+   <!-- 
    <c:choose>
      <c:when test='${user.team.sport.name=="Basketball" || user.userType.displayName == "ADMIN"}'>
        <li><a href='/scheduling/schedule/basketball'><span>Basketball Calendar</span></a></li>
@@ -25,6 +26,7 @@ if(userAgent.contains("iPhone") || userAgent.contains("Android")){
        <li><a href='/scheduling/schedule/calendar'><span>Calendar</span></a></li>
      </c:otherwise>
    </c:choose>
+   --><li><a href='/scheduling/schedule/calendar'><span>Calendar</span></a></li>
    <li><a href='/scheduling/schedule/list'><span>Searchable List</span></a></li>
 
    <c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "Commissioner"}'>
@@ -49,6 +51,7 @@ if(userAgent.contains("iPhone") || userAgent.contains("Android")){
    <li><a href='/scheduling/user/home'><span>Home</span></a></li>
    <li class='has-sub'><a>Schedule</a>
       <ul>
+      <!-- 
          <c:choose>
            <c:when test='${user.userType.displayName == "ADMIN"}'>
              <li><a href='/scheduling/schedule/basketball'><span>Basketball Calendar</span></a></li>
@@ -58,9 +61,12 @@ if(userAgent.contains("iPhone") || userAgent.contains("Android")){
              <li><a href='/scheduling/schedule/basketball'><span>Basketball Calendar</span></a></li>
            </c:when>
            <c:otherwise>
+           -->
              <li><a href='/scheduling/schedule/calendar'><span>Calendar</span></a></li>
+             <!-- 
            </c:otherwise>
          </c:choose>
+         -->
          <li><a href='/scheduling/schedule/list'><span>Searchable List</span></a></li>
       </ul>
    </li>

@@ -24,6 +24,7 @@
 		<label for="password">Password</label>
 		<input id="password" type="password" name="password" style="width: 150px" required>
 		<p><a href="/scheduling/user/forgotpassword">Forgot Password</a></p>
+		<p><a href="/scheduling/user/requestaccount">Request an Account</a></p>
 		<div class="form-actions">
 			<input id="proceed" class="btn btn-primary" type="submit" value="Submit">
 		</div>

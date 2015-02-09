@@ -23,7 +23,7 @@
 		<c:if test="${season.sport.name.equals('Baseball')}">
 			<p>
 				<b>Baseball - ${season.name}</b>
-				<br />Schedule is locked until the Friday prior to the week.
+				<br />Schedule is locked until the Friday prior to the week being scheduled.
 				<br />Non-VASA teams can not schedule until that Saturday.
 				<br />10U, 12U, and 14U are not allowed to schedule anything before 7:00 PM until the Saturday prior to the week.
 			</p>
@@ -32,7 +32,7 @@
 		<c:if test="${season.sport.name.equals('Softball')}">
 			<p>
 				<b>Softball - ${season.name}</b>
-				<br />Schedule is locked until the Thursday prior to the week.
+				<br />Schedule is locked until the Thursday prior to the week being scheduled.
 				<br />Non-VASA teams can not schedule until that Saturday.
 				<br />6U and 8U are not allowed to schedule anything on Big East until the Saturday prior to the week.
 				<br />10U, 12U, and 14U are not allowed to schedule anything on Little East until the Saturday prior to the week.

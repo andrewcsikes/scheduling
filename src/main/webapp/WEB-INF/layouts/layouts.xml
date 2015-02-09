@@ -28,6 +28,14 @@
         <put-attribute name="footer" value="" />
     </definition>
     
+    <definition name="user/requestaccount" extends="base.definition">
+        <put-attribute name="title" value="VASA Field Schedule" />
+        <put-attribute name="header" value="" />
+        <put-attribute name="menu" value="" />
+        <put-attribute name="body" value="/WEB-INF/views/user/requestaccount.jsp" />
+        <put-attribute name="footer" value="" />
+    </definition>
+    
     <definition name="schedule/quick-calendar" extends="base.definition">
         <put-attribute name="title" value="VASA Field Schedule" />
         <put-attribute name="header" value="" />
