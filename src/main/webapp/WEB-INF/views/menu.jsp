@@ -61,12 +61,10 @@ if(userAgent.contains("iPhone") || userAgent.contains("Android")){
              <li><a href='/scheduling/schedule/basketball'><span>Basketball Calendar</span></a></li>
            </c:when>
            <c:otherwise>
-           -->
              <li><a href='/scheduling/schedule/calendar'><span>Calendar</span></a></li>
-             <!-- 
            </c:otherwise>
          </c:choose>
-         -->
+         --><li><a href='/scheduling/schedule/calendar'><span>Calendar</span></a></li>
          <li><a href='/scheduling/schedule/list'><span>Searchable List</span></a></li>
       </ul>
    </li>
