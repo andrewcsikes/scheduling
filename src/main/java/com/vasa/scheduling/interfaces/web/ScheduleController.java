@@ -151,12 +151,22 @@ public class ScheduleController extends DefaultHandlerController {
 	}
 	
 	protected List<Fields> getFields(User user) {
+
 		List<Fields> fields = null;
-		Sport sport = teamService.findSportById(1);
-		fields=service.findAllFields(sport);
-	
-		sport = teamService.findSportById(2);
-		fields.addAll(service.findAllFields(sport));
+		if(user.getTeam() != null && user.getTeam().getSport() != null && user.getTeam().getSport().getName().equals("Baseball")){
+			Sport sport = teamService.findSportById(2);
+			fields=service.findAllFields(sport);
+		
+			sport = teamService.findSportById(1);
+			fields.addAll(service.findAllFields(sport));
+		}else{
+			Sport sport = teamService.findSportById(1);
+			fields=service.findAllFields(sport);
+		
+			sport = teamService.findSportById(2);
+			fields.addAll(service.findAllFields(sport));
+		}
+		
 		return fields;
 	}
 

@@ -17,12 +17,6 @@
 <c:set var="rulesApplied" scope="request" value="false"/>
 <h3>Active Scheduling Rules</h3>
 
-<ul>
-	<li>6U and 8U are limited to 1 hour practices with a max of 2 hours/week</li>
-	<li>10U and 12U are limited to 1 1/2 hour practices with a max of 3 hours/week</li>
-	<li>On Saturday of the week prior to your practice, you can add more time based on what's available</li>
-</ul>
-
 <c:forEach var="season" items="${seasons}">
 <c:if test="${season.status.displayName.equals('Active')}">
 	<c:if test="${season.applySchedulingRules==true}">
