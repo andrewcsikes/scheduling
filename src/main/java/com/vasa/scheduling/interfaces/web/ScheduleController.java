@@ -188,18 +188,18 @@ public class ScheduleController extends DefaultHandlerController {
 		}
 		
 		if(team != null && team.getClassification().equals(Classification.NON_VASA)){
-			return lockNonVasa(startOfWeek);
+			return lockNonVasa(startOfWeek, team.getSeason());
 		}
 		if(team !=null && team.getSport().getName().equals("Baseball")){
-			return lockBaseball(startOfWeek);
+			return lockBaseball(startOfWeek, team.getSeason());
 		}
 		else if(team !=null && team.getSport().getName().equals("Softball")){
-			return lockSoftball(startOfWeek);
+			return lockSoftball(startOfWeek, team.getSeason());
 		}
 		return false;
 	}
 	
-	protected boolean lockNonVasa(Date startOfWeek) {
+	protected boolean lockNonVasa(Date startOfWeek, Season season) {
 		Calendar today = Calendar.getInstance();
 		Calendar week = Calendar.getInstance();
 		week.setTime(startOfWeek);
@@ -210,7 +210,7 @@ public class ScheduleController extends DefaultHandlerController {
 		}
 		
 		// The week before
-		if(today.compareTo(week)<0){
+		if(today.compareTo(week)<0 && seasonStarted(season, startOfWeek)){
 			if(today.get(Calendar.DAY_OF_WEEK)<Calendar.SATURDAY){
 				// Lock if before Saturday
 				return true;
@@ -220,7 +220,7 @@ public class ScheduleController extends DefaultHandlerController {
 		return false;
 	}
 	
-	protected boolean lockBaseball(Date startOfWeek) {
+	protected boolean lockBaseball(Date startOfWeek, Season season) {
 		Calendar today = Calendar.getInstance();
 		Calendar week = Calendar.getInstance();
 		week.setTime(startOfWeek);
@@ -231,7 +231,7 @@ public class ScheduleController extends DefaultHandlerController {
 		}
 		
 		// The week before
-		if(today.compareTo(week)<0){
+		if(today.compareTo(week)<0 && seasonStarted(season, startOfWeek)){
 			if(today.get(Calendar.DAY_OF_WEEK)<Calendar.THURSDAY){
 				// Lock if before Thursday
 				return true;
@@ -240,8 +240,8 @@ public class ScheduleController extends DefaultHandlerController {
 		
 		return false;
 	}
-	
-	protected boolean lockSoftball(Date startOfWeek) {
+
+	protected boolean lockSoftball(Date startOfWeek, Season season) {
 		Calendar today = Calendar.getInstance();
 		Calendar week = Calendar.getInstance();
 		week.setTime(startOfWeek);
@@ -252,7 +252,7 @@ public class ScheduleController extends DefaultHandlerController {
 		}
 		
 		// The week before
-		if(today.compareTo(week)<0){
+		if(today.compareTo(week)<0 && seasonStarted(season, startOfWeek)){
 			if(today.get(Calendar.DAY_OF_WEEK)<Calendar.WEDNESDAY){
 				// Lock if before Thursday
 				return true;
@@ -287,6 +287,19 @@ public class ScheduleController extends DefaultHandlerController {
 			}
 		}
 		
+		return false;
+	}
+	
+	private boolean seasonStarted(Season season, Date startOfWeek) {
+		// see if the last day of the week is before the season startDate
+		Calendar today = Calendar.getInstance();
+		today.setTime(season.getStartDate());
+		today.set(Calendar.MINUTE, 0);
+		today.set(Calendar.HOUR, 0);
+		today.set(Calendar.SECOND, 0);
+		if(startOfWeek.after(today.getTime())){
+			return true;
+		}
 		return false;
 	}
 
@@ -430,10 +443,13 @@ public class ScheduleController extends DefaultHandlerController {
 						// loop through all the coaches for the sport
 						for(Team t : teamService.findTeamsBySport(schedule.getField().getSport())){
 							User u = t.getCoach();
+							if(u.getStatus() == Status.INACTIVE){
+								continue;
+							}
 							String message = "The practice spot for "+schedule.getField().getName()+" at "+formatter.format(schedule.getDate())+" was previously scheduled, but is now available.";
 							String emailAddress = u.getEmailAddress();
 							if(emailAddress != null){
-								es.sendEmail(emailAddress, "Time Slot has been made Available", message);
+								//es.sendEmail(emailAddress, "Time Slot has been made Available", message);
 							}
 						}
 					}catch(Exception e){
@@ -580,7 +596,12 @@ public class ScheduleController extends DefaultHandlerController {
 		week.setTime(date);
 		week.set(Calendar.DAY_OF_WEEK, 1);
 		
-		if(today.compareTo(week)>0){
+		Calendar twoWeeks = Calendar.getInstance();
+		twoWeeks.add(Calendar.WEEK_OF_YEAR, 2);
+		twoWeeks.set(Calendar.DAY_OF_WEEK, 1);
+		twoWeeks.add(Calendar.DAY_OF_YEAR, -1);
+		
+		if(today.after(week)){
 			// This week, do nothing
 		}else{
 			if(field.getSport().getName().equals("Baseball") && 
@@ -590,7 +611,7 @@ public class ScheduleController extends DefaultHandlerController {
 				if(calDay.get(Calendar.DAY_OF_WEEK)==Calendar.SUNDAY
 						|| calDay.get(Calendar.DAY_OF_WEEK)==Calendar.SATURDAY){
 					// No rules apply
-				}else if(today.get(Calendar.DAY_OF_WEEK)==Calendar.THURSDAY){
+				}else if(today.get(Calendar.DAY_OF_WEEK)==Calendar.THURSDAY || week.after(twoWeeks)){
 					// don't allow older teams to schedule anything before 7:00
 					if(field.getName().contains("FM") &&
 							(team.getAgeGroup().getName().equals("10U") 
@@ -608,7 +629,7 @@ public class ScheduleController extends DefaultHandlerController {
 				if(calDay.get(Calendar.DAY_OF_WEEK)==Calendar.SUNDAY
 						|| calDay.get(Calendar.DAY_OF_WEEK)==Calendar.SATURDAY){
 					// No rules apply
-				}else if(today.get(Calendar.DAY_OF_WEEK)<=Calendar.WEDNESDAY){
+				}else if(today.get(Calendar.DAY_OF_WEEK)<=Calendar.WEDNESDAY || week.after(twoWeeks)){
 					// don't allow older teams to schedule little east
 					if(field.getName().contains("Little") &&
 							(team.getAgeGroup().getName().equals("10U") 
