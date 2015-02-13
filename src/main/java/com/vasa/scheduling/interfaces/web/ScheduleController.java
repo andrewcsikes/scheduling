@@ -449,7 +449,7 @@ public class ScheduleController extends DefaultHandlerController {
 							String message = "The practice spot for "+schedule.getField().getName()+" at "+formatter.format(schedule.getDate())+" was previously scheduled, but is now available.";
 							String emailAddress = u.getEmailAddress();
 							if(emailAddress != null){
-								//es.sendEmail(emailAddress, "Time Slot has been made Available", message);
+								es.sendEmail(emailAddress, "Time Slot has been made Available", message);
 							}
 						}
 					}catch(Exception e){
