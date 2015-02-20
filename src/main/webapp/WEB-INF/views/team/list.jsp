@@ -55,11 +55,11 @@
     <table class="list">
     <thead>
 	<tr class="header">
+		<th>Age Group</th>
 		<th>Name</th>
 		<th>Coach</th>
 		<th>Sport</th>
 		<th>Season</th>
-		<th>Age Group</th>
 		<th>Classification</th>
 		<c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "Commissioner"}'>
 			<th>Action</th>
@@ -68,11 +68,11 @@
 	</thead>
 	<c:forEach var="team" items="${teams}">
 		<tr>
+		    <td><c:out value="${team.ageGroup.name}" /></td>
 		    <td><c:out value="${team.name}" /></td>
 			<td><c:out value="${team.coach.firstName}"/> <c:out value="${team.coach.lastName}"/></td>
 			<td><c:out value="${team.sport.name}" /></td>
 			<td><c:out value="${team.season.name}" /></td>
-			<td><c:out value="${team.ageGroup.name}" /></td>
 			<td><c:out value="${team.classification.displayName}" /></td>
 			<c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "Commissioner"}'>
 			  <td><a href="modify?team=${team.id}">Edit</a></td>
