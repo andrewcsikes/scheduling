@@ -9,12 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.vasa.scheduling.domain.User;
 import com.vasa.scheduling.enums.State;
 import com.vasa.scheduling.enums.UserType;
 import com.vasa.scheduling.enums.Status;
+import com.vasa.scheduling.services.EmailService;
 import com.vasa.scheduling.services.UserService;
 
 @RequestMapping("/user/add")
@@ -23,6 +23,9 @@ public class UserAddController extends DefaultHandlerController{
 	
 	@Autowired
 	private UserService mr;
+	
+	@Autowired
+	private EmailService es;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String modify(Model model, HttpServletRequest request) {
@@ -74,6 +77,17 @@ public class UserAddController extends DefaultHandlerController{
 		user.setMemberSince(new Date());
 		
 		mr.save(user);
+		
+		String emailAddress = user.getEmailAddress();
+		String message = "New Account has been setup for you on the VAASA Field Scheduling Website - http://scheduling.vasayouthsports.com" +
+				" Your username is "+user.getUserName()+" and your password is "+user.getPassword();
+		message += " email address: "+user.getEmailAddress();
+		try{
+			es.sendEmail(emailAddress, "New User Account for VASA Field Scheduling", message);
+			model.addAttribute("loginerror", "Your request has been emailed to the Scheduler.");
+		}catch(Exception e){
+			model.addAttribute("loginerror", e.getCause() +": "+e.getMessage());
+		}
 		
 		return "user/home";
 	}

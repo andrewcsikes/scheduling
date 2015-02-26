@@ -614,6 +614,17 @@ public class ScheduleController extends DefaultHandlerController {
 		if(today.after(week)){
 			// This week, do nothing
 		}else{
+			// don't allow younger teams later spots
+			if(team.getAgeGroup().getName().equals("6U")){
+				day.set(20, "Reserved For Older Teams.");
+				day.set(21, "Reserved For Older Teams.");
+				day.set(22, "Reserved For Older Teams.");
+				day.set(23, "Reserved For Older Teams.");
+			}
+			else if(team.getAgeGroup().getName().equals("8U")){
+				day.set(22, "Reserved For Older Teams.");
+				day.set(23, "Reserved For Older Teams.");
+			}
 			if(field.getSport().getName().equals("Baseball") && 
 					team != null && 
 					team.getSeason().getApplySchedulingRules()){

@@ -62,6 +62,7 @@ public class UserRequestAccountController extends DefaultHandlerController{
 		
 		String emailAddress = "andrewcsikes@gmail.com";
 		String message = "New User has Requested an account. "+user.getFirstName()+" "+user.getLastName();
+		message += " email address: "+user.getEmailAddress();
 		try{
 			es.sendEmail(emailAddress, "New User Request", message);
 			model.addAttribute("loginerror", "Your request has been emailed to the Scheduler.");
