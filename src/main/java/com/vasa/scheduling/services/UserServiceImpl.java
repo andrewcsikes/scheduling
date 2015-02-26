@@ -1,5 +1,6 @@
 package com.vasa.scheduling.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.vasa.scheduling.domain.Team;
 import com.vasa.scheduling.domain.User;
+import com.vasa.scheduling.enums.Status;
 import com.vasa.scheduling.enums.UserType;
 import com.vasa.scheduling.repositiories.TeamRepository;
 import com.vasa.scheduling.repositiories.UserRepository;
@@ -52,7 +54,15 @@ public class UserServiceImpl implements UserService{
 		List <User> coaches = teamRepo.findByUserType(UserType.COACH);
 		coaches.addAll(teamRepo.findByUserType(UserType.ADMIN));
 		coaches.addAll(teamRepo.findByUserType(UserType.COMMISSIONER));
-		return coaches;
+		
+		List<User> users = new ArrayList<User>();
+		for(User u : coaches){
+			if(u.getStatus() == Status.ACTIVE){
+				users.add(u);
+			}
+		}
+		
+		return users;
 	}
 	
 }

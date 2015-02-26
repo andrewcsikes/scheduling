@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.vasa.scheduling.domain.User;
+import com.vasa.scheduling.enums.UserType;
 import com.vasa.scheduling.services.UserService;
 
 // TODO: Add ability to select current sport
@@ -32,8 +33,16 @@ public class UserListController extends DefaultHandlerController {
 		if(user== null){
 			return "login";
 		}
-				
-		List<User> users = service.findAll();	
+		
+		List<User> users = null;
+		
+		if(user.getUserType() == UserType.ADMIN ||
+				user.getUserType() == UserType.COMMISSIONER){
+			users = service.findAll();
+		}else{
+			users = service.findAllCoaches();
+		}
+			
 	    model.addAttribute("users", users);
 	    return "user/list";
 	}
