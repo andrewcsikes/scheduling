@@ -339,7 +339,7 @@ public class ScheduleController extends DefaultHandlerController {
 		
 			FieldSchedule schedule = service.findByDateField(calendarDay, field);
 			
-			if(schedule == null && validateRequest(model, user.getTeam(), calendarDay)){
+			if(schedule == null && validateRequest(model, field, user.getTeam(), calendarDay)){
 				schedule = new FieldSchedule();
 				schedule.setCreationDate(new Date());
 				schedule.setDate(calendarDay);
@@ -368,7 +368,7 @@ public class ScheduleController extends DefaultHandlerController {
 		return list(listDate, model, request);
 	}
 	
-	protected boolean validateRequest(Model model, Team team, Date calendarDay) {
+	protected boolean validateRequest(Model model, String field, Team team, Date calendarDay) {
 		
 		Calendar today = Calendar.getInstance();
 		Calendar week = Calendar.getInstance();
@@ -385,6 +385,11 @@ public class ScheduleController extends DefaultHandlerController {
 			if(today.get(Calendar.DAY_OF_WEEK)>Calendar.FRIDAY){
 				return true;
 			}
+		}
+		
+		if(field.startsWith("Batting Cage")){
+			// ignore times
+			return true;
 		}
 		
 		boolean validate = validateWeeklyPracticeLimit(model, team, calendarDay);
@@ -565,7 +570,9 @@ public class ScheduleController extends DefaultHandlerController {
 		}
 		
 		Season season = service.findSeason(field.getSport());
-		if(season != null && season.getApplySchedulingRules()){
+		if(season != null && season.getApplySchedulingRules() && 
+				(team.getCoach().getUserType() != UserType.ADMIN ||
+					team.getCoach().getUserType() != UserType.COMMISSIONER)){
 			setBlockedTimesBasedOnRules(field, team, date, day);
 		}
 		
@@ -630,10 +637,14 @@ public class ScheduleController extends DefaultHandlerController {
 				day.set(21, "Reserved For Older Teams.");
 				day.set(22, "Reserved For Older Teams.");
 				day.set(23, "Reserved For Older Teams.");
+				day.set(24, "Reserved For Older Teams.");
+				day.set(25, "Reserved For Older Teams.");
 			}
 			else if(team.getAgeGroup().getName().equals("8U")){
 				day.set(22, "Reserved For Older Teams.");
 				day.set(23, "Reserved For Older Teams.");
+				day.set(24, "Reserved For Older Teams.");
+				day.set(25, "Reserved For Older Teams.");
 			}
 			if(field.getSport().getName().equals("Baseball") && 
 					team != null && 
