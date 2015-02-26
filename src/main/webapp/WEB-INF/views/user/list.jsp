@@ -33,7 +33,7 @@
 			<td><c:out value="${modifyuser.firstName}" /></td>
 			<td><c:out value="${modifyuser.lastName}" /></td>
 			<td><c:out value="${modifyuser.userName}" /></td>
-			<td><c:out value="${modifyuser.team.name} - ${modifyuser.team.season.name}" /></td>
+			<td><c:out value="${modifyuser.team.ageGroup.name} - ${modifyuser.team.name} - ${modifyuser.team.season.name}" /></td>
 			<td><c:out value="${modifyuser.phone}" /></td>
 			
 			<fmt:formatDate value="${modifyuser.lastLogin}" var="formattedDate" 
