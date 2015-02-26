@@ -362,7 +362,7 @@ public class ScheduleController extends DefaultHandlerController {
 			
 		} catch (ParseException e) {
 			model.addAttribute("error", e.getMessage());
-			e.printStackTrace();
+			e.printStackTrace(); 
 		}
 		
 		return list(listDate, model, request);
