@@ -28,7 +28,7 @@ addDay.add(java.util.Calendar.DAY_OF_MONTH, -7);
 for(com.vasa.scheduling.domain.Fields field:fields){
 	boolean locked = (Boolean)request.getAttribute(field.getName()+"locked");
 	if(locked){out.println("<p><b><font color='red'>Scheduling is locked for "+field.getName()+" at this time.</font></b></p>");}
-}
+} 
 %>
 	
 	<div style="width: 100%; overflow: hidden;">
@@ -224,7 +224,7 @@ for(com.vasa.scheduling.domain.Fields field:fields){
 							user.getUserType().equals(com.vasa.scheduling.enums.UserType.COMMISSIONER))){
 						
 						java.util.List<com.vasa.scheduling.domain.Team> teams = (java.util.List<com.vasa.scheduling.domain.Team>)request.getAttribute("teams");
-						out.append("<form id='entry' name='entry' action='/scheduling/schedule/basketball/add' method='POST'><select name='team' style='max-width:40%;'>");
+						out.append("<form id='entry' name='entry' action='/scheduling/schedule/calendar/add' method='POST'><select name='team' style='max-width:40%;'>");
 						for(com.vasa.scheduling.domain.Team t:teams){
 							out.append("<option value='"+t.getId()+"'>"+t.getName()+" - "+t.getCoach().getLastName()+"</option>");
 						}

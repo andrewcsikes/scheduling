@@ -326,6 +326,8 @@ public class ScheduleController extends DefaultHandlerController {
 			return "login";
 		}
 		
+		String listDate = null; 
+		
 		Team t = null;
 		if(teamId != null){
 			t=teamService.findById(Integer.valueOf(teamId));
@@ -350,12 +352,20 @@ public class ScheduleController extends DefaultHandlerController {
 				service.save(schedule);
 			}
 			
+			Calendar sunday = Calendar.getInstance();
+			sunday.setTime(calendarDay);
+			sunday.set(Calendar.MINUTE, 0);
+			sunday.set(Calendar.HOUR, 0);
+			sunday.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+			
+			listDate = formatter.format(sunday.getTime());
+			
 		} catch (ParseException e) {
 			model.addAttribute("error", e.getMessage());
 			e.printStackTrace();
 		}
 		
-		return list(date, model, request);
+		return list(listDate, model, request);
 	}
 	
 	protected boolean validateRequest(Model model, Team team, Date calendarDay) {
