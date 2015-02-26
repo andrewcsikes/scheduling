@@ -193,13 +193,14 @@ public class ScheduleController extends DefaultHandlerController {
 			return true;
 		}
 		
-		if(!season.getApplySchedulingRules()){
-			return false;
-		}
-		
 		if(team != null && team.getClassification().equals(Classification.NON_VASA)){
 			return lockNonVasa(startOfWeek, team.getSeason());
 		}
+		
+		if(!season.getApplySchedulingRules()){
+			return false;
+		}
+				
 		if(team !=null && team.getSport().getName().equals("Baseball")){
 			return lockBaseball(startOfWeek, team.getSeason());
 		}
