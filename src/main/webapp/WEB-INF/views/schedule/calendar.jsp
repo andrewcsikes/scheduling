@@ -28,7 +28,7 @@ addDay.add(java.util.Calendar.DAY_OF_MONTH, -7);
 for(com.vasa.scheduling.domain.Fields field:fields){
 	boolean locked = (Boolean)request.getAttribute(field.getName()+"locked");
 	if(locked){out.println("<p><b><font color='red'>Scheduling is locked for "+field.getName()+" at this time.</font></b></p>");}
-}
+} 
 %>
 	
 	<div style="width: 100%; overflow: hidden;">
