@@ -10,10 +10,6 @@
 </head>
 <body>
 
-<div class="header">
-<img src="/scheduling/images/Sports_Cards_Banner.jpg">
-</div>
-
 <div class="loginbox">
 	<h3>Send Private Message To </br> ${name}!</h3>
 	<form id="contact" name="contact" action="/scheduling/user/contact" method="POST" onsubmit="return validate();">
