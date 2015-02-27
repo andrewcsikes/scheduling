@@ -64,6 +64,7 @@
 		<c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "Commissioner"}'>
 			<th>Action</th>
 		</c:if>
+		<th>Contact</th>
 	</tr>
 	</thead>
 	<c:forEach var="team" items="${teams}">
@@ -77,6 +78,7 @@
 			<c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "Commissioner"}'>
 			  <td><a href="modify?team=${team.id}">Edit</a></td>
 			</c:if>
+			<td><a href="/scheduling/user/contact?username=${team.coach.userName}&name=${team.coach.firstName}%20${team.coach.lastName}">Contact</a></td>
 		</tr>
 	</c:forEach>
 	</table>

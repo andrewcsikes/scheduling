@@ -15,7 +15,15 @@ import org.springframework.stereotype.Service;
 @Service("emailService")
 public class EmailService {
 
+	public void sendEmail(String toAddress, String fromAddress, String subject, String emailMessage) throws AddressException, MessagingException {
+		send(toAddress, fromAddress, subject, emailMessage);
+	}
+	
 	public void sendEmail(String emailAddress, String subject, String emailMessage) throws AddressException, MessagingException {
+		send(emailAddress, "scheduling@vasayouthsports.com", subject, emailMessage);
+	}
+	
+	public void send(String emailAddress, String fromAddress, String subject, String emailMessage) throws AddressException, MessagingException {
 //		// Get system properties
 //		Properties properties = System.getProperties();
 //
@@ -68,7 +76,7 @@ public class EmailService {
         multipart.addBodyPart(bodyPart);
  
         message.setContent(multipart);
-        message.setFrom(new InternetAddress("scheduling@vasayouthsports.com"));
+        message.setFrom(new InternetAddress(fromAddress));
         message.setSubject("VASA Field Scheduling - "+subject);
         message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailAddress));
  
