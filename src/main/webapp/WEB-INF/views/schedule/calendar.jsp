@@ -5,6 +5,69 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>VASA Field Scheduling</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+
+	<script>
+	
+	$(document).ready(function(){
+		
+		hideDay(1);
+		hideDay(2);
+		hideDay(3);
+		hideDay(4);
+		hideDay(5);
+		
+	});
+	
+	function hideDay(day){
+
+		$("table.list").eq(day).find("tr:nth-child(2)").find("td").hide();
+		$("table.list").eq(day).find("tr:nth-child(2)").find("th:nth-child(2)").hide();
+
+		$("table.list").eq(day).find("tr:nth-child(3)").find("td").hide();
+		$("table.list").eq(day).find("tr:nth-child(3)").find("th:nth-child(1)").hide();
+
+		$("table.list").eq(day).find("tr:nth-child(4)").find("td").hide();
+		$("table.list").eq(day).find("tr:nth-child(4)").find("th:nth-child(1)").hide();
+
+		$("table.list").eq(day).find("tr:nth-child(5)").find("td").hide();
+		$("table.list").eq(day).find("tr:nth-child(5)").find("th:nth-child(1)").hide();
+
+		$("table.list").eq(day).find("tr:nth-child(6)").find("td").hide();
+		$("table.list").eq(day).find("tr:nth-child(6)").find("th:nth-child(1)").hide();
+
+		$("table.list").eq(day).find("tr:nth-child(7)").find("td").hide();
+		$("table.list").eq(day).find("tr:nth-child(7)").find("th:nth-child(1)").hide();
+
+		$("table.list").eq(day).find("tr:nth-child(8)").find("td").hide();
+		$("table.list").eq(day).find("tr:nth-child(8)").find("th:nth-child(1)").hide();
+
+		$("table.list").eq(day).find("tr:nth-child(9)").find("td").hide();
+		$("table.list").eq(day).find("tr:nth-child(9)").find("th:nth-child(1)").hide();
+
+		$("table.list").eq(day).find("tr:nth-child(10)").find("td").hide();
+		$("table.list").eq(day).find("tr:nth-child(10)").find("th:nth-child(1)").hide();
+
+		$("table.list").eq(day).find("tr:nth-child(11)").find("td").hide();
+		$("table.list").eq(day).find("tr:nth-child(11)").find("th:nth-child(1)").hide();
+
+		$("table.list").eq(day).find("tr:nth-child(12)").find("td").hide();
+		$("table.list").eq(day).find("tr:nth-child(12)").find("th:nth-child(1)").hide();
+
+		$("table.list").eq(day).find("tr:nth-child(13)").find("td").hide();
+		$("table.list").eq(day).find("tr:nth-child(13)").find("th:nth-child(1)").hide();
+
+		$("table.list").eq(day).find("tr:nth-child(14)").find("td").hide();
+		$("table.list").eq(day).find("tr:nth-child(14)").find("th:nth-child(1)").hide();
+
+		$("table.list").eq(day).find("tr:nth-child(15)").find("td").hide();
+		$("table.list").eq(day).find("tr:nth-child(15)").find("th:nth-child(1)").hide();
+
+		
+	}
+	</script>
+
 </head>
 <body>
 
@@ -259,5 +322,6 @@ for(com.vasa.scheduling.domain.Fields field:fields){
 	%>
 	
 	</table>
+	
 </body>
 </html>
