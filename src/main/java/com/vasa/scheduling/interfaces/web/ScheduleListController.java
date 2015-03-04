@@ -246,7 +246,7 @@ public class ScheduleListController extends DefaultHandlerController {
 					returnVal.add(s);
 				}
 			}
-		}else{
+		}else if(schedule != null){
 			returnVal.addAll(schedule);
 		}
 		

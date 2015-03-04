@@ -77,7 +77,7 @@
   <h3><font color="red">${error}</font></h3>
 </c:if>
 
-    <h1>List of Games</h1>
+    <h1>Field Usage</h1>
     <table class="list">
 	<tr class="header">
 		<th>Team</th>
@@ -95,14 +95,22 @@
 			<td><c:out value="${shedule_day.team.sport.name}" /></td>
 			<td><c:out value="${shedule_day.field.name}" /></td>
 			
-			<c:choose>
-				<c:when test="${shedule_day.game}">
-					<td><c:out value="${shedule_day.gameDescription}" /></td>  
-				</c:when>
-				<c:otherwise>
-					<td>Practice</td>
-				</c:otherwise>
-			</c:choose>
+			<td>Practice</td>
+			
+			<fmt:formatDate value="${shedule_day.date}" var="formattedDate" 
+                type="date" pattern="EEEEE, MMM dd, yyyy    hh:mm a" />
+			
+			<td><c:out value="${formattedDate}" /></td>
+		</tr>
+	</c:forEach>
+	<c:forEach var="shedule_day" items="${games}">
+		<tr>
+		    <td><c:out value="${shedule_day.team.name}" /></td>
+			<td><c:out value="${shedule_day.team.coach.firstName}"/> <c:out value="${shedule_day.team.coach.lastName}"/></td>
+			<td><c:out value="${shedule_day.team.sport.name}" /></td>
+			<td><c:out value="${shedule_day.field.name}" /></td>
+			
+			<td><c:out value="${shedule_day.gameDescription}" /></td>
 			
 			<fmt:formatDate value="${shedule_day.date}" var="formattedDate" 
                 type="date" pattern="EEEEE, MMM dd, yyyy    hh:mm a" />

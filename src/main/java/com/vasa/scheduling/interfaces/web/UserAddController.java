@@ -1,5 +1,6 @@
 package com.vasa.scheduling.interfaces.web;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
@@ -72,7 +73,14 @@ public class UserAddController extends DefaultHandlerController{
 		user.setPhone(request.getParameter("phone"));
 		user.setPostalCode(request.getParameter("postalCode"));
 		
-		user.setLastLogin(new Date());
+		Calendar today = Calendar.getInstance();
+		Date d = new Date();
+		today.setTime(d);
+		today.set(Calendar.HOUR_OF_DAY, 0);
+		today.set(Calendar.MINUTE, 0);
+		today.set(Calendar.SECOND, 0);
+				
+		user.setLastLogin(today.getTime());
 		user.setLoginFailures(0);
 		user.setMemberSince(new Date());
 		

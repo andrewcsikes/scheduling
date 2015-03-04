@@ -88,9 +88,12 @@ java.util.Calendar addDay = java.util.Calendar.getInstance();
 addDay.setTime((java.util.Date)request.getAttribute("sunday"));
 addDay.add(java.util.Calendar.DAY_OF_MONTH, -7);
 
-for(com.vasa.scheduling.domain.Fields field:fields){
-	boolean locked = (Boolean)request.getAttribute(field.getName()+"locked");
-	if(locked){out.println("<p><b><font color='red'>Scheduling is locked for "+field.getName()+" at this time.</font></b></p>");}
+com.vasa.scheduling.domain.User user = (com.vasa.scheduling.domain.User)request.getAttribute("user");
+if(user != null && user.getTeam() != null){
+	for(com.vasa.scheduling.domain.Fields field:fields){
+		boolean locked = (Boolean)request.getAttribute(field.getName()+"locked");
+		if(locked){out.println("<p><b><font color='red'>Scheduling is locked for "+field.getName()+" at this time.</font></b></p>");}
+	}
 }
 %>
 	
@@ -112,7 +115,6 @@ for(com.vasa.scheduling.domain.Fields field:fields){
 	
 	<%
 	java.util.Map<String,java.util.Map<String,java.util.ArrayList<String>>> schedule = (java.util.Map<String,java.util.Map<String,java.util.ArrayList<String>>>)request.getAttribute("schedule");
-	com.vasa.scheduling.domain.User user = (com.vasa.scheduling.domain.User)request.getAttribute("user"); 
 	
 	for(com.vasa.scheduling.domain.Fields field:fields){
 		out.println("<th>"+field.getName()+"</th>");

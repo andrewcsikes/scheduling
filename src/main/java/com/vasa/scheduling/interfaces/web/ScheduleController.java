@@ -153,7 +153,7 @@ public class ScheduleController extends DefaultHandlerController {
 	protected List<Fields> getFields(User user) {
 
 		List<Fields> fields = null;
-		if(user.getTeam() != null && user.getTeam().getSport() != null && user.getTeam().getSport().getName().equals("Baseball")){
+		if(user != null && user.getTeam() != null && user.getTeam().getSport() != null && user.getTeam().getSport().getName().equals("Baseball")){
 			Sport sport = teamService.findSportById(2);
 			fields=service.findAllFields(sport);
 		
@@ -222,8 +222,8 @@ public class ScheduleController extends DefaultHandlerController {
 		
 		// The week before
 		if(today.compareTo(week)<0 && seasonStarted(season, startOfWeek)){
-			if(today.get(Calendar.DAY_OF_WEEK)<Calendar.SATURDAY){
-				// Lock if before Saturday
+			if(today.get(Calendar.DAY_OF_WEEK)<Calendar.FRIDAY){
+				// Lock if before Friday
 				return true;
 			}
 		}
@@ -571,7 +571,8 @@ public class ScheduleController extends DefaultHandlerController {
 		}
 		
 		Season season = service.findSeason(field.getSport());
-		if(season != null && season.getApplySchedulingRules() && 
+		if(season != null && season.getApplySchedulingRules() &&
+				team != null &&
 				(team.getCoach().getUserType() != UserType.ADMIN ||
 					team.getCoach().getUserType() != UserType.COMMISSIONER)){
 			setBlockedTimesBasedOnRules(field, team, date, day);

@@ -73,7 +73,7 @@
   <h3><font color="red">${error}</font></h3>
 </c:if>
 
-    <h1>List of Games</h1>
+    <h1>Field Usage</h1>
     <table class="list">
 	<tr class="header">
 		<th>Team</th>
