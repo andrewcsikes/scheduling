@@ -21,9 +21,9 @@ public interface TeamRepository extends JpaRepository<Team, Integer>{
 
 	Team findByCoach(User user);
 	Team findByNameAndAgeGroup(String name, AgeGroup ag);
-	List<Team> findBySeasonStatus(Status status);
+	List<Team> findBySeasonStatusOrderByAgeGroupNameAscNameAsc(Status status);
 	Team findById(Integer teamId);
-	List<Team> findBySportAndSeasonStatus(Sport sport, Status status);
+	List<Team> findBySportAndSeasonStatusOrderByAgeGroupNameAscNameAsc(Sport sport, Status status);
 	
 	@Query("Select u from User u where userType=:type ")
 	List<User> findByUserType(@Param("type")UserType type);

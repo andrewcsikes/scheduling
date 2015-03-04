@@ -42,7 +42,7 @@ public class TeamServiceImpl implements TeamService{
 	
 	@Override
 	public List<Team> findActive() {
-		return teamRepo.findBySeasonStatus(Status.ACTIVE);
+		return teamRepo.findBySeasonStatusOrderByAgeGroupNameAscNameAsc(Status.ACTIVE);
 	}
 	
 	@Override
@@ -77,7 +77,8 @@ public class TeamServiceImpl implements TeamService{
 
 	@Override
 	public List<Team> findTeamsBySport(Sport sport) {
-		return teamRepo.findBySportAndSeasonStatus(sport, Status.ACTIVE);
+		return teamRepo.findBySportAndSeasonStatusOrderByAgeGroupNameAscNameAsc(sport, Status.ACTIVE);
+		//return null;
 	}
 	
 }
