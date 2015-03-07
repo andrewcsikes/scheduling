@@ -474,7 +474,7 @@ public class ScheduleController extends DefaultHandlerController {
 						// loop through all the coaches for the sport
 						for(Team t : teamService.findTeamsBySport(schedule.getField().getSport())){
 							User u = t.getCoach();
-							if(u.getStatus() == Status.INACTIVE){
+							if(u.getStatus() == Status.INACTIVE || u.isSkipNotifications()){
 								continue;
 							}
 							String message = "The practice spot for "+schedule.getField().getName()+" at "+formatter.format(schedule.getDate())+" was previously scheduled, but is now available.";
@@ -492,7 +492,7 @@ public class ScheduleController extends DefaultHandlerController {
 				service.delete(schedule);
 				// email coach, ADMIN deleted his schedule
 				try{
-					String message = "Your practice for "+schedule.getField().getName()+" at "+formatter.format(schedule.getDate())+" was removed by the "+user.getFirstName()+" "+user.getLastName();
+					String message = "Your practice for "+schedule.getField().getName()+" at "+formatter.format(schedule.getDate())+" was removed by "+user.getFirstName()+" "+user.getLastName();
 					String emailAddress = schedule.getTeam().getCoach().getEmailAddress();
 					if(emailAddress != null){
 						es.sendEmail(emailAddress, "Practice removed", message);

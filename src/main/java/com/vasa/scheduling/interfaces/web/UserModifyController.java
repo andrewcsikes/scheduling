@@ -69,6 +69,13 @@ public class UserModifyController extends DefaultHandlerController{
 			user.setStatus(Status.toEnumFromCode(Integer.valueOf(request.getParameter("status"))));
 		}
 		
+		String skip = request.getParameter("notifications");
+		if(skip != null && skip.equals("True")){
+			user.setSkipNotifications(true);
+		}else{
+			user.setSkipNotifications(false);
+		}
+		
 		user.setUserName(request.getParameter("username"));
 		user.setPassword(request.getParameter("password"));
 		user.setFirstName(request.getParameter("firstName"));
@@ -82,6 +89,10 @@ public class UserModifyController extends DefaultHandlerController{
 		user.setPostalCode(request.getParameter("postalCode"));
 		
 		mr.save(user);
+		
+		if(realUser.getId() == user.getId()){
+			request.getSession().setAttribute("user", user);
+		}
 		
 		return "user/home";
 	}

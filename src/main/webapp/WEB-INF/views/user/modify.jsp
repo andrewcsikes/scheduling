@@ -44,6 +44,17 @@
     <td>Password:</td>
     <td><input type="password" name="password" value="${modifyuser.password}" /></td>
   </tr>
+  <tr>
+    <td valign="top">Opt out of Email Notifications:</td>
+    <c:choose>
+    <c:when test="${modifyuser.skipNotifications}">
+    	<td><input name="notifications" type="checkbox" value="True" checked></td>
+    </c:when>
+    <c:otherwise>
+    	<td><input name="notifications" type="checkbox" value="True"></td>
+    </c:otherwise>
+    </c:choose>
+  </tr>
 </table>
 
 

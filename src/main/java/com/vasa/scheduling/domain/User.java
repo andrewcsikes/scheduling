@@ -79,6 +79,8 @@ public class User {
 	@NotNull
 	private UserType userType;
 	
+	@NotNull
+	private boolean skipNotifications=false;	
 	
 	public UserType getUserType() {
 		return userType;
@@ -196,6 +198,10 @@ public class User {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	
-	
+	public boolean isSkipNotifications() {
+		return skipNotifications;
+	}
+	public void setSkipNotifications(boolean skipNotifications) {
+		this.skipNotifications = skipNotifications;
+	}
 }
