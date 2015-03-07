@@ -34,7 +34,7 @@ public interface FieldScheduleRepository extends JpaRepository<FieldSchedule, In
 	@Query("Select s from FieldSchedule s where week(date)=week(:d) and (team=:team or team2=:team) order by date")
 	List<FieldSchedule> findScheduleForWeek(@Param("team")Team team, @Param("d")Date calendarDay);
 
-	@Query("Select s from FieldSchedule s where day(date)=day(:d) and (team=:team or team2=:team) order by date")
+	@Query("Select s from FieldSchedule s where month(date)=month(:d) and day(date)=day(:d) and year(date)=year(:d) and (team=:team or team2=:team) order by date")
 	List<FieldSchedule> findScheduleForDay(@Param("team")Team team, @Param("d")Date calendarDay);
 	
 }

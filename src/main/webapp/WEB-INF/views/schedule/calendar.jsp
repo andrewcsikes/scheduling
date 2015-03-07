@@ -291,7 +291,7 @@ if(user != null && user.getTeam() != null){
 						java.util.List<com.vasa.scheduling.domain.Team> teams = (java.util.List<com.vasa.scheduling.domain.Team>)request.getAttribute("teams");
 						out.append("<form id='entry' name='entry' action='/scheduling/schedule/calendar/add' method='POST'><select name='team' style='max-width:40%;'>");
 						for(com.vasa.scheduling.domain.Team t:teams){
-							out.append("<option value='"+t.getId()+"'>" + t.getAgeGroup().getName() + " - " + t.getName()+" - "+t.getCoach().getLastName()+"</option>");
+							out.append("<option value='"+t.getId()+"'>" + t.getName()+" - "+t.getCoach().getLastName()+"</option>");
 						}
 						out.append("</select>");
 						out.append("<input type='hidden' name='date' value='"+format2.format(time.getTime())+"'>");

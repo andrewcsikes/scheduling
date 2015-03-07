@@ -221,7 +221,10 @@ public class ScheduleController extends DefaultHandlerController {
 		}
 		
 		// The week before
-		if(today.compareTo(week)<0 && seasonStarted(season, startOfWeek)){
+		if(today.compareTo(week)<0){
+			if(season.getStartDate() == null){
+				return false;
+			}
 			if(today.get(Calendar.DAY_OF_WEEK)<Calendar.FRIDAY){
 				// Lock if before Friday
 				return true;
