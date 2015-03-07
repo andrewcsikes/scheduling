@@ -17,16 +17,16 @@
 <c:set var="rulesApplied" scope="request" value="false"/>
 <h3>Active Scheduling Rules</h3>
 
+<ul>
+	<li>6U and 8U are limited to 1 hour practices with a max of 2 hours/week</li>
+	<li>10U and 12U are limited to 1 1/2 hour practices with a max of 3 hours/week</li>
+	<li>Batting Cages do not coun't against your practice times.</li>
+	<li>Non-VASA teams can not schedule until that Friday</li>
+</ul>
+
 <c:forEach var="season" items="${seasons}">
 <c:if test="${season.status.displayName.equals('Active')}">
 	<c:if test="${season.applySchedulingRules==true}">
-	
-		<ul>
-			<li>6U and 8U are limited to 1 hour practices with a max of 2 hours/week</li>
-			<li>10U and 12U are limited to 1 1/2 hour practices with a max of 3 hours/week</li>
-			<li>Batting Cages do not coun't against your practice times.</li>
-			<li>Non-VASA teams can not schedule until that Friday</li>
-		</ul>
 	
 		<c:if test="${season.sport.name.equals('Baseball')}">
 			<p>
