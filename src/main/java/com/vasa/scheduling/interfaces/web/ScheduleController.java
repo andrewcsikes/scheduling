@@ -464,10 +464,12 @@ public class ScheduleController extends DefaultHandlerController {
 				
 				// If date is current week, email league coaches.
 				Calendar today = Calendar.getInstance();
+				Calendar slot = Calendar.getInstance();
+				slot.setTime(schedule.getDate());
 				Calendar week = Calendar.getInstance();
 				week.setTime(schedule.getDate());
 				week.set(Calendar.DAY_OF_WEEK,1);
-				if(today.compareTo(week)>0){
+				if(today.compareTo(week)>0 && today.compareTo(slot)<0){
 					try{
 						// loop through all the coaches for the sport
 						for(Team t : teamService.findTeamsBySport(schedule.getField().getSport())){
