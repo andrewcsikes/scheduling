@@ -316,8 +316,67 @@ public class ScheduleController extends DefaultHandlerController {
 		}
 		return false;
 	}
+	
+	@RequestMapping(value="/add", method = RequestMethod.POST)
+	public String add(@RequestParam(required=false, value="field") String field,
+			@RequestParam(required=false, value="team") String teamId,
+			@RequestParam(required=false, value="date") String date,
+			@RequestParam(required=false, value="hour") String hour,
+			@RequestParam(required=false, value="minute") String minute,
+			@RequestParam(required=false, value="duration") String duration,
+			Model model, 
+			HttpServletRequest request) {
+		
+		String listDate = null;
+		User user = verifyUser(request.getSession());
+		
+		if(user== null){
+			return "login";
+		}
+		
+		try{
+			
+			int multiple = 0;
+			if(duration.indexOf("h")>0){
+				String hours = duration.substring(0, duration.indexOf("h")).trim();
+				multiple = Integer.valueOf(hours) * 2;
+			}
+			if(duration.indexOf("m")>0){
+				multiple += 1;
+			}
+			
+			SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+			Date calendarDay = formatter.parse(date + " " + hour + ":" + minute);
+			Calendar times = Calendar.getInstance();
+			times.setTime(calendarDay);
+			
+			for(int x=0; x<multiple; x++){
+				FieldSchedule schedule = service.findByDateField(times.getTime(), field);
+				if(schedule == null){
+					listDate = add(user, formatter.format(times.getTime()), field, teamId, model);
+				}else{
+					Team t = schedule.getTeam();
+					model.addAttribute("error", "Time "+formatter.format(times.getTime())+" is already taken by "+t.getAgeGroup().getName()+"-"+t.getName()+"-"+t.getCoach().getLastName()+".");
+					Calendar sunday = Calendar.getInstance();
+					sunday.setTime(times.getTime());
+					sunday.set(Calendar.MINUTE, 0);
+					sunday.set(Calendar.HOUR, 0);
+					sunday.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+					listDate = formatter.format(sunday.getTime());
+					break;
+				}
+				times.add(Calendar.MINUTE, 30);
+			}
+			
+			
+		}catch(ParseException e){
+			System.out.println("Parse Error: " +e.getMessage());
+		}
+		
+		return list(listDate, model, request);
+	}
 
-	@RequestMapping(value="/add")
+	@RequestMapping(value="/add", method = RequestMethod.GET)
 	public String add(@RequestParam(required=true, value="date") String date,
 			@RequestParam(required=true, value="field") String field,
 			@RequestParam(required=false, value="team") String teamId,
@@ -330,6 +389,12 @@ public class ScheduleController extends DefaultHandlerController {
 			return "login";
 		}
 		
+		String listDate = add(user, date, field, teamId, model);
+		
+		return list(listDate, model, request);
+	}
+	
+	private String add(User user, String date, String field, String teamId, Model model){
 		String listDate = null; 
 		
 		Team t = null;
@@ -368,8 +433,7 @@ public class ScheduleController extends DefaultHandlerController {
 			model.addAttribute("error", e.getMessage());
 			e.printStackTrace(); 
 		}
-		
-		return list(listDate, model, request);
+		return listDate;
 	}
 	
 	protected boolean validateRequest(Model model, String field, Team team, Date calendarDay) {
@@ -582,7 +646,6 @@ public class ScheduleController extends DefaultHandlerController {
 					team.getCoach().getUserType() != UserType.COMMISSIONER)){
 			setBlockedTimesBasedOnRules(field, team, date, day);
 		}
-		
 		List<FieldSchedule> schedules = service.findByDayField(date, field.getName());
 		List<Game> games = service.findGamesByDayField(date, field.getName());
 		

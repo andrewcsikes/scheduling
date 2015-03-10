@@ -30,3 +30,11 @@ https://uptimerobot.com
 
 admin8xbeEqe
 Q5aY9pRyaIhw
+
+
+last activity ...
+select DATE_FORMAT(last_update, '%b %d, %Y %h:%i %p') as last_activity from (
+select CONVERT_TZ(max(d.date),'+00:00','-1:00') as last_update from(
+select max(creation_date) as date from field_schedule
+union all
+select max(last_login) as date from user)d)p

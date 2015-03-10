@@ -6,9 +6,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>VASA Field Scheduling</title>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css">
 
 
 	<script>
+	$(function() {
+		$( "#datepicker" ).datepicker();
+	});
 	
 	$(document).ready(function(){
 		
@@ -95,11 +102,65 @@ if(user != null && user.getTeam() != null){
 		if(locked){out.println("<p><b><font color='red'>Scheduling is locked for "+field.getName()+" at this time.</font></b></p>");}
 	}
 }
+
+if((user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
+		user.getUserType().equals(com.vasa.scheduling.enums.UserType.COMMISSIONER))){
+
 %>
 	
+<form id="entry" name="entry" action="/scheduling/schedule/calendar/add" method="POST">
+<table class="search">
+<tbody>
+<tr><td colspan="11">Commissioner Quick Practice Entry</td></tr>
+<tr>
+    <td valign="top">Team:</td>
+    <td>
+      <select name="team">
+      <%
+      // Display the list of teams
+		java.util.List<com.vasa.scheduling.domain.Team> teams = (java.util.List<com.vasa.scheduling.domain.Team>)request.getAttribute("teams");
+		for(com.vasa.scheduling.domain.Team t:teams){
+			out.append("<option value='"+t.getId()+"'>" + t.getAgeGroup().getName()+" - " + t.getName()+" - "+t.getCoach().getLastName()+"</option>");
+		}
+      %>
+      </select>
+    </td>
+    <td>Field:</td>
+    <td>
+      <select name="field">
+      <%
+      // Display the list of fields
+		for(com.vasa.scheduling.domain.Fields t:fields){
+			out.append("<option value='"+t.getName()+"'>" + t.getName()+"</option>");
+		}
+      %>
+      </select>
+    </td>
+    <td>Date:</td>
+    <td>
+      <input name="date" type="text" id="datepicker" size="10">
+    </td>
+    <td>Time:</td>
+    <td>
+      <input name="hour" type="text" size="2" maxlength="2">
+      <input name="minute" type="text" size="2" maxlength="2">
+       (military time)
+    </td>
+    <td>Duration:</td>
+    <td>
+     <input name="duration" type="text" size="7">
+     format: 2h 30m
+    </td>
+    <td><input type="submit" value="Add"></td>
+  </tr>
+</tbody></table>
+</form>
+
+<% } %>
+
 	<div style="width: 100%; overflow: hidden;">
     	<div style="width: 100px; float: left;"><a href="/scheduling/schedule/calendar?date=<%out.println(format1.format(addDay.getTime()));%>"><b>Previous Week</b></a></div>
-    	 <% addDay.add(java.util.Calendar.DAY_OF_MONTH, 14); %>
+        <% addDay.add(java.util.Calendar.DAY_OF_MONTH, 14); %>
     	<div style="margin-left: 80%; float: right;"><a href="/scheduling/schedule/calendar?date=<%out.println(format1.format(addDay.getTime()));%>"><b>Next Week</b></a></div>
 	</div>
 	
@@ -284,21 +345,22 @@ if(user != null && user.getTeam() != null){
 						user.getUserType().equals(com.vasa.scheduling.enums.UserType.COMMISSIONER))){
 					out.append("<td><a href='/scheduling/schedule/calendar/add?date="+format2.format(time.getTime())+"&field="+field.getName()+"'><img src='/scheduling/images/plus-icon.png' /></a>");
 					
-					// Display the list of teams
-					if((user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
-							user.getUserType().equals(com.vasa.scheduling.enums.UserType.COMMISSIONER))){
+// 					// Display the list of teams
+// 					if((user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
+// 							user.getUserType().equals(com.vasa.scheduling.enums.UserType.COMMISSIONER))){
 						
-						java.util.List<com.vasa.scheduling.domain.Team> teams = (java.util.List<com.vasa.scheduling.domain.Team>)request.getAttribute("teams");
-						out.append("<form id='entry' name='entry' action='/scheduling/schedule/calendar/add' method='POST'><select name='team' style='max-width:40%;'>");
-						for(com.vasa.scheduling.domain.Team t:teams){
-							out.append("<option value='"+t.getId()+"'>" + t.getName()+" - "+t.getCoach().getLastName()+"</option>");
-						}
-						out.append("</select>");
-						out.append("<input type='hidden' name='date' value='"+format2.format(time.getTime())+"'>");
-						out.append("<input type='hidden' name='field' value='"+field.getName()+"'>");
-						out.append("<input type='submit' value='Add'>");
-						out.append("</form></td>");	
-					}
+// 						java.util.List<com.vasa.scheduling.domain.Team> teams = (java.util.List<com.vasa.scheduling.domain.Team>)request.getAttribute("teams");
+// 						out.append("<form id='entry' name='entry' action='/scheduling/schedule/calendar/add' method='POST'><select name='team' style='max-width:40%;'>");
+// 						for(com.vasa.scheduling.domain.Team t:teams){
+// 							out.append("<option value='"+t.getId()+"'>" + t.getName()+" - "+t.getCoach().getLastName()+"</option>");
+// 						}
+// 						out.append("</select>");
+// 						out.append("<input type='hidden' name='date' value='"+format2.format(time.getTime())+"'>");
+// 						out.append("<input type='hidden' name='field' value='"+field.getName()+"'>");
+// 						out.append("<input type='submit' value='Add'>");
+// 						out.append("</form>");
+// 					}
+					out.append("</td>");
 					
 				}else if(hour != null && (user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 						user.getUserType().equals(com.vasa.scheduling.enums.UserType.COACH) ||
