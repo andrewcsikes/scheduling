@@ -78,8 +78,16 @@ if(userAgent.contains("iPhone") || userAgent.contains("Android")){
        </ul>
      </li>
    </c:if>
-   <c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "Commissioner"}'>
+   <c:if test='${user.userType.displayName == "Commissioner"}'>
      <li><a href='/scheduling/user/list'><span>All Users</span></a></li>
+   </c:if>
+   <c:if test='${user.userType.displayName == "ADMIN"}'>
+   <li class='has-sub'><a>Users</a>
+     <ul>
+     	<li><a href='/scheduling/user/list'><span>All Users</span></a></li>
+     	<li><a href='/scheduling/user/lastactive'><span>Last Active User</span></a></li>
+     </ul>
+   </li>
    </c:if>
    <c:choose>
      <c:when test='${user.userType.displayName == "ADMIN"}'>

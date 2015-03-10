@@ -1,6 +1,7 @@
 package com.vasa.scheduling.services;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,22 @@ public class UserServiceImpl implements UserService{
 		}
 		
 		return users;
+	}
+
+	@Override
+	public User getLastActive() {
+		Date maxDate = null;
+		User user = null;
+		
+		List<User> users = userRepo.findAll();
+		for(User u : users){
+			if(maxDate == null || u.getLastLogin().after(maxDate) && u.getUserType() != UserType.ADMIN){
+				maxDate=u.getLastLogin();
+				user=u;
+			}
+		}
+		
+		return user;
 	}
 	
 }

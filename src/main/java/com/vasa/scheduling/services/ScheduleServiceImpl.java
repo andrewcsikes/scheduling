@@ -1,6 +1,7 @@
 package com.vasa.scheduling.services;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -186,5 +187,41 @@ public class ScheduleServiceImpl implements ScheduleService {
 	@Override
 	public Game save(Game schedule) {
 		return gameRepo.save(schedule);
+	}
+
+	@Override
+	public FieldSchedule getLastActive() {
+		SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+		
+		Date d = new Date();
+		Date maxDate = null;
+		FieldSchedule fs = null;
+		
+		String query = "Select s from FieldSchedule s where ";
+		String whereClause = "month(date)=month(STR_TO_DATE('"+sdf.format(d)+"','%m-%d-%Y'))";
+				
+		List<FieldSchedule> results = (List<FieldSchedule>)em.createQuery(query+whereClause, FieldSchedule.class).getResultList();
+		
+		if(results == null || results.size()<=0){
+			Calendar c = Calendar.getInstance();
+			c.setTime(d);
+			c.add(Calendar.MONTH, -1);
+			whereClause = "month(date)=month(STR_TO_DATE('"+sdf.format(d)+"','%m-%d-%Y'))";
+			
+			results = (List<FieldSchedule>)em.createQuery(query+whereClause, FieldSchedule.class).getResultList();
+		}
+		
+		if(results == null || results.size()<=0){
+			return null;
+		}
+		
+		for(FieldSchedule sch : results){
+			if(maxDate == null || sch.getCreationDate().after(maxDate)){
+				maxDate = sch.getCreationDate();
+				fs=sch;
+			}
+		}
+		
+		return fs;
 	}
 }

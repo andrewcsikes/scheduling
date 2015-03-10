@@ -33,4 +33,5 @@ public interface ScheduleService{
 	List<Game> findGameByMonth(Date date);
 	List<Game> findGamesByFilter(Team team, Fields field, String filterClass, Date time);
 	Game save(Game schedule);
+	FieldSchedule getLastActive();
 }
