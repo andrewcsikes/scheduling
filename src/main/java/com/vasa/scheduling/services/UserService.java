@@ -1,6 +1,5 @@
 package com.vasa.scheduling.services;
 
-import java.util.Date;
 import java.util.List;
 
 import com.vasa.scheduling.domain.Team;
@@ -15,5 +14,6 @@ public interface UserService{
 	User findById(Integer userId);
 	List<User> findAllCoaches();
 	User getLastActive();
-
+	String getGlobalMessage();
+	void setGlobalMessage(String message);
 }

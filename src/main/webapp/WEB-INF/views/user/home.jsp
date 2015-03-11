@@ -5,6 +5,12 @@
 	<title>Home</title>
 </head>
 <body>
+
+<c:if test="${message != null}">
+  <h3><font color="red">${message}</font></h3>
+  <p>&nbsp;</p>
+</c:if>
+
 <h1>
 	Welcome to the new VASA Field Scheduling tool. 
 </h1>
@@ -12,7 +18,6 @@
 <a href="help">Directions on using the System.</a>
 
 <p>&nbsp;</p>
-
 
 <c:set var="rulesApplied" scope="request" value="false"/>
 <h3>Active Scheduling Rules</h3>

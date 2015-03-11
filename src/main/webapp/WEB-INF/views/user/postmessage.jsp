@@ -11,13 +11,14 @@
 <body>
 
 <div class="loginbox">
-	<h3>Send Private Message To </br> ${name}!</h3>
-	<form id="contact" name="contact" action="/scheduling/user/contact" method="POST" onsubmit="return validate();">
-		<input type="hidden" name="username" value="${username}" />
+	<h3>Set/Send Global Message</h3>
+	<form id="postmessage" name="postmessage" action="/scheduling/user/postmessage" method="POST" onsubmit="return validate();">
 		<label for="Message">Message</label>
 		<textarea rows="10" cols="35" name="message"></textarea>
 		<div class="form-actions">
-			<input id="proceed" class="btn btn-primary" type="submit" value="Send Message">
+			<input id="proceed" name="submit" class="btn btn-primary" type="submit" value="Post Message">
+			&nbsp;&nbsp;&nbsp;<input id="proceed" name="submit" class="btn btn-primary" type="submit" value="Delete Message">
+			<br /> <br /><input id="proceed" name="submit" class="btn btn-primary" type="submit" value="Send Email">
 		</div>
 	</form>
 </div>

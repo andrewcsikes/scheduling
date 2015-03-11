@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.vasa.scheduling.domain.GlobalMessage;
 import com.vasa.scheduling.domain.Season;
 import com.vasa.scheduling.domain.User;
 import com.vasa.scheduling.enums.Status;
@@ -54,7 +55,8 @@ public class UserHomeController extends DefaultHandlerController{
 					
 					List<Season> season = seasonService.findAll();
 				    model.addAttribute("seasons", season);
-					
+					model.addAttribute("message", getMessage());
+				    
 					return "user/home";
 				}else{
 					model.addAttribute("loginerror", "user "+username+" is not active." );
@@ -84,7 +86,12 @@ public class UserHomeController extends DefaultHandlerController{
 		List<Season> season = seasonService.findAll();
 	    model.addAttribute("seasons", season);
 		model.addAttribute("user", user);
+		model.addAttribute("message", getMessage());
 		return "user/home";
+	}
+	
+	private String getMessage(){
+		return mr.getGlobalMessage();
 	}
 	
 }

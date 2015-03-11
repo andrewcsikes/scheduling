@@ -10,14 +10,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.vasa.scheduling.domain.Season;
 import com.vasa.scheduling.domain.Team;
 import com.vasa.scheduling.domain.User;
+import com.vasa.scheduling.enums.Status;
 import com.vasa.scheduling.services.EmailService;
 import com.vasa.scheduling.services.ScheduleService;
+import com.vasa.scheduling.services.SeasonService;
 import com.vasa.scheduling.services.TeamService;
 import com.vasa.scheduling.services.UserService;
 
-@RequestMapping("/user/contact")
+@RequestMapping("/user")
 @Controller
 public class UserContactController extends DefaultHandlerController{
 	
@@ -25,9 +28,10 @@ public class UserContactController extends DefaultHandlerController{
 	@Autowired private TeamService service;
 	@Autowired private EmailService es;
 	@Autowired private ScheduleService scheduleService;
+	@Autowired private SeasonService seasonService;
 	
-	@RequestMapping(method = RequestMethod.GET)
-	public String modify(Model model, HttpServletRequest request) {
+	@RequestMapping(value="/contact", method = RequestMethod.GET)
+	public String contact(Model model, HttpServletRequest request) {
 		String username=request.getParameter("username");
 		model.addAttribute("username", username);
 		String name=request.getParameter("name");
@@ -35,9 +39,8 @@ public class UserContactController extends DefaultHandlerController{
 		return "user/contact";
 	}
 	
-	@RequestMapping(method = RequestMethod.POST)
-	public String save(Model model, HttpServletRequest request) {
-		
+	@RequestMapping(value="/contact", method = RequestMethod.POST)
+	public String emailCoach(Model model, HttpServletRequest request) {
 		
 		User realUser = verifyUser(request.getSession());
 		
@@ -53,8 +56,8 @@ public class UserContactController extends DefaultHandlerController{
 		
 		String emailAddress = user.getEmailAddress();
 		try{
-			es.sendEmail(emailAddress, realUser.getEmailAddress(), "Forgot Password", message);
-			model.addAttribute("loginerror", "Your Password has been emailed to "+emailAddress);
+			es.sendEmail(emailAddress, realUser.getEmailAddress(), "New Message", message);
+			model.addAttribute("loginerror", "Your Email has been sent.");
 		}catch(Exception e){
 			model.addAttribute("loginerror", e.getCause() +": "+e.getMessage());
 		}
@@ -69,4 +72,49 @@ public class UserContactController extends DefaultHandlerController{
 		
 		return "team/list";
 	}
+	
+	@RequestMapping(value="/postmessage", method = RequestMethod.GET)
+	public String postAddMessage(Model model, HttpServletRequest request) {
+		return "user/postmessage";
+	}
+	
+	@RequestMapping(value="/postmessage", method = RequestMethod.POST)
+	public String postMessage(Model model, HttpServletRequest request) {
+		
+		User realUser = verifyUser(request.getSession());
+		
+		if(realUser== null){
+			return "login";
+		}
+		
+		String message = request.getParameter("message");
+		String submit = request.getParameter("submit");
+
+		List<Team> teams = service.findActive();
+		
+		if(submit.equals("Post Message")){
+			userService.setGlobalMessage(message);
+		}else if(submit.equals("Delete Message")){
+			userService.setGlobalMessage(null);
+		}else{
+			message = realUser.getFirstName() + " " + realUser.getLastName() +" sent you a message through the VASA field scheduling site. MESSAGE="+message;
+			for(Team t : teams){
+				if(!t.getCoach().getStatus().equals(Status.ACTIVE)){
+					continue;
+				}
+				String emailAddress = t.getCoach().getEmailAddress();
+				try{
+					es.sendEmail(emailAddress, realUser.getEmailAddress(), "Global Alert", message);
+				}catch(Exception e){
+				}
+			}
+		}
+		
+		List<Season> season = seasonService.findAll();
+	    model.addAttribute("seasons", season);
+		model.addAttribute("user", realUser);
+		model.addAttribute("message", userService.getGlobalMessage());
+		return "user/home";
+	}
+	
 }

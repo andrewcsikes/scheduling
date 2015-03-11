@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
+import com.vasa.scheduling.domain.GlobalMessage;
 import com.vasa.scheduling.domain.Team;
 import com.vasa.scheduling.domain.User;
 import com.vasa.scheduling.enums.Status;
 import com.vasa.scheduling.enums.UserType;
+import com.vasa.scheduling.repositiories.MessageRepository;
 import com.vasa.scheduling.repositiories.TeamRepository;
 import com.vasa.scheduling.repositiories.UserRepository;
 
@@ -24,6 +26,9 @@ public class UserServiceImpl implements UserService{
 	
 	@Autowired
 	private TeamRepository teamRepo;
+	
+	@Autowired
+	private MessageRepository messageRepo;
 	
 	@Override
 	public User save(User member) {
@@ -80,6 +85,27 @@ public class UserServiceImpl implements UserService{
 		}
 		
 		return user;
+	}
+
+	@Override
+	public String getGlobalMessage() {
+		List<GlobalMessage> message = messageRepo.findAll();
+		if(message.size()>0){
+			return message.get(0).getMessage();
+		}
+		return null;
+	}
+
+	@Override
+	public void setGlobalMessage(String message) {
+		messageRepo.deleteAll();
+		if(message == null || message.length()<=0){
+			
+		}else{
+			GlobalMessage m = new GlobalMessage();
+			m.setMessage(message);
+			messageRepo.save(m);
+		}
 	}
 	
 }
