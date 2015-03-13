@@ -40,6 +40,57 @@ if(userAgent.contains("iPhone") || userAgent.contains("Android")){
 
 
 <%
+} else if(userAgent.contains("iPad")){
+%>
+	
+	
+<div id='cssmenu'>
+<ul>
+   <li><a href='/scheduling/user/home'><span>Home</span></a></li>
+      <!-- 
+         <c:choose>
+           <c:when test='${user.userType.displayName == "ADMIN"}'>
+             <li><a href='/scheduling/schedule/basketball'><span>Basketball Calendar</span></a></li>
+             <li><a href='/scheduling/schedule/calendar'><span>Baseball Calendar</span></a></li>
+           </c:when>
+           <c:when test='${user.team.sport.name=="Basketball"}'>
+             <li><a href='/scheduling/schedule/basketball'><span>Basketball Calendar</span></a></li>
+           </c:when>
+           <c:otherwise>
+             <li><a href='/scheduling/schedule/calendar'><span>Calendar</span></a></li>
+           </c:otherwise>
+         </c:choose>
+         -->
+         <li><a href='/scheduling/schedule/calendar'><span>Calendar</span></a></li>
+         <li><a href='/scheduling/schedule/list'><span>Searchable List</span></a></li>
+
+   <c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "Commissioner"}'>
+     <li><a href='/scheduling/game/add'><span>Add Single Game</span></a></li>
+   </c:if>
+   <c:if test='${user.userType.displayName == "Commissioner" || user.userType.displayName == "ADMIN"}'>
+   	<li><a href='/scheduling/user/list'><span>Users</span></a></li>
+   </c:if>
+   <c:choose>
+     <c:when test='${user.userType.displayName == "ADMIN"}'>
+       <li><a href='/scheduling/team/list'><span>Teams</span></a></li>
+       <li><a href='/scheduling/sport/list'><span>Sports</span></a></li>
+       <li><a href='/scheduling/season/list'><span>Seasons</span></a></li>
+       <li><a href='/scheduling/fields/list'><span>Fields</span></a></li>
+   	 </c:when>
+     <c:when test='${user.userType.displayName == "Commissioner"}'>
+     	<li><a href='/scheduling/team/list'><span>Teams</span></a></li>
+   	    <li><a href='/scheduling/user/postmessage'><span>System Message</span></a></li>
+   	 </c:when>
+     <c:otherwise>
+       <li><a href='/scheduling/team/list'><span>Teams</span></a></li>
+     </c:otherwise>
+   </c:choose>
+   <li><a href='/scheduling/user/modify'><span>My Account</span></a></li>
+</ul>
+</div>
+	
+	
+<%
 }else{
 %>
 
@@ -77,7 +128,6 @@ if(userAgent.contains("iPhone") || userAgent.contains("Android")){
    </c:if>
    <c:if test='${user.userType.displayName == "Commissioner"}'>
    	<li><a href='/scheduling/user/list'><span>Users</span></a></li>
-   	<li><a href='/scheduling/user/postmessage'><span>System Message</span></a></li>
    </c:if>
    <c:if test='${user.userType.displayName == "ADMIN"}'>
    <li class='has-sub'><a>Users</a>
