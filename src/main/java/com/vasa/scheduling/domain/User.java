@@ -17,6 +17,7 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.vasa.scheduling.enums.Carrier;
 import com.vasa.scheduling.enums.Status;
 import com.vasa.scheduling.enums.UserType;
 
@@ -60,6 +61,8 @@ public class User {
 	private String postalCode;
 	
 	private String phone;
+	
+	private Carrier carrier;
 	
 	@NotNull
 	private Status status;
@@ -197,6 +200,12 @@ public class User {
 	}
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+	public Carrier getCarrier() {
+		return carrier;
+	}
+	public void setCarrier(Carrier carrier) {
+		this.carrier = carrier;
 	}
 	public boolean isSkipNotifications() {
 		return skipNotifications;

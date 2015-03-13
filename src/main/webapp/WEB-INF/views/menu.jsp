@@ -26,16 +26,13 @@ if(userAgent.contains("iPhone") || userAgent.contains("Android")){
        <li><a href='/scheduling/schedule/calendar'><span>Calendar</span></a></li>
      </c:otherwise>
    </c:choose>
-   --><li><a href='/scheduling/schedule/calendar'><span>Calendar</span></a></li>
+   -->
+   <li><a href='/scheduling/schedule/calendar'><span>Calendar</span></a></li>
    <li><a href='/scheduling/schedule/list'><span>Searchable List</span></a></li>
 
    <c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "Commissioner"}'>
-     <li><a href='/scheduling/game/add'><span>Add Single Game</span></a></li>
-   </c:if>
-   <c:if test='${user.userType.displayName == "ADMIN"}'>
-     <li><a href='/scheduling/sport/list'><span>Sports</span></a></li>
-     <li><a href='/scheduling/season/list'><span>Seasons</span></a></li>
-     <li><a href='/scheduling/fields/list'><span>Fields</span></a></li>
+     <li><a href='/scheduling/game/add'><span>Add Game</span></a></li>
+     <li><a href='/scheduling/user/postmessage'><span>System Message</span></a></li>
    </c:if>
    <li><a href='/scheduling/user/modify'><span>My Account</span></a></li>
 </ul>
@@ -79,18 +76,13 @@ if(userAgent.contains("iPhone") || userAgent.contains("Android")){
      </li>
    </c:if>
    <c:if test='${user.userType.displayName == "Commissioner"}'>
-   <li class='has-sub'><a>Users</a>
-     <ul>
-       <li><a href='/scheduling/user/list'><span>All Users</span></a></li>
-       <li><a href='/scheduling/user/postmessage'><span>Post System Message</span></a></li>
-     </ul>
-   </li>
+   	<li><a href='/scheduling/user/list'><span>Users</span></a></li>
+   	<li><a href='/scheduling/user/postmessage'><span>System Message</span></a></li>
    </c:if>
    <c:if test='${user.userType.displayName == "ADMIN"}'>
    <li class='has-sub'><a>Users</a>
      <ul>
      	<li><a href='/scheduling/user/list'><span>All Users</span></a></li>
-       <li><a href='/scheduling/user/postmessage'><span>Post System Message</span></a></li>
      	<li><a href='/scheduling/user/lastactive'><span>Last Active User</span></a></li>
      </ul>
    </li>
@@ -103,8 +95,17 @@ if(userAgent.contains("iPhone") || userAgent.contains("Android")){
            <li><a href='/scheduling/sport/list'><span>Sports</span></a></li>
            <li><a href='/scheduling/season/list'><span>Seasons</span></a></li>
            <li><a href='/scheduling/fields/list'><span>Fields</span></a></li>
+   	       <li><a href='/scheduling/user/postmessage'><span>System Message</span></a></li>
          </ul>
        </li>
+     </c:when>
+     <c:when test='${user.userType.displayName == "Commissioner"}'>
+     	<li class='has-sub'><a>Admin</a>
+         <ul>
+           <li><a href='/scheduling/team/list'><span>Teams</span></a></li>
+   	       <li><a href='/scheduling/user/postmessage'><span>System Message</span></a></li>
+   	     </ul>
+   	    </li>
      </c:when>
      <c:otherwise>
        <li><a href='/scheduling/team/list'><span>Teams</span></a></li>

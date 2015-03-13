@@ -70,5 +70,10 @@
 <p>None at this time</p>
 </c:if>
 
+
+<%
+String userAgent = request.getHeader("user-agent");
+out.println("<p><font color='white'>"+userAgent+"</font></p>");
+%>
 </body>
 </html>

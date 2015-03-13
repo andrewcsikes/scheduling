@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.vasa.scheduling.domain.Season;
 import com.vasa.scheduling.domain.Team;
 import com.vasa.scheduling.domain.User;
+import com.vasa.scheduling.enums.Carrier;
 import com.vasa.scheduling.enums.Status;
 import com.vasa.scheduling.services.EmailService;
 import com.vasa.scheduling.services.ScheduleService;
@@ -96,7 +97,7 @@ public class UserContactController extends DefaultHandlerController{
 			userService.setGlobalMessage(message);
 		}else if(submit.equals("Delete Message")){
 			userService.setGlobalMessage(null);
-		}else{
+		}else if(submit.equals("Send Email")){
 			message = realUser.getFirstName() + " " + realUser.getLastName() +" sent you a message through the VASA field scheduling site. MESSAGE="+message;
 			for(Team t : teams){
 				if(!t.getCoach().getStatus().equals(Status.ACTIVE)){
@@ -105,6 +106,35 @@ public class UserContactController extends DefaultHandlerController{
 				String emailAddress = t.getCoach().getEmailAddress();
 				try{
 					es.sendEmail(emailAddress, realUser.getEmailAddress(), "Global Alert", message);
+				}catch(Exception e){
+				}
+			}
+		}else if(submit.equals("Send Text")){
+			for(Team t : teams){
+				User u = t.getCoach();
+				if(!u.getStatus().equals(Status.ACTIVE) || u.getCarrier()==null){
+					continue;
+				}
+				String phone = u.getPhone();
+				phone = phone.replaceAll("-", "");
+				phone = phone.replaceAll(".", "");
+				
+				if(u.getCarrier().equals(Carrier.ATT)){
+					phone = phone + "@txt.att.net";
+				}else if(u.getCarrier().equals(Carrier.VERIZON)){
+					phone = phone + "@vtext.com";
+				}else if(u.getCarrier().equals(Carrier.SPRINT)){
+					phone = phone + "@messaging.sprintpcs.com";
+				}else if(u.getCarrier().equals(Carrier.TMOBIL)){
+					phone = phone + "@tmomail.net";
+				}else if(u.getCarrier().equals(Carrier.NEXTTEL)){
+					phone = phone + "@messaging.nextel.com";
+				}else if(u.getCarrier().equals(Carrier.CRICKET)){
+					phone = phone + "@mms.mycricket.com";
+				}
+				
+				try{
+					es.sendEmail(phone, realUser.getEmailAddress(), "Global Alert", message);
 				}catch(Exception e){
 				}
 			}
