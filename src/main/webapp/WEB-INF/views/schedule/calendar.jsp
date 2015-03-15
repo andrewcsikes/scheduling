@@ -142,8 +142,8 @@ if((user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
     </td>
     <td>Time:</td>
     <td>
-      <input name="hour" type="text" size="2" maxlength="2">
-      <input name="minute" type="text" size="2" maxlength="2">
+      <input name="hour" type="text" size="2" maxlength="2" value="hh">
+      <input name="minute" type="text" size="2" maxlength="2" value="mm">
        (military time)
     </td>
     <td>Duration:</td>
@@ -338,6 +338,10 @@ if((user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 				}
 				else if(locked){
 					if(hour==null) hour="&nbsp;";
+					else if(user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
+							user.getUserType().equals(com.vasa.scheduling.enums.UserType.COMMISSIONER)){
+						hour="<a href='/scheduling/schedule/calendar/delete?date="+format2.format(time.getTime())+"&field="+field.getName()+"'><img src='/scheduling/images/minus-icon.png' /></a> "+hour;
+					}
 					out.append("<td>"+hour+"</td>");
 				}
 				else if(hour == null && (user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||

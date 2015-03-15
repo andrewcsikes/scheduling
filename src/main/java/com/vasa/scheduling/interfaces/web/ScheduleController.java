@@ -99,7 +99,12 @@ public class ScheduleController extends DefaultHandlerController {
 			}
 			else if(user.getUserType().equals(UserType.ADMIN) || 
 					user.getUserType().equals(UserType.COMMISSIONER)){
-				locked=false;
+				
+				if(user.getUserType().equals(UserType.ADMIN)){
+					locked=false;
+				}else{
+					locked = getLocked(user.getTeam(), field, startOfWeek);
+				}
 				
 				if(user.getTeam() != null && user.getTeam().getSport() != null){
 					Sport s = user.getTeam().getSport();
