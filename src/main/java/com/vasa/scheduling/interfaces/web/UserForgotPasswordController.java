@@ -39,7 +39,7 @@ public class UserForgotPasswordController extends DefaultHandlerController{
 			model.addAttribute("loginerror", "Username not valid.");
 		}else{
 			String emailAddress = user.getEmailAddress();
-			String message = "You are receiving this email because someone submitted the forgot password form on the VASA Scheduling website. Your username is "+user.getUserName()+" and your password is "+user.getPassword();
+			String message = "You are receiving this email because someone submitted the forgot password form on the VASA Scheduling website.<br /><br />Your username is "+user.getUserName()+"<br />Your password is "+user.getPassword();
 			try{
 				es.sendEmail(emailAddress, "Forgot Password", message);
 				model.addAttribute("loginerror", "Your Password has been emailed to "+emailAddress);

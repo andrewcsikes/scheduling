@@ -521,7 +521,7 @@ public class ScheduleController extends DefaultHandlerController {
 			HttpServletRequest request) {
 		
 		try {
-			SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+			SimpleDateFormat formatter = new SimpleDateFormat("EEE, MMM d HH:mm");
 			Date calenderDay = formatter.parse(date);
 		
 			FieldSchedule schedule = service.findByDateField(calenderDay, field);

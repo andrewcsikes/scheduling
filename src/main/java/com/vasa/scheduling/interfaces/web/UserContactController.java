@@ -50,7 +50,8 @@ public class UserContactController extends DefaultHandlerController{
 		}
 		
 		String message = request.getParameter("message");
-		message = realUser.getFirstName() + " " + realUser.getLastName() +" sent you a message through the VASA field scheduling site. MESSAGE="+message; 
+		message = realUser.getFirstName() + " " + realUser.getLastName() +" sent you a message through the VASA field scheduling site."+
+				"<br /><br />MESSAGE="+message; 
 				
 		String username = request.getParameter("username");
 		User user = userService.findByUserName(username);
@@ -98,7 +99,7 @@ public class UserContactController extends DefaultHandlerController{
 		}else if(submit.equals("Delete Message")){
 			userService.setGlobalMessage(null);
 		}else if(submit.equals("Send Email")){
-			message = realUser.getFirstName() + " " + realUser.getLastName() +" sent you a message through the VASA field scheduling site. MESSAGE="+message;
+			message = realUser.getFirstName() + " " + realUser.getLastName() +" sent you a message through the VASA field scheduling site.<br /><br />MESSAGE="+message;
 			for(Team t : teams){
 				if(!t.getCoach().getStatus().equals(Status.ACTIVE)){
 					continue;

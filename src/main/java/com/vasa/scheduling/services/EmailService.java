@@ -53,8 +53,6 @@ public class EmailService {
 //		Transport.send(message);
 //		//System.out.println("Sent message successfully....");
 		
-		
-
 		Properties props = new Properties();
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.host", "smtp.sendgrid.net");
@@ -68,7 +66,7 @@ public class EmailService {
         Transport transport = mailSession.getTransport();
  
         MimeMessage message = new MimeMessage(mailSession);
- 
+        
         javax.mail.Multipart multipart = new javax.mail.internet.MimeMultipart("alternative");
  
         javax.mail.BodyPart bodyPart = new javax.mail.internet.MimeBodyPart();

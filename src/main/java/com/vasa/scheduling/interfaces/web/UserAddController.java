@@ -88,7 +88,7 @@ public class UserAddController extends DefaultHandlerController{
 		
 		String emailAddress = user.getEmailAddress();
 		String message = "New Account has been setup for you on the VASA Field Scheduling Website - http://scheduling.vasayouthsports.com" +
-				" Your username is "+user.getUserName()+" and your password is "+user.getPassword();
+				"<br /><br />Your username is "+user.getUserName()+"<br />Your password is "+user.getPassword();
 		message += " email address: "+user.getEmailAddress();
 		try{
 			es.sendEmail(emailAddress, "New User Account for VASA Field Scheduling", message);
