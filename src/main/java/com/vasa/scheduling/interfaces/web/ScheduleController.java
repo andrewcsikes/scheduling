@@ -450,7 +450,7 @@ public class ScheduleController extends DefaultHandlerController {
 		
 		// This week
 		if(today.compareTo(week)>0){
-			return true;
+			//return true;
 		}
 		
 		// The week before
@@ -465,7 +465,7 @@ public class ScheduleController extends DefaultHandlerController {
 			return true;
 		}
 		
-		boolean validate = validateWeeklyPracticeLimit(model, team, calendarDay);
+		boolean validate = true;//validateWeeklyPracticeLimit(model, team, calendarDay);
 		if(validate){
 			validate = validateDailyPracticeLimit(model, team, calendarDay);
 		}
