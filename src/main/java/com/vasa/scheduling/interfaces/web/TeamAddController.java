@@ -67,7 +67,7 @@ public class TeamAddController extends DefaultHandlerController{
 		String limit = request.getParameter("practiceLimit");
 		if(limit != null){
 			try{
-				team.setPracticeLimit(Integer.valueOf(limit));
+				team.setPracticeLimit(Double.valueOf(limit));
 			}catch(Exception e){
 				
 			}
@@ -78,7 +78,7 @@ public class TeamAddController extends DefaultHandlerController{
 		limit = request.getParameter("weeklyPracticeLimit");
 		if(limit != null){
 			try{
-				team.setWeeklyPracticeLimit(Integer.valueOf(limit));
+				team.setWeeklyPracticeLimit(Double.valueOf(limit));
 			}catch(Exception e){
 				
 			}
