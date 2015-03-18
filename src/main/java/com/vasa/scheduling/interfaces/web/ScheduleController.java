@@ -521,7 +521,7 @@ public class ScheduleController extends DefaultHandlerController {
 			HttpServletRequest request) {
 		
 		try {
-			SimpleDateFormat formatter = new SimpleDateFormat("EEE, MMM d HH:mm");
+			SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 			Date calenderDay = formatter.parse(date);
 		
 			FieldSchedule schedule = service.findByDateField(calenderDay, field);
@@ -546,7 +546,8 @@ public class ScheduleController extends DefaultHandlerController {
 							if(u.getStatus() == Status.INACTIVE || u.isSkipNotifications()){
 								continue;
 							}
-							String message = "The practice spot for "+schedule.getField().getName()+" at "+formatter.format(schedule.getDate())+" was previously scheduled, but is now available.";
+							SimpleDateFormat formatter2 = new SimpleDateFormat("EEE, MMM d HH:mm");
+							String message = "The practice spot for "+schedule.getField().getName()+" at "+formatter2.format(schedule.getDate())+" was previously scheduled, but is now available.";
 							String emailAddress = u.getEmailAddress();
 							if(emailAddress != null){
 								es.sendEmail(emailAddress, "Time Slot has been made Available", message);
@@ -561,7 +562,8 @@ public class ScheduleController extends DefaultHandlerController {
 				service.delete(schedule);
 				// email coach, ADMIN deleted his schedule
 				try{
-					String message = "Your practice for "+schedule.getField().getName()+" at "+formatter.format(schedule.getDate())+" was removed by "+user.getFirstName()+" "+user.getLastName();
+					SimpleDateFormat formatter2 = new SimpleDateFormat("EEE, MMM d HH:mm");
+					String message = "Your practice for "+schedule.getField().getName()+" at "+formatter2.format(schedule.getDate())+" was removed by "+user.getFirstName()+" "+user.getLastName();
 					String emailAddress = schedule.getTeam().getCoach().getEmailAddress();
 					if(emailAddress != null){
 						es.sendEmail(emailAddress, "Practice removed", message);
