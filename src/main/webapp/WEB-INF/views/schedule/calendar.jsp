@@ -107,6 +107,7 @@ if((user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 		user.getUserType().equals(com.vasa.scheduling.enums.UserType.COMMISSIONER))){
 
 %>
+
 	
 <form id="entry" name="entry" action="/scheduling/schedule/calendar/add" method="POST">
 <table class="search">
