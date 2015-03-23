@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.vasa.scheduling.weather.Weather;
+import com.vasa.scheduling.weather.YahooWeatherParser;
 import com.vasa.scheduling.domain.FieldSchedule;
 import com.vasa.scheduling.domain.Fields;
 import com.vasa.scheduling.domain.Game;
@@ -153,8 +155,36 @@ public class ScheduleController extends DefaultHandlerController {
 		model.addAttribute("fields", fields);
 		model.addAttribute("schedule",schedule);
 		model.addAttribute("locked", anylocked);
+		
+		sunday.set(Calendar.DAY_OF_WEEK,1);
+		
+//		if(sunday.compareTo(Calendar.getInstance())<5){
+//			getWeather(model, sunday);
+//		}
 	}
 	
+	private void getWeather(Model model, Calendar sunday) {
+		Weather w = null;
+		
+		try {
+			YahooWeatherParser weatherParser = new YahooWeatherParser();
+			w = weatherParser.parse("75495");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(sunday.compareTo(Calendar.getInstance())<=0){
+			
+		
+		}
+		if(w.getTodaysCondition().contains("Showers") ||
+				w.getTodaysCondition().contains("Thunderstorms") ||
+				w.getTodaysCondition().contains("Rain")){
+			
+		}
+		
+	}
+
 	protected List<Fields> getFields(User user) {
 
 		List<Fields> fields = null;
@@ -546,7 +576,7 @@ public class ScheduleController extends DefaultHandlerController {
 							if(u.getStatus() == Status.INACTIVE || u.isSkipNotifications()){
 								continue;
 							}
-							SimpleDateFormat formatter2 = new SimpleDateFormat("EEE, MMM d HH:mm");
+							SimpleDateFormat formatter2 = new SimpleDateFormat("EEE, MMM d hh:mm a");
 							String message = "The practice spot for "+schedule.getField().getName()+" at "+formatter2.format(schedule.getDate())+" was previously scheduled, but is now available.";
 							String emailAddress = u.getEmailAddress();
 							if(emailAddress != null){

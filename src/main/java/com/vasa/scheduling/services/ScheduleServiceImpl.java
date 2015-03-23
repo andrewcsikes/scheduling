@@ -169,6 +169,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 		
 		if(team != null){
 			whereClause += " and (homeTeam='"+team.getName()+"' or awayTeam='"+team.getName()+"')";
+			whereClause += " and ageGroup="+team.getAgeGroup().getId();
+			whereClause += " and field.sport="+team.getSport().getId();
 		}
 		if(field != null){
 			whereClause += " and field.id="+field.getId();
