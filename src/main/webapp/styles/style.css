@@ -120,3 +120,16 @@ table.search td{
 table.search p{
 	font-weight: bold;
 }
+
+table.weather {
+    background-color: orange;
+    color: white;
+    border: 0 none;
+    empty-cells: show;
+    font-size: small;
+    font-weight: bold;
+    margin: 0 0 10px;
+    min-width: 100px;
+    overflow: visible;
+    white-space: nowrap;
+}
