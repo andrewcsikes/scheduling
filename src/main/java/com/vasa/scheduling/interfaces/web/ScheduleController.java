@@ -158,9 +158,9 @@ public class ScheduleController extends DefaultHandlerController {
 		
 		sunday.set(Calendar.DAY_OF_WEEK,1);
 		
-//		if(sunday.compareTo(Calendar.getInstance())<5){
-//			getWeather(model, sunday);
-//		}
+		if(sunday.compareTo(Calendar.getInstance())<5){
+			getWeather(model, sunday);
+		}
 	}
 	
 	private void getWeather(Model model, Calendar sunday) {
@@ -173,14 +173,70 @@ public class ScheduleController extends DefaultHandlerController {
 			e.printStackTrace();
 		}
 		
-		if(sunday.compareTo(Calendar.getInstance())<=0){
-			
+		w.addMessage("03/24/2015","4th Grade Field Trip - Parent Meeting @ 6:30, 7th Grade Field Trip - Parent Meeting @ 6:00, MS Track Meet");
+		w.addMessage("03/25/2015","MS Band Contest");
+		w.addMessage("03/26/2015","8th Grade Museum Night 4-7");
+		w.addMessage("03/27/2015","Elementry Family Night");
+    	w.addMessage("03/29/2015","4nd Grade STAR Testing the Next day");
+    	w.addMessage("03/30/2015","4nd Grade STAR Testing the Next day");
+    	w.addMessage("03/31/2015","1st Grade School Performance");
+    	w.addMessage("04/02/2015","4th Grade Austin Field Trip");
+    	w.addMessage("04/03/2015","Good Friday");
+    	w.addMessage("04/05/2015","Easter Sunday");
 		
+		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+		String date = formatter.format(sunday.getTime());
+		String condition = w.getWeather(date);
+		if(condition != null && condition.length()>0){
+			model.addAttribute("SundayWeather",date +": "+condition);
 		}
-		if(w.getTodaysCondition().contains("Showers") ||
-				w.getTodaysCondition().contains("Thunderstorms") ||
-				w.getTodaysCondition().contains("Rain")){
-			
+		
+		sunday.add(Calendar.DAY_OF_YEAR, 1);
+		formatter = new SimpleDateFormat("MM/dd/yyyy");
+		date = formatter.format(sunday.getTime());
+		condition = w.getWeather(date);
+		if(condition != null && condition.length()>0){
+			model.addAttribute("MondayWeather",date +": "+condition);
+		}
+		
+		sunday.add(Calendar.DAY_OF_YEAR, 1);
+		formatter = new SimpleDateFormat("MM/dd/yyyy");
+		date = formatter.format(sunday.getTime());
+		condition = w.getWeather(date);
+		if(condition != null && condition.length()>0){
+			model.addAttribute("TuesdayWeather",date +": "+condition);
+		}
+		
+		sunday.add(Calendar.DAY_OF_YEAR, 1);
+		formatter = new SimpleDateFormat("MM/dd/yyyy");
+		date = formatter.format(sunday.getTime());
+		condition = w.getWeather(date);
+		if(condition != null && condition.length()>0){
+			model.addAttribute("WednesdayWeather",date +": "+condition);
+		}
+		
+		sunday.add(Calendar.DAY_OF_YEAR, 1);
+		formatter = new SimpleDateFormat("MM/dd/yyyy");
+		date = formatter.format(sunday.getTime());
+		condition = w.getWeather(date);
+		if(condition != null && condition.length()>0){
+			model.addAttribute("ThursdayWeather",date +": "+condition);
+		}
+		
+		sunday.add(Calendar.DAY_OF_YEAR, 1);
+		formatter = new SimpleDateFormat("MM/dd/yyyy");
+		date = formatter.format(sunday.getTime());
+		condition = w.getWeather(date);
+		if(condition != null && condition.length()>0){
+			model.addAttribute("FridayWeather",date +": "+condition);
+		}
+		
+		sunday.add(Calendar.DAY_OF_YEAR, 1);
+		formatter = new SimpleDateFormat("MM/dd/yyyy");
+		date = formatter.format(sunday.getTime());
+		condition = w.getWeather(date);
+		if(condition != null && condition.length()>0){
+			model.addAttribute("SaturdayWeather",date +": "+condition);
 		}
 		
 	}
@@ -739,7 +795,7 @@ public class ScheduleController extends DefaultHandlerController {
 			// This week, do nothing
 		}else{
 			// don't allow younger teams later spots
-			if(team.getAgeGroup().getName().equals("6U")){
+			if(team.getAgeGroup().getName().equals("6U") && !team.getCoach().getUserType().equals(UserType.ADMIN)){
 				day.set(20, "Reserved For Older Teams.");
 				day.set(21, "Reserved For Older Teams.");
 				day.set(22, "Reserved For Older Teams.");
@@ -747,7 +803,7 @@ public class ScheduleController extends DefaultHandlerController {
 				day.set(24, "Reserved For Older Teams.");
 				day.set(25, "Reserved For Older Teams.");
 			}
-			else if(team.getAgeGroup().getName().equals("8U")){
+			else if(team.getAgeGroup().getName().equals("8U") && !team.getCoach().getUserType().equals(UserType.ADMIN)){
 				day.set(22, "Reserved For Older Teams.");
 				day.set(23, "Reserved For Older Teams.");
 				day.set(24, "Reserved For Older Teams.");
@@ -762,7 +818,8 @@ public class ScheduleController extends DefaultHandlerController {
 					// No rules apply
 				}else if(today.get(Calendar.DAY_OF_WEEK)==Calendar.THURSDAY || week.after(twoWeeks)){
 					// don't allow older teams to schedule anything before 7:00
-					if(field.getName().contains("FM") &&
+					if(field.getName().contains("FM") && 
+							!team.getCoach().getUserType().equals(UserType.ADMIN) &&
 							(team.getAgeGroup().getName().equals("10U") 
 								|| team.getAgeGroup().getName().equals("12U")
 								|| team.getAgeGroup().getName().equals("14U"))){
@@ -781,6 +838,7 @@ public class ScheduleController extends DefaultHandlerController {
 				}else if(today.get(Calendar.DAY_OF_WEEK)<=Calendar.WEDNESDAY || week.after(twoWeeks)){
 					// don't allow older teams to schedule little east
 					if(field.getName().contains("Little") &&
+							 !team.getCoach().getUserType().equals(UserType.ADMIN) &&
 							(team.getAgeGroup().getName().equals("10U") 
 								|| team.getAgeGroup().getName().equals("12U")
 								|| team.getAgeGroup().getName().equals("14U"))){
@@ -792,7 +850,8 @@ public class ScheduleController extends DefaultHandlerController {
 						day.set(21, "Reserved For Younger Teams.");
 						day.set(22, "Reserved For Younger Teams.");
 						day.set(23, "Reserved For Younger Teams.");
-					}else if(field.getName().contains("Big") &&
+					}else if(field.getName().contains("Big") && 
+							!team.getCoach().getUserType().equals(UserType.ADMIN) &&
 							(team.getAgeGroup().getName().equals("6U") 
 								|| team.getAgeGroup().getName().equals("8U"))){
 						day.set(16, "Reserved For Older Teams.");

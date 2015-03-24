@@ -19,11 +19,11 @@
 	
 	$(document).ready(function(){
 		
-		hideDay(1);
 		hideDay(2);
 		hideDay(3);
 		hideDay(4);
 		hideDay(5);
+		hideDay(6);
 		
 	});
 	
@@ -164,12 +164,23 @@ if((user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
     	<div style="margin-left: 80%; float: right;"><a href="/scheduling/schedule/calendar?date=<%out.println(format1.format(addDay.getTime()));%>"><b>Next Week</b></a></div>
 	</div>
 	
-	<table class="list">
+	<table class="list" width="100%">
 	<tr class="header">
-	  <th colspan=<%out.println(fields.size()+2); %>>
+	  <th>
 	    Week of <% out.println(format2.format(scheduleDay.getTime())); %>
 	  </th>
 	</tr>
+	</table>
+	
+	<c:if test="${SundayWeather != null }">
+	<table class="weather" width="100%">
+	<tbody>
+	<tr><td>${SundayWeather}</td></tr>
+	</tbody>
+	</table>
+	</c:if>
+	
+	<table class="list">
 	<tr class="header">
 		<th> </th>
 		<th> </th>
@@ -189,6 +200,14 @@ if((user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 	out.println("</table>");
 	
 	%>
+	<c:if test="${MondayWeather != null }">
+	<table class="weather" width="100%">
+	<tbody>
+	<tr><td>${MondayWeather}</td></tr>
+	</tbody>
+	</table>
+	</c:if>
+	
 	<table class="list">
 	<tr class="header">
 		<th> </th>
@@ -206,6 +225,14 @@ if((user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 	out.println("</table>");
 	
 	%>
+	<c:if test="${TuesdayWeather != null }">
+	<table class="weather" width="100%">
+	<tbody>
+	<tr><td>${TuesdayWeather}</td></tr>
+	</tbody>
+	</table>
+	</c:if>
+	
 	<table class="list">
 	<tr class="header">
 		<th> </th>
@@ -223,6 +250,14 @@ if((user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 	out.println("</table>");
 	
 	%>
+	<c:if test="${WednesdayWeather != null }">
+	<table class="weather" width="100%">
+	<tbody>
+	<tr><td>${WednesdayWeather}</td></tr>
+	</tbody>
+	</table>
+	</c:if>
+	
 	<table class="list">
 	<tr class="header">
 		<th> </th>
@@ -240,6 +275,14 @@ if((user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 	out.println("</table>");
 	
 	%>
+	<c:if test="${ThursdayWeather != null }">
+	<table class="weather" width="100%">
+	<tbody>
+	<tr><td>${ThursdayWeather}</td></tr>
+	</tbody>
+	</table>
+	</c:if>
+	
 	<table class="list">
 	<tr class="header">
 		<th> </th>
@@ -257,6 +300,14 @@ if((user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 	out.println("</table>");
 	
 	%>
+	<c:if test="${FridayWeather != null }">
+	<table class="weather" width="100%">
+	<tbody>
+	<tr><td>${FridayWeather}</td></tr>
+	</tbody>
+	</table>
+	</c:if>
+	
 	<table class="list">
 	<tr class="header">
 		<th> </th>
@@ -274,6 +325,14 @@ if((user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 	out.println("</table>");
 	
 	%>
+	<c:if test="${SaturdayWeather != null }">
+	<table class="weather" width="100%">
+	<tbody>
+	<tr><td>${SaturdayWeather}</td></tr>
+	</tbody>
+	</table>
+	</c:if>
+	
 	<table class="list">
 	<tr class="header">
 		<th> </th>

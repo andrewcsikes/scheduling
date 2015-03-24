@@ -3,9 +3,15 @@ package com.vasa.scheduling.weather;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
+
+
 
 
 
@@ -31,23 +37,31 @@ public class YahooWeatherParser {
         NodeList nodi = doc.getElementsByTagName("yweather:forecast"); 
         if (nodi.getLength() > 0) { 
         	Element nodo = (Element)nodi.item(0);
-        	weather.setTodaysHigh(Integer.valueOf(nodo.getAttribute("high")).intValue());
-        	weather.setTodaysLow(Integer.valueOf(nodo.getAttribute("low")).intValue());
-        	weather.setTodaysCondition(nodo.getAttribute("day") + " - " +nodo.getAttribute("text"));
+        	
+        	Calendar day = Calendar.getInstance();
+        	day.setTime(new Date());
+        	day.set(Calendar.MINUTE, 0);
+        	day.set(Calendar.HOUR, 0);
+        	
+        	SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+        	
+        	weather.add(formatter.format(day.getTime()),nodo.getAttribute("text"));
         	
         	nodo = (Element)nodi.item(1);
-        	weather.setTomorrowsHigh(Integer.valueOf(nodo.getAttribute("high")).intValue());
-        	weather.setTomorrowsLow(Integer.valueOf(nodo.getAttribute("low")).intValue());
-        	weather.setTomorrowsCondition(nodo.getAttribute("day") + " - " +nodo.getAttribute("text"));
+        	day.add(Calendar.DAY_OF_YEAR,1);
+        	weather.add(formatter.format(day.getTime()),nodo.getAttribute("text"));
         	
         	nodo = (Element)nodi.item(2);
-        	weather.setDay3Condition(nodo.getAttribute("day") + " - " +nodo.getAttribute("text"));
+        	day.add(Calendar.DAY_OF_YEAR,1);
+        	weather.add(formatter.format(day.getTime()),nodo.getAttribute("text"));
         	
         	nodo = (Element)nodi.item(3);
-        	weather.setDay4Condition(nodo.getAttribute("day") + " - " +nodo.getAttribute("text"));
+        	day.add(Calendar.DAY_OF_YEAR,1);
+        	weather.add(formatter.format(day.getTime()),nodo.getAttribute("text"));
         	
         	nodo = (Element)nodi.item(4);
-        	weather.setDay5Condition(nodo.getAttribute("day") + " - " +nodo.getAttribute("text"));
+        	day.add(Calendar.DAY_OF_YEAR,1);
+        	weather.add(formatter.format(day.getTime()),nodo.getAttribute("text"));
         }
 
         return weather;
