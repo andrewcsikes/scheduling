@@ -536,7 +536,7 @@ public class ScheduleController extends DefaultHandlerController {
 		
 		// This week
 		if(today.compareTo(week)>0){
-			//return true;
+			return true;
 		}
 		
 		// The week before
