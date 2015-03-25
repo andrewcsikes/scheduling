@@ -124,6 +124,7 @@ table.search p{
 table.weather {
     background-color: orange;
     color: white;
+    border: 0 none;
     font-size: small;
     font-weight: bold;
 }

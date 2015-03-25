@@ -173,9 +173,9 @@ public class ScheduleController extends DefaultHandlerController {
 			e.printStackTrace();
 		}
 		
-		w.addMessage("03/24/2015","4th Grade Field Trip - Parent Meeting @ 6:30, 7th Grade Field Trip - Parent Meeting @ 6:00, MS Track Meet");
+		w.addMessage("03/24/2015","4th Grade Field Trip - Parent Meeting @ 6:30 PM, 7th Grade Field Trip - Parent Meeting @ 6:00 PM, MS Track Meet");
 		w.addMessage("03/25/2015","MS Band Contest");
-		w.addMessage("03/26/2015","8th Grade Museum Night 4-7");
+		w.addMessage("03/26/2015","8th Grade Museum Night 4-7 PM");
 		w.addMessage("03/27/2015","Elementry Family Night");
     	w.addMessage("03/29/2015","4nd Grade STAR Testing the Next day");
     	w.addMessage("03/30/2015","4nd Grade STAR Testing the Next day");
