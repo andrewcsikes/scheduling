@@ -795,20 +795,20 @@ public class ScheduleController extends DefaultHandlerController {
 			// This week, do nothing
 		}else{
 			// don't allow younger teams later spots
-			if(team.getAgeGroup().getName().equals("6U") && !team.getCoach().getUserType().equals(UserType.ADMIN)){
-				day.set(20, "Reserved For Older Teams.");
-				day.set(21, "Reserved For Older Teams.");
-				day.set(22, "Reserved For Older Teams.");
-				day.set(23, "Reserved For Older Teams.");
-				day.set(24, "Reserved For Older Teams.");
-				day.set(25, "Reserved For Older Teams.");
-			}
-			else if(team.getAgeGroup().getName().equals("8U") && !team.getCoach().getUserType().equals(UserType.ADMIN)){
-				day.set(22, "Reserved For Older Teams.");
-				day.set(23, "Reserved For Older Teams.");
-				day.set(24, "Reserved For Older Teams.");
-				day.set(25, "Reserved For Older Teams.");
-			}
+//			if(!field.getName().contains("Little") && team.getAgeGroup().getName().equals("6U") && !team.getCoach().getUserType().equals(UserType.ADMIN)){
+//				day.set(20, "Reserved For Older Teams.");
+//				day.set(21, "Reserved For Older Teams.");
+//				day.set(22, "Reserved For Older Teams.");
+//				day.set(23, "Reserved For Older Teams.");
+//				day.set(24, "Reserved For Older Teams.");
+//				day.set(25, "Reserved For Older Teams.");
+//			}
+//			else if(!field.getName().contains("Little") && team.getAgeGroup().getName().equals("8U") && !team.getCoach().getUserType().equals(UserType.ADMIN)){
+//				day.set(22, "Reserved For Older Teams.");
+//				day.set(23, "Reserved For Older Teams.");
+//				day.set(24, "Reserved For Older Teams.");
+//				day.set(25, "Reserved For Older Teams.");
+//			}
 			if(field.getSport().getName().equals("Baseball") && 
 					team != null && 
 					team.getSeason().getApplySchedulingRules()){
@@ -816,7 +816,7 @@ public class ScheduleController extends DefaultHandlerController {
 				if(calDay.get(Calendar.DAY_OF_WEEK)==Calendar.SUNDAY
 						|| calDay.get(Calendar.DAY_OF_WEEK)==Calendar.SATURDAY){
 					// No rules apply
-				}else if(today.get(Calendar.DAY_OF_WEEK)==Calendar.THURSDAY || week.after(twoWeeks)){
+				}else if(today.get(Calendar.DAY_OF_WEEK)<=Calendar.THURSDAY || week.after(twoWeeks)){
 					// don't allow older teams to schedule anything before 7:00
 					if(field.getName().contains("FM") && 
 							!team.getCoach().getUserType().equals(UserType.ADMIN) &&
@@ -827,6 +827,15 @@ public class ScheduleController extends DefaultHandlerController {
 						day.set(17, "Reserved For Younger Teams.");
 						day.set(18, "Reserved For Younger Teams.");
 						day.set(19, "Reserved For Younger Teams.");
+					}
+					else if(field.getName().contains("FM") && 
+							!team.getCoach().getUserType().equals(UserType.ADMIN) &&
+							(team.getAgeGroup().getName().equals("6U") 
+								|| team.getAgeGroup().getName().equals("8U"))){
+						day.set(22, "Reserved For Older Teams.");
+						day.set(23, "Reserved For Older Teams.");
+						day.set(24, "Reserved For Older Teams.");
+						day.set(25, "Reserved For Older Teams.");
 					}
 				}
 			}else if(field.getSport().getName().equals("Softball") && 
@@ -842,6 +851,8 @@ public class ScheduleController extends DefaultHandlerController {
 							(team.getAgeGroup().getName().equals("10U") 
 								|| team.getAgeGroup().getName().equals("12U")
 								|| team.getAgeGroup().getName().equals("14U"))){
+						day.set(14, "Reserved For Younger Teams.");
+						day.set(15, "Reserved For Younger Teams.");
 						day.set(16, "Reserved For Younger Teams.");
 						day.set(17, "Reserved For Younger Teams.");
 						day.set(18, "Reserved For Younger Teams.");
@@ -850,10 +861,14 @@ public class ScheduleController extends DefaultHandlerController {
 						day.set(21, "Reserved For Younger Teams.");
 						day.set(22, "Reserved For Younger Teams.");
 						day.set(23, "Reserved For Younger Teams.");
+						day.set(24, "Reserved For Younger Teams.");
+						day.set(25, "Reserved For Younger Teams.");
 					}else if(field.getName().contains("Big") && 
 							!team.getCoach().getUserType().equals(UserType.ADMIN) &&
 							(team.getAgeGroup().getName().equals("6U") 
 								|| team.getAgeGroup().getName().equals("8U"))){
+						day.set(14, "Reserved For Older Teams.");
+						day.set(15, "Reserved For Older Teams.");
 						day.set(16, "Reserved For Older Teams.");
 						day.set(17, "Reserved For Older Teams.");
 						day.set(18, "Reserved For Older Teams.");
@@ -862,6 +877,8 @@ public class ScheduleController extends DefaultHandlerController {
 						day.set(21, "Reserved For Older Teams.");
 						day.set(22, "Reserved For Older Teams.");
 						day.set(23, "Reserved For Older Teams.");
+						day.set(24, "Reserved For Older Teams.");
+						day.set(25, "Reserved For Older Teams.");
 					}
 				}
 			}
