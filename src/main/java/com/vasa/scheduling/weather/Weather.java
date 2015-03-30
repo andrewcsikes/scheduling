@@ -18,7 +18,7 @@ public class Weather {
 				weather.contains("Storms") ||
 				weather.contains("Rain")){
     		if(cond != null){
-        		weather = weather + cond;
+        		weather = weather + ", " + cond;
         	}
         	conditions.put(date, weather);
     	}
