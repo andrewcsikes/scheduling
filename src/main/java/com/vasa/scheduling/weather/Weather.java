@@ -16,6 +16,7 @@ public class Weather {
     	if(weather.contains("Showers") ||
 				weather.contains("Thunderstorms") ||
 				weather.contains("Storms") ||
+				weather.contains("Snow") ||
 				weather.contains("Rain")){
     		if(cond != null){
         		weather = weather + ", " + cond;
