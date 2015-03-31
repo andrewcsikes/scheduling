@@ -182,8 +182,6 @@ public class ScheduleController extends DefaultHandlerController {
 			e.printStackTrace();
 		}
 		
-		
-		
 		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 		String date = formatter.format(sunday.getTime());
 		String condition = w.getWeather(date);
