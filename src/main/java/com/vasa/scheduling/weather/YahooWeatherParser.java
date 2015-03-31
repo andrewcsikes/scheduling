@@ -24,13 +24,11 @@ import org.w3c.dom.NodeList;
 
 public class YahooWeatherParser {
 
-    public Weather parse(String zip) throws Exception {
+    public Weather parse(Weather weather, String zip) throws Exception {
         
     	InputStream inputStream = retrieve( zip );
     	
-    	Weather weather = new Weather();
-
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    	DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document doc = builder.parse(inputStream);
         
