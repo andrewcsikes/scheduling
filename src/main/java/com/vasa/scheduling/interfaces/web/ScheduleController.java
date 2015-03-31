@@ -173,16 +173,14 @@ public class ScheduleController extends DefaultHandlerController {
 			e.printStackTrace();
 		}
 		
-		w.addMessage("03/24/2015","4th Grade Field Trip - Parent Meeting @ 6:30 PM, 7th Grade Field Trip - Parent Meeting @ 6:00 PM, MS Track Meet");
-		w.addMessage("03/25/2015","MS Band Contest");
-		w.addMessage("03/26/2015","8th Grade Museum Night 4-7 PM");
-		w.addMessage("03/27/2015","Elementry Family Night");
-    	w.addMessage("03/29/2015","4nd Grade STAR Testing the Next day");
-    	w.addMessage("03/30/2015","4nd Grade STAR Testing the Next day");
-    	w.addMessage("03/31/2015","1st Grade School Performance");
+		w.addMessage("03/31/2015","1st Grade School Performance");
     	w.addMessage("04/02/2015","4th Grade Austin Field Trip");
     	w.addMessage("04/03/2015","Good Friday");
     	w.addMessage("04/05/2015","Easter Sunday");
+    	w.addMessage("04/20/2015","4nd Grade STAR Testing the Next day");
+		w.addMessage("04/21/2015","4nd Grade STAR Testing the Next day");
+		w.addMessage("04/22/2015","4nd Grade STAR Testing the Next day");
+		w.addMessage("04/23/2015","4nd Grade STAR Testing the Next day");
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 		String date = formatter.format(sunday.getTime());
