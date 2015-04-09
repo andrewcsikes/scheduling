@@ -166,10 +166,6 @@ public class ScheduleController extends DefaultHandlerController {
 	private void getWeather(Model model, Calendar sunday) {
 		Weather w = new Weather();
 		
-		w.addMessage("03/31/2015","1st Grade School Performance");
-    	w.addMessage("04/02/2015","4th Grade Austin Field Trip");
-    	w.addMessage("04/03/2015","Good Friday");
-    	w.addMessage("04/05/2015","Easter Sunday");
     	w.addMessage("04/20/2015","4nd Grade STAR Testing the Next day");
 		w.addMessage("04/21/2015","4nd Grade STAR Testing the Next day");
 		w.addMessage("04/22/2015","4nd Grade STAR Testing the Next day");

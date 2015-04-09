@@ -110,6 +110,36 @@ public class UserContactController extends DefaultHandlerController{
 				}catch(Exception e){
 				}
 			}
+		}else if(submit.equals("Email Baseball")){
+			message = realUser.getFirstName() + " " + realUser.getLastName() +" sent you a message through the VASA field scheduling site.<br /><br />MESSAGE="+message;
+			for(Team t : teams){
+				if(!t.getCoach().getStatus().equals(Status.ACTIVE)){
+					continue;
+				}
+				else if(t.getCoach().getTeam() == null || t.getCoach().getTeam().getSport() == null || !t.getCoach().getTeam().getSport().getName().equals("Baseball")){
+					continue;
+				}
+				String emailAddress = t.getCoach().getEmailAddress();
+				try{
+					es.sendEmail(emailAddress, realUser.getEmailAddress(), "Global Alert", message);
+				}catch(Exception e){
+				}
+			}
+		}else if(submit.equals("Email Softball")){
+			message = realUser.getFirstName() + " " + realUser.getLastName() +" sent you a message through the VASA field scheduling site.<br /><br />MESSAGE="+message;
+			for(Team t : teams){
+				if(!t.getCoach().getStatus().equals(Status.ACTIVE)){
+					continue;
+				}
+				else if(t.getCoach().getTeam() == null || t.getCoach().getTeam().getSport() == null || !t.getCoach().getTeam().getSport().getName().equals("Softball")){
+					continue;
+				}
+				String emailAddress = t.getCoach().getEmailAddress();
+				try{
+					es.sendEmail(emailAddress, realUser.getEmailAddress(), "Global Alert", message);
+				}catch(Exception e){
+				}
+			}
 		}else if(submit.equals("Send Text")){
 			for(Team t : teams){
 				User u = t.getCoach();

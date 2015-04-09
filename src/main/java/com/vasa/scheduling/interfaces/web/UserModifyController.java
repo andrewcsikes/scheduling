@@ -13,6 +13,7 @@ import com.vasa.scheduling.domain.User;
 import com.vasa.scheduling.enums.State;
 import com.vasa.scheduling.enums.UserType;
 import com.vasa.scheduling.enums.Status;
+import com.vasa.scheduling.enums.Carrier;
 import com.vasa.scheduling.services.UserService;
 
 @RequestMapping("/user/modify")
@@ -85,6 +86,11 @@ public class UserModifyController extends DefaultHandlerController{
 		user.setAddress2(request.getParameter("address2"));
 		user.setCity(request.getParameter("city"));
 		user.setState(request.getParameter("state"));
+		
+		if(request.getParameter("carrier") != null){
+			user.setCarrier(Carrier.toEnumFromCode(Integer.valueOf(request.getParameter("carrier"))));
+		}
+		
 		user.setPhone(request.getParameter("phone"));
 		user.setPostalCode(request.getParameter("postalCode"));
 		
