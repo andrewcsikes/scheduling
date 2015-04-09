@@ -6,6 +6,7 @@ import java.util.List;
 import com.vasa.scheduling.domain.FieldSchedule;
 import com.vasa.scheduling.domain.Fields;
 import com.vasa.scheduling.domain.Game;
+import com.vasa.scheduling.domain.Log;
 import com.vasa.scheduling.domain.Season;
 import com.vasa.scheduling.domain.Sport;
 import com.vasa.scheduling.domain.Team;
@@ -33,5 +34,7 @@ public interface ScheduleService{
 	List<Game> findGameByMonth(Date date);
 	List<Game> findGamesByFilter(Team team, Fields field, String filterClass, Date time);
 	Game save(Game schedule);
+	Log save(Log l);
+	List<Log> findAllLogs();
 	FieldSchedule getLastActive();
 }

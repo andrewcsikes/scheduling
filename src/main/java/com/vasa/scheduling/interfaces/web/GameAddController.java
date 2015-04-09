@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.vasa.scheduling.domain.FieldSchedule;
 import com.vasa.scheduling.domain.Game;
+import com.vasa.scheduling.domain.Log;
 import com.vasa.scheduling.domain.User;
 import com.vasa.scheduling.services.ScheduleService;
 import com.vasa.scheduling.services.TeamService;
@@ -74,13 +75,19 @@ public class GameAddController extends DefaultHandlerController{
 		
 		Game schedule = new Game();
 		schedule.setCreationDate(new Date());
-		schedule.setField(service.findFieldByName(request.getParameter("field")));
+		String fieldName = request.getParameter("field");
+		schedule.setField(service.findFieldByName(fieldName));
 		schedule.setAgeGroup(teamService.findAgeGroupById(Integer.valueOf(request.getParameter("ageGroup"))));
 		schedule.setDate(date.getTime());
 		schedule.setDuration(request.getParameter("duration"));
 		schedule.setHomeTeam(request.getParameter("homeTeam"));
 		schedule.setAwayTeam(request.getParameter("awayTeam"));
 		service.save(schedule);
+		
+		Log l = new Log();
+		l.setDescription(realUser.getFirstName() + " " + realUser.getLastName() + " added a game on "+fieldName + " for " + d);
+		l.setCreationDate(new Date());
+		service.save(l);
 				
 		return "user/home";
 	}

@@ -74,21 +74,22 @@
     <td>Email Address:</td>
     <td><input type="text" size="40" name="emailAddress" value="${modifyuser.emailAddress}" /></td>
   </tr>
+<!--   <tr> -->
+<!--       <td>Cell Service:</td> -->
+<!--       <td> -->
+<!--         <select name="carrier"> -->
+<%--           <option value="" ${modifyuser.carrier.code == null ? 'selected' : ''}>Select</option> --%>
+<%--           <option value="1" ${modifyuser.carrier.code == 1 ? 'selected' : ''}>AT&T</option> --%>
+<%--           <option value="2" ${modifyuser.carrier.code == 2 ? 'selected' : ''}>Sprint</option> --%>
+<%--           <option value="3" ${modifyuser.carrier.code == 3 ? 'selected' : ''}>T-Mobile</option> --%>
+<%--           <option value="4" ${modifyuser.carrier.code == 4 ? 'selected' : ''}>Verizon</option> --%>
+<%--           <option value="5" ${modifyuser.carrier.code == 5 ? 'selected' : ''}>Nextel</option> --%>
+<%--           <option value="6" ${modifyuser.carrier.code == 6 ? 'selected' : ''}>Cricket</option> --%>
+<!--         </select> -->
+<!--       </td> -->
+<!--     </tr> -->
   <tr>
-      <td>Cell Service:</td>
-      <td>
-        <select name="status">
-          <option value="1" ${modifyuser.carrier.code == 1 ? 'selected' : ''}>AT&T</option>
-          <option value="2" ${modifyuser.carrier.code == 2 ? 'selected' : ''}>Sprint</option>
-          <option value="3" ${modifyuser.carrier.code == 3 ? 'selected' : ''}>T-Mobile</option>
-          <option value="4" ${modifyuser.carrier.code == 3 ? 'selected' : ''}>Verizon</option>
-          <option value="5" ${modifyuser.carrier.code == 3 ? 'selected' : ''}>Nextel</option>
-          <option value="6" ${modifyuser.carrier.code == 3 ? 'selected' : ''}>Cricket</option>
-        </select>
-      </td>
-    </tr>
-  <tr>
-    <td>Cell Phone Number:</td>
+    <td>Phone Number:</td>
     <td><input type="text" size="40" name="phone" value="${modifyuser.phone}"></td>
   </tr>
 </table>

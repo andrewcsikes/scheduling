@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.vasa.scheduling.domain.FieldSchedule;
 import com.vasa.scheduling.domain.Fields;
 import com.vasa.scheduling.domain.Game;
+import com.vasa.scheduling.domain.Log;
 import com.vasa.scheduling.domain.Season;
 import com.vasa.scheduling.domain.Sport;
 import com.vasa.scheduling.domain.Team;
@@ -21,6 +22,7 @@ import com.vasa.scheduling.enums.Status;
 import com.vasa.scheduling.repositiories.FieldRepository;
 import com.vasa.scheduling.repositiories.FieldScheduleRepository;
 import com.vasa.scheduling.repositiories.GameRepository;
+import com.vasa.scheduling.repositiories.LogRepository;
 import com.vasa.scheduling.repositiories.SeasonRepository;
 import com.vasa.scheduling.repositiories.SportRepository;
 
@@ -32,6 +34,9 @@ public class ScheduleServiceImpl implements ScheduleService {
 	
 	@Autowired
 	private FieldScheduleRepository repo;
+	
+	@Autowired
+	private LogRepository logRepo;
 	
 	@Autowired
 	private FieldRepository fieldRepo;
@@ -225,5 +230,15 @@ public class ScheduleServiceImpl implements ScheduleService {
 		}
 		
 		return fs;
+	}
+
+	@Override
+	public Log save(Log l) {
+		return logRepo.save(l);
+	}
+	
+	@Override
+	public List<Log> findAllLogs() {
+		return logRepo.findAll();
 	}
 }

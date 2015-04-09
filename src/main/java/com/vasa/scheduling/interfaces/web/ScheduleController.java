@@ -22,6 +22,7 @@ import com.vasa.scheduling.weather.YahooWeatherParser;
 import com.vasa.scheduling.domain.FieldSchedule;
 import com.vasa.scheduling.domain.Fields;
 import com.vasa.scheduling.domain.Game;
+import com.vasa.scheduling.domain.Log;
 import com.vasa.scheduling.domain.Season;
 import com.vasa.scheduling.domain.Sport;
 import com.vasa.scheduling.domain.Team;
@@ -453,6 +454,10 @@ public class ScheduleController extends DefaultHandlerController {
 				times.add(Calendar.MINUTE, 30);
 			}
 			
+			Log l = new Log();
+			l.setDescription(user.getFirstName() + " " + user.getLastName() + " added a practice on "+field + " for " + date +" " +hour+ ":"+minute);
+			l.setCreationDate(new Date());
+			service.save(l);
 			
 		}catch(ParseException e){
 			System.out.println("Parse Error: " +e.getMessage());
@@ -504,6 +509,11 @@ public class ScheduleController extends DefaultHandlerController {
 					schedule.setTeam(user.getTeam());
 				}
 				service.save(schedule);
+				
+				Log l = new Log();
+				l.setDescription(user.getFirstName() + " " + user.getLastName() + " added a practice on "+field + " for " + calendarDay);
+				l.setCreationDate(new Date());
+				service.save(l);
 			}
 			
 			Calendar sunday = Calendar.getInstance();
@@ -611,6 +621,11 @@ public class ScheduleController extends DefaultHandlerController {
 					schedule.getTeam().getId().equals(user.getTeam().getId())){
 				service.delete(schedule);
 				
+				Log l = new Log();
+				l.setDescription(user.getFirstName() + " " + user.getLastName() + " deleted a practice on "+field + " for " + calenderDay);
+				l.setCreationDate(new Date());
+				service.save(l);
+				
 				// If date is current week, email league coaches.
 				Calendar today = Calendar.getInstance();
 				Calendar slot = Calendar.getInstance();
@@ -639,7 +654,14 @@ public class ScheduleController extends DefaultHandlerController {
 				}
 			}else if(schedule != null && (user.getUserType().equals(UserType.ADMIN) ||
 					user.getUserType().equals(UserType.COMMISSIONER))){
+				User coach = schedule.getTeam().getCoach();
 				service.delete(schedule);
+				
+				Log l = new Log();
+				l.setDescription(user.getFirstName() + " " + user.getLastName() + " deleted "+coach.getLastName()+"'s practice on "+field + " for " + calenderDay);
+				l.setCreationDate(new Date());
+				service.save(l);
+				
 				// email coach, ADMIN deleted his schedule
 				try{
 					SimpleDateFormat formatter2 = new SimpleDateFormat("EEE, MMM d HH:mm");

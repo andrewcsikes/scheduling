@@ -98,18 +98,18 @@ public class UserContactController extends DefaultHandlerController{
 			userService.setGlobalMessage(message);
 		}else if(submit.equals("Delete Message")){
 			userService.setGlobalMessage(null);
-		}else if(submit.equals("Send Email")){
-			message = realUser.getFirstName() + " " + realUser.getLastName() +" sent you a message through the VASA field scheduling site.<br /><br />MESSAGE="+message;
-			for(Team t : teams){
-				if(!t.getCoach().getStatus().equals(Status.ACTIVE)){
-					continue;
-				}
-				String emailAddress = t.getCoach().getEmailAddress();
-				try{
-					es.sendEmail(emailAddress, realUser.getEmailAddress(), "Global Alert", message);
-				}catch(Exception e){
-				}
-			}
+//		}else if(submit.equals("Send Email")){
+//			message = realUser.getFirstName() + " " + realUser.getLastName() +" sent you a message through the VASA field scheduling site.<br /><br />MESSAGE="+message;
+//			for(Team t : teams){
+//				if(!t.getCoach().getStatus().equals(Status.ACTIVE)){
+//					continue;
+//				}
+//				String emailAddress = t.getCoach().getEmailAddress();
+//				try{
+//					es.sendEmail(emailAddress, realUser.getEmailAddress(), "Global Alert", message);
+//				}catch(Exception e){
+//				}
+//			}
 		}else if(submit.equals("Email Baseball")){
 			message = realUser.getFirstName() + " " + realUser.getLastName() +" sent you a message through the VASA field scheduling site.<br /><br />MESSAGE="+message;
 			for(Team t : teams){
@@ -140,15 +140,50 @@ public class UserContactController extends DefaultHandlerController{
 				}catch(Exception e){
 				}
 			}
-		}else if(submit.equals("Send Text")){
+		}else if(submit.equals("Text Baseball")){
 			for(Team t : teams){
 				User u = t.getCoach();
 				if(!u.getStatus().equals(Status.ACTIVE) || u.getCarrier()==null){
+					continue;
+				}else if(t.getCoach().getTeam() == null || t.getCoach().getTeam().getSport() == null || !t.getCoach().getTeam().getSport().getName().equals("Baseball")){
 					continue;
 				}
 				String phone = u.getPhone();
 				phone = phone.replaceAll("-", "");
 				phone = phone.replaceAll(".", "");
+				phone = phone.replaceAll(" ", "");
+				
+				if(u.getCarrier().equals(Carrier.ATT)){
+					phone = phone + "@txt.att.net";
+				}else if(u.getCarrier().equals(Carrier.VERIZON)){
+					phone = phone + "@vtext.com";
+				}else if(u.getCarrier().equals(Carrier.SPRINT)){
+					phone = phone + "@messaging.sprintpcs.com";
+				}else if(u.getCarrier().equals(Carrier.TMOBIL)){
+					phone = phone + "@tmomail.net";
+				}else if(u.getCarrier().equals(Carrier.NEXTTEL)){
+					phone = phone + "@messaging.nextel.com";
+				}else if(u.getCarrier().equals(Carrier.CRICKET)){
+					phone = phone + "@mms.mycricket.com";
+				}
+				
+				try{
+					es.sendEmail(phone, realUser.getEmailAddress(), "Global Alert", message);
+				}catch(Exception e){
+				}
+			}
+		}else if(submit.equals("Text Softball")){
+			for(Team t : teams){
+				User u = t.getCoach();
+				if(!u.getStatus().equals(Status.ACTIVE) || u.getCarrier()==null){
+					continue;
+				}else if(t.getCoach().getTeam() == null || t.getCoach().getTeam().getSport() == null || !t.getCoach().getTeam().getSport().getName().equals("Softball")){
+					continue;
+				}
+				String phone = u.getPhone();
+				phone = phone.replaceAll("-", "");
+				phone = phone.replaceAll(".", "");
+				phone = phone.replaceAll(" ", "");
 				
 				if(u.getCarrier().equals(Carrier.ATT)){
 					phone = phone + "@txt.att.net";
