@@ -1,5 +1,6 @@
 package com.vasa.scheduling.interfaces.web;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.vasa.scheduling.domain.Log;
 import com.vasa.scheduling.domain.Season;
 import com.vasa.scheduling.domain.Team;
 import com.vasa.scheduling.domain.User;
@@ -63,6 +65,11 @@ public class UserContactController extends DefaultHandlerController{
 		}catch(Exception e){
 			model.addAttribute("loginerror", e.getCause() +": "+e.getMessage());
 		}
+		
+		Log l = new Log();
+		l.setDescription(realUser.getFirstName() + " " + realUser.getLastName() + " emailed "+user.getLastName());
+		l.setCreationDate(new Date());
+		scheduleService.save(l);
 		
 		List<Team> teams = service.findActive();
 	    model.addAttribute("teams", teams);

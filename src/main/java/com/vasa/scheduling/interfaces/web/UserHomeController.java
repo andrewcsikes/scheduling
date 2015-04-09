@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.vasa.scheduling.domain.GlobalMessage;
+import com.vasa.scheduling.domain.Log;
 import com.vasa.scheduling.domain.Season;
 import com.vasa.scheduling.domain.User;
 import com.vasa.scheduling.enums.Status;
+import com.vasa.scheduling.enums.UserType;
+import com.vasa.scheduling.services.ScheduleService;
 import com.vasa.scheduling.services.SeasonService;
 import com.vasa.scheduling.services.UserService;
 
@@ -32,6 +35,7 @@ public class UserHomeController extends DefaultHandlerController{
 	
 	@Autowired private UserService mr;
 	@Autowired private SeasonService seasonService;
+	@Autowired private ScheduleService scheduleService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(UserHomeController.class);
 	
@@ -81,6 +85,13 @@ public class UserHomeController extends DefaultHandlerController{
 		
 		if(user == null){
 			return "login";
+		}
+		
+		if(!user.getUserType().equals(UserType.ADMIN)){
+			Log l = new Log();
+			l.setDescription(user.getFirstName() + " " + user.getLastName() + " logged in");
+			l.setCreationDate(new Date());
+			scheduleService.save(l);
 		}
 		
 		List<Season> season = seasonService.findAll();
