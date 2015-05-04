@@ -37,4 +37,7 @@ public interface ScheduleService{
 	Log save(Log l);
 	List<Log> findAllLogs();
 	FieldSchedule getLastActive();
+	List<Game> findAllGames();
+	Game findGameById(Integer id);
+	void delete(Game schedule);
 }

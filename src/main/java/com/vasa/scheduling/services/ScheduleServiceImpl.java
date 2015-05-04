@@ -241,4 +241,19 @@ public class ScheduleServiceImpl implements ScheduleService {
 	public List<Log> findAllLogs() {
 		return logRepo.findAll();
 	}
+
+	@Override
+	public Game findGameById(Integer id) {
+		return gameRepo.findById(id);
+	}
+
+	@Override
+	public void delete(Game schedule) {
+		gameRepo.delete(schedule);
+	}
+
+	@Override
+	public List<Game> findAllGames() {
+		return gameRepo.findAll();
+	}
 }

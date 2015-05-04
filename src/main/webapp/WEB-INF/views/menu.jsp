@@ -65,7 +65,7 @@ if(userAgent.contains("iPhone") || userAgent.contains("Android")){
          <li><a href='/scheduling/schedule/list'><span>Searchable List</span></a></li>
 
    <c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "Commissioner"}'>
-     <li><a href='/scheduling/game/add'><span>Add Single Game</span></a></li>
+     <li><a href='/scheduling/game/list'><span>Games</span></a></li>
    </c:if>
    <c:if test='${user.userType.displayName == "Commissioner" || user.userType.displayName == "ADMIN"}'>
    	<li><a href='/scheduling/user/list'><span>Users</span></a></li>
@@ -120,7 +120,7 @@ if(userAgent.contains("iPhone") || userAgent.contains("Android")){
    <c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "Commissioner"}'>
      <li class='has-sub'><a>Games</a>
        <ul>
-         <li><a href='/scheduling/game/add'><span>Add Single Game</span></a></li>
+         <li><a href='/scheduling/game/list'><span>All Games</span></a></li>
          <c:if test='${user.userType.displayName == "ADMIN"}'>
          	<li><a href='/scheduling/game/upload'><span>Upload Games</span></a></li>
          </c:if>
