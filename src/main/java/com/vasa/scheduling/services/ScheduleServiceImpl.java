@@ -157,10 +157,14 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 	@Override
 	public List<Game> findGamesByDayField(Date date, String field) {
-		if(field==null){
+		if(field==null && date != null){
 			return gameRepo.findByDay(date);
-		}else{
+		}else if(field !=null && date != null){
 			return gameRepo.findByDayAndFieldName(date, field);
+		}else if (date==null && field != null){
+			return gameRepo.findByFieldName(field);
+		}else{
+			return findAllGames();
 		}
 	}
 
