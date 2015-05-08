@@ -58,7 +58,7 @@ public class GameListController extends DefaultHandlerController {
 		
 		List<Game> games = null;
 		
-		if(dateString == null){
+		if(dateString == null || dateString.length()<=0){
 			if(fieldName.equals("All")){
 				games = service.findGamesByDayField(null, null);
 			}else{
