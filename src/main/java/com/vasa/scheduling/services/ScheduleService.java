@@ -40,4 +40,5 @@ public interface ScheduleService{
 	List<Game> findAllGames();
 	Game findGameById(Integer id);
 	void delete(Game schedule);
+	List<Game> findGameByWeek(Date date);
 }

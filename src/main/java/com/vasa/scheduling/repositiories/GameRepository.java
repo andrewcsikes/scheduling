@@ -21,11 +21,17 @@ public interface GameRepository extends JpaRepository<Game, Integer>{
 	
 	Game findById(Integer id);
 	
-	@Query("Select s from Game s where date=:d and field.name=:field ")
+	@Query("Select s from Game s where date=:d and field.name=:field")
 	Game findByDateAndFieldName(@Param("d") Date d, @Param("field") String field);
 
 	@Query("Select s from Game s where month(date)=month(:d) order by field, date, homeTeam")
 	List<Game> findByMonth(@Param("d") Date date);
+	
+	@Query("Select s from Game s where DATE(date)=DATE(:d) order by field, homeTeam")
+	List<Game> findByDay(@Param("d") Date d);
+
+	@Query("Select s from Game s where week(date)=week(:d) order by date, field, homeTeam")
+	List<Game> findByWeek(@Param("d") Date d);
 
 //	@Query("Select s from Game s where month(date)=month(:d) and (homeTeam=:team.name or awayTeam=:team.name) order by date")
 //	List<Game> findByMonthAndTeam(@Param("d") Date date, @Param("team") Team team);
