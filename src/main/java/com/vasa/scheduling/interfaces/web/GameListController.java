@@ -56,23 +56,31 @@ public class GameListController extends DefaultHandlerController {
 		String fieldName = request.getParameter("field");
 		String dateString = request.getParameter("date");
 		
-		Date d = null;
-		try {
-			d = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse(dateString);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		
-		Calendar date = Calendar.getInstance();
-		date.setTime(d);
-		
 		List<Game> games = null;
 		
-		
-		if(fieldName.equals("All")){
-			games = service.findGamesByDayField(date.getTime(), null);
+		if(dateString == null){
+			if(fieldName.equals("All")){
+				games = service.findGamesByDayField(null, null);
+			}else{
+				games = service.findGamesByDayField(null, fieldName);
+			}
 		}else{
-			games = service.findGamesByDayField(date.getTime(), fieldName);
+			Date d = null;
+			try {
+				d = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH)
+						.parse(dateString);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+
+			Calendar date = Calendar.getInstance();
+			date.setTime(d);
+
+			if (fieldName.equals("All")) {
+				games = service.findGamesByDayField(date.getTime(), null);
+			} else {
+				games = service.findGamesByDayField(date.getTime(), fieldName);
+			}
 		}
 		
 		
