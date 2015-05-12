@@ -46,9 +46,7 @@ $( "#datepicker" ).datepicker();
 
     <div style="width: 100%; overflow: hidden;">
     	<div style="width: 10%px; float: left;"><h1>List of Games</h1></div>
-    	<c:if test='${user.userType.displayName == "ADMIN"}'>
-    		<div style="margin-left: 70%; float: right;"><a href="add"><img src='/scheduling/images/plus-icon.png' />Add Game</a></div>
-    	</c:if>
+    	<div style="margin-left: 70%; float: right;"><a href="add"><img src='/scheduling/images/plus-icon.png' />Add Game</a></div>
 	</div>
     
     <table class="list">
