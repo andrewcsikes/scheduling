@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.vasa.scheduling.domain.GlobalMessage;
 import com.vasa.scheduling.domain.Log;
 import com.vasa.scheduling.domain.Season;
+import com.vasa.scheduling.domain.Team;
 import com.vasa.scheduling.domain.User;
 import com.vasa.scheduling.enums.Status;
 import com.vasa.scheduling.enums.UserType;
@@ -60,6 +61,11 @@ public class UserHomeController extends DefaultHandlerController{
 					List<Season> season = seasonService.findAll();
 				    model.addAttribute("seasons", season);
 					model.addAttribute("message", getMessage());
+					
+					Log l = new Log();
+					l.setDescription(user.getFirstName() + " " + user.getLastName() + " logged in.");
+					l.setCreationDate(new Date());
+					scheduleService.save(l);
 				    
 					return "user/home";
 				}else{
