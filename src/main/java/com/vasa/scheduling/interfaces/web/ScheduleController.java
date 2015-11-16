@@ -455,7 +455,10 @@ public class ScheduleController extends DefaultHandlerController {
 			}
 			
 			Log l = new Log();
-			l.setDescription(user.getFirstName() + " " + user.getLastName() + " added a practice on "+field + " for " + date +" " +hour+ ":"+minute);
+			Team t = teamService.findById(Integer.valueOf(teamId));
+			l.setDescription(user.getFirstName() + " " + user.getLastName() + " added a practice on "+field + " for Team: "+
+					t.getAgeGroup().getName() + " - " + t.getName() + " - " + t.getCoach().getLastName() + 
+					" on " + date +" " +hour+ ":"+minute);
 			l.setCreationDate(new Date());
 			service.save(l);
 			
