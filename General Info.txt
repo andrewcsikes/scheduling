@@ -34,7 +34,7 @@ https://uptimerobot.com
 
 Disk size used ...
 On the cmd line ...
-rhc app-show --gears quota
+rhc app-show scheduling --gears quota
 
 
 admin8xbeEqe

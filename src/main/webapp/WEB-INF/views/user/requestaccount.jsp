@@ -33,6 +33,27 @@
 
 <table class="modify">
   <tr class="header">
+    <td colspan="2">Purpose</td>
+  </tr>
+  <tr>
+    <td>Sport:</td>
+    <td>
+      <select name="sport">
+        <option value="baseball">Baseball</option>
+        <option value="softball">Softball</option>
+        <option value="other">Other</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td>General Comments:</td>
+    <td><textarea rows="10" cols="35" name="comments"></textarea></td>
+  </tr>
+</table>
+
+
+<table class="modify">
+  <tr class="header">
     <td colspan="2">User Information</td>
   </tr>
   <tr>

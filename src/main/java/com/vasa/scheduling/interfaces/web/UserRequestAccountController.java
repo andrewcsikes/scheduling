@@ -60,11 +60,19 @@ public class UserRequestAccountController extends DefaultHandlerController{
 		
 		mr.save(user);
 		
+		String sport = request.getParameter("sport");
+		String comments = request.getParameter("comments");
+		
 		String emailAddress = "andrewcsikes@gmail.com";
-		String message = "New User has Requested an account. "+user.getFirstName()+" "+user.getLastName();
-		message += " email address: "+user.getEmailAddress();
+		StringBuffer message = new StringBuffer();
+		message.append("Make sure the following are answered ... If it's for a team, where do you play and what age group?");
+		message.append("      New User has Requested an account. "+user.getFirstName()+" "+user.getLastName());
+		message.append(" email address: "+user.getEmailAddress());
+		message.append("      Sport: " + sport + "      Comments: "+comments);
+		
+		
 		try{
-			es.sendEmail(emailAddress, "New User Request", message);
+			es.sendEmail(emailAddress, "New User Request", message.toString());
 			model.addAttribute("loginerror", "Your request has been emailed to the Scheduler.");
 		}catch(Exception e){
 			model.addAttribute("loginerror", e.getCause() +": "+e.getMessage());
