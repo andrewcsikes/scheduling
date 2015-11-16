@@ -17,6 +17,10 @@
 <form id="entry" name="entry" action="requestaccount" method="POST"  onsubmit="return validate();">
 
 <table class="modify">
+<tr>
+  <td>
+
+<table class="modify">
   <tr class="header">
     <td colspan="2">Login Information</td>
   </tr>
@@ -29,28 +33,6 @@
     <td><input type="password" name="password" /></td>
   </tr>
 </table>
-
-
-<table class="modify">
-  <tr class="header">
-    <td colspan="2">Purpose</td>
-  </tr>
-  <tr>
-    <td>Sport:</td>
-    <td>
-      <select name="sport">
-        <option value="baseball">Baseball</option>
-        <option value="softball">Softball</option>
-        <option value="other">Other</option>
-      </select>
-    </td>
-  </tr>
-  <tr>
-    <td>General Comments:</td>
-    <td><textarea rows="10" cols="35" name="comments"></textarea></td>
-  </tr>
-</table>
-
 
 <table class="modify">
   <tr class="header">
@@ -104,6 +86,36 @@
     <td><input type="text" name="postalCode" /></td>
   </tr>
 </table>
+
+
+</td>
+<td>
+
+<table class="modify">
+  <tr class="header">
+    <td colspan="2">Purpose</td>
+  </tr>
+  <tr>
+    <td>Sport:</td>
+    <td>
+      <select name="sport">
+        <option value="baseball">Baseball</option>
+        <option value="softball">Softball</option>
+        <option value="other">Other</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td>General Comments:</td>
+    <td><textarea rows="10" cols="35" name="comments"></textarea></td>
+  </tr>
+</table>
+
+</td>
+</tr>
+</table>
+
+
 <input type="submit" value="Save">
 <input id="cancel" onclick="history.back();" type="button" value="Cancel">
 </form>
