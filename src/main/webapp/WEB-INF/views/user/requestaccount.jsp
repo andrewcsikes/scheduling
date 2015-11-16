@@ -89,7 +89,7 @@
 
 
 </td>
-<td>
+<td valign="top">
 
 <table class="modify">
   <tr class="header">
