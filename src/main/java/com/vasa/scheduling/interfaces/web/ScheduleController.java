@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.vasa.scheduling.weather.Weather;
-import com.vasa.scheduling.weather.YahooWeatherParser;
 import com.vasa.scheduling.domain.FieldSchedule;
 import com.vasa.scheduling.domain.Fields;
 import com.vasa.scheduling.domain.Game;
@@ -27,12 +25,13 @@ import com.vasa.scheduling.domain.Season;
 import com.vasa.scheduling.domain.Sport;
 import com.vasa.scheduling.domain.Team;
 import com.vasa.scheduling.domain.User;
-import com.vasa.scheduling.enums.Classification;
 import com.vasa.scheduling.enums.Status;
 import com.vasa.scheduling.enums.UserType;
 import com.vasa.scheduling.services.EmailService;
+import com.vasa.scheduling.services.LockingService;
 import com.vasa.scheduling.services.ScheduleService;
 import com.vasa.scheduling.services.TeamService;
+import com.vasa.scheduling.services.DailyMessageService;
 
 @Controller
 @RequestMapping("/schedule/calendar")
@@ -46,6 +45,12 @@ public class ScheduleController extends DefaultHandlerController {
 	
 	@Autowired
 	private TeamService teamService;
+	
+	@Autowired
+	private LockingService lockingService;
+	
+	@Autowired
+	private DailyMessageService weatherService;
 	
 	@RequestMapping(value="/quick", method = RequestMethod.GET)
 	public String quick(@RequestParam(required=false, value="date") String date, Model model, HttpServletRequest request) {
@@ -106,7 +111,7 @@ public class ScheduleController extends DefaultHandlerController {
 				if(user.getUserType().equals(UserType.ADMIN)){
 					locked=false;
 				}else{
-					locked = getLocked(user.getTeam(), field, startOfWeek);
+					locked = lockingService.getLocked(user.getTeam(), field, startOfWeek);
 				}
 				
 				if(user.getTeam() != null && user.getTeam().getSport() != null){
@@ -124,7 +129,7 @@ public class ScheduleController extends DefaultHandlerController {
 					model.addAttribute("teams", teamService.findActive());
 				}
 			}else{
-				locked = getLocked(user.getTeam(), field, startOfWeek);
+				locked = lockingService.getLocked(user.getTeam(), field, startOfWeek);
 			}
 			anylocked=anylocked||locked;
 			model.addAttribute(field.getName()+"locked",locked);
@@ -160,80 +165,8 @@ public class ScheduleController extends DefaultHandlerController {
 		sunday.set(Calendar.DAY_OF_WEEK,1);
 		
 		if(sunday.compareTo(Calendar.getInstance())<5){
-			getWeather(model, sunday);
+			weatherService.addDailyMessages(model, sunday);
 		}
-	}
-	
-	private void getWeather(Model model, Calendar sunday) {
-		Weather w = new Weather();
-		
-    	w.addMessage("04/20/2015","4nd Grade STAR Testing the Next day");
-		w.addMessage("04/21/2015","4nd Grade STAR Testing the Next day");
-		w.addMessage("04/22/2015","4nd Grade STAR Testing the Next day");
-		w.addMessage("04/23/2015","4nd Grade STAR Testing the Next day");
-		
-		try {
-			YahooWeatherParser weatherParser = new YahooWeatherParser();
-			weatherParser.parse(w, "75495");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-		String date = formatter.format(sunday.getTime());
-		String condition = w.getWeather(date);
-		if(condition != null && condition.length()>0){
-			model.addAttribute("SundayWeather",date +": "+condition);
-		}
-		
-		sunday.add(Calendar.DAY_OF_YEAR, 1);
-		formatter = new SimpleDateFormat("MM/dd/yyyy");
-		date = formatter.format(sunday.getTime());
-		condition = w.getWeather(date);
-		if(condition != null && condition.length()>0){
-			model.addAttribute("MondayWeather",date +": "+condition);
-		}
-		
-		sunday.add(Calendar.DAY_OF_YEAR, 1);
-		formatter = new SimpleDateFormat("MM/dd/yyyy");
-		date = formatter.format(sunday.getTime());
-		condition = w.getWeather(date);
-		if(condition != null && condition.length()>0){
-			model.addAttribute("TuesdayWeather",date +": "+condition);
-		}
-		
-		sunday.add(Calendar.DAY_OF_YEAR, 1);
-		formatter = new SimpleDateFormat("MM/dd/yyyy");
-		date = formatter.format(sunday.getTime());
-		condition = w.getWeather(date);
-		if(condition != null && condition.length()>0){
-			model.addAttribute("WednesdayWeather",date +": "+condition);
-		}
-		
-		sunday.add(Calendar.DAY_OF_YEAR, 1);
-		formatter = new SimpleDateFormat("MM/dd/yyyy");
-		date = formatter.format(sunday.getTime());
-		condition = w.getWeather(date);
-		if(condition != null && condition.length()>0){
-			model.addAttribute("ThursdayWeather",date +": "+condition);
-		}
-		
-		sunday.add(Calendar.DAY_OF_YEAR, 1);
-		formatter = new SimpleDateFormat("MM/dd/yyyy");
-		date = formatter.format(sunday.getTime());
-		condition = w.getWeather(date);
-		if(condition != null && condition.length()>0){
-			model.addAttribute("FridayWeather",date +": "+condition);
-		}
-		
-		sunday.add(Calendar.DAY_OF_YEAR, 1);
-		formatter = new SimpleDateFormat("MM/dd/yyyy");
-		date = formatter.format(sunday.getTime());
-		condition = w.getWeather(date);
-		if(condition != null && condition.length()>0){
-			model.addAttribute("SaturdayWeather",date +": "+condition);
-		}
-		
 	}
 
 	protected List<Fields> getFields(User user) {
@@ -254,153 +187,6 @@ public class ScheduleController extends DefaultHandlerController {
 		}
 		
 		return fields;
-	}
-
-	protected boolean getLocked(Team team, Fields field, Date startOfWeek) {
-		
-		Season season = service.findSeason(field.getSport());
-		if(season == null){
-			return false;
-		}else if (team==null || team.getSeason() == null){
-			return true;
-		}else if(team.getSeason().getStatus().equals(Status.INACTIVE)){
-			return true;
-		}else if(season.getSport() != null){
-			if(lockSport(team, season, field, startOfWeek)){
-				return true;
-			}
-		}
-		return false;
-	}
-		
-	protected boolean lockSport(Team team, Season season, Fields field, Date startOfWeek) {
-		boolean lock = lockSeason(season, startOfWeek);
-		if(lock){
-			return true;
-		}
-		
-		if(team != null && team.getClassification().equals(Classification.NON_VASA)){
-			return lockNonVasa(startOfWeek, team.getSeason());
-		}
-		
-		if(!season.getApplySchedulingRules()){
-			return false;
-		}
-				
-		if(team !=null && team.getSport().getName().equals("Baseball")){
-			return lockBaseball(startOfWeek, team.getSeason());
-		}
-		else if(team !=null && team.getSport().getName().equals("Softball")){
-			return lockSoftball(startOfWeek, team.getSeason());
-		}
-		return false;
-	}
-	
-	protected boolean lockNonVasa(Date startOfWeek, Season season) {
-		Calendar today = Calendar.getInstance();
-		Calendar week = Calendar.getInstance();
-		week.setTime(startOfWeek);
-		
-		// This week
-		if(today.compareTo(week)>0){
-			return false;
-		}
-		
-		// The week before
-		if(today.compareTo(week)<0){
-			if(season.getStartDate() == null){
-				return false;
-			}
-			if(today.get(Calendar.DAY_OF_WEEK)<Calendar.FRIDAY){
-				// Lock if before Friday
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	protected boolean lockBaseball(Date startOfWeek, Season season) {
-		Calendar today = Calendar.getInstance();
-		Calendar week = Calendar.getInstance();
-		week.setTime(startOfWeek);
-		
-		// This week
-		if(today.compareTo(week)>0){
-			return false;
-		}
-		
-		// The week before
-		if(today.compareTo(week)<0 && seasonStarted(season, startOfWeek)){
-			if(today.get(Calendar.DAY_OF_WEEK)<Calendar.THURSDAY){
-				// Lock if before Thursday
-				return true;
-			}
-		}
-		
-		return false;
-	}
-
-	protected boolean lockSoftball(Date startOfWeek, Season season) {
-		Calendar today = Calendar.getInstance();
-		Calendar week = Calendar.getInstance();
-		week.setTime(startOfWeek);
-		
-		// This week
-		if(today.compareTo(week)>0){
-			return false;
-		}
-		
-		// The week before
-		if(today.compareTo(week)<0 && seasonStarted(season, startOfWeek)){
-			if(today.get(Calendar.DAY_OF_WEEK)<Calendar.WEDNESDAY){
-				// Lock if before Thursday
-				return true;
-			}
-		}
-		
-		return false;
-	}
-
-	protected boolean lockSeason(Season season, Date startOfWeek){
-		if(season.getStartDate() == null){
-			return false;
-		}
-		
-		// see if the last day of the week is before the season startDate
-		Calendar today = Calendar.getInstance();
-		today.setTime(season.getStartDate());
-		today.set(Calendar.MINUTE, 0);
-		today.set(Calendar.HOUR, 0);
-		today.set(Calendar.SECOND, 0);
-		if(startOfWeek.after(today.getTime())){
-			// see if the the start week > than today + 7
-			today = Calendar.getInstance();
-			Date d = new Date();
-			today.setTime(d);
-			today.set(Calendar.MINUTE, 0);
-			today.set(Calendar.HOUR, 0);
-			today.add(Calendar.DAY_OF_YEAR, 7);
-			
-			if(startOfWeek.after(today.getTime())){
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	private boolean seasonStarted(Season season, Date startOfWeek) {
-		// see if the last day of the week is before the season startDate
-		Calendar today = Calendar.getInstance();
-		today.setTime(season.getStartDate());
-		today.set(Calendar.MINUTE, 0);
-		today.set(Calendar.HOUR, 0);
-		today.set(Calendar.SECOND, 0);
-		if(startOfWeek.after(today.getTime())){
-			return true;
-		}
-		return false;
 	}
 	
 	@RequestMapping(value="/add", method = RequestMethod.POST)
@@ -692,8 +478,11 @@ public class ScheduleController extends DefaultHandlerController {
 		
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
+		cal.set(Calendar.HOUR_OF_DAY, 23);
 		
-		if(cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY){
+		if(cal.getTime().compareTo(new Date()) < 0){
+			addBlockedDay(day);
+		} else if(cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY){
 			if(!field.isAvailableSunday()){
 				addBlockedDay(day);
 			}else if(field.getSundayStartTime() != null){
@@ -756,7 +545,7 @@ public class ScheduleController extends DefaultHandlerController {
 				team != null &&
 				(team.getCoach().getUserType() != UserType.ADMIN ||
 					team.getCoach().getUserType() != UserType.COMMISSIONER)){
-			setBlockedTimesBasedOnRules(field, team, date, day);
+			lockingService.setBlockedTimesBasedOnRules(field, team, date, day);
 		}
 		List<FieldSchedule> schedules = service.findByDayField(date, field.getName());
 		List<Game> games = service.findGamesByDayField(date, field.getName());
@@ -795,125 +584,22 @@ public class ScheduleController extends DefaultHandlerController {
 		return day;
 	}
 	
-	protected void setBlockedTimesBasedOnRules(Fields field, Team team, Date date, ArrayList<String> day) {
-		Calendar today = Calendar.getInstance();
-		
-		Calendar calDay = Calendar.getInstance();
-		calDay.setTime(date);
-		
-		Calendar week = Calendar.getInstance();
-		week.setTime(date);
-		week.set(Calendar.DAY_OF_WEEK, 1);
-		
-		Calendar twoWeeks = Calendar.getInstance();
-		twoWeeks.add(Calendar.WEEK_OF_YEAR, 2);
-		twoWeeks.set(Calendar.DAY_OF_WEEK, 1);
-		twoWeeks.add(Calendar.DAY_OF_YEAR, -1);
-		
-		if(today.after(week)){
-			// This week, do nothing
-		}else{
-			// don't allow younger teams later spots
-//			if(!field.getName().contains("Little") && team.getAgeGroup().getName().equals("6U") && !team.getCoach().getUserType().equals(UserType.ADMIN)){
-//				day.set(20, "Reserved For Older Teams.");
-//				day.set(21, "Reserved For Older Teams.");
-//				day.set(22, "Reserved For Older Teams.");
-//				day.set(23, "Reserved For Older Teams.");
-//				day.set(24, "Reserved For Older Teams.");
-//				day.set(25, "Reserved For Older Teams.");
-//			}
-//			else if(!field.getName().contains("Little") && team.getAgeGroup().getName().equals("8U") && !team.getCoach().getUserType().equals(UserType.ADMIN)){
-//				day.set(22, "Reserved For Older Teams.");
-//				day.set(23, "Reserved For Older Teams.");
-//				day.set(24, "Reserved For Older Teams.");
-//				day.set(25, "Reserved For Older Teams.");
-//			}
-			if(field.getSport().getName().equals("Baseball") && 
-					team != null && 
-					team.getSeason().getApplySchedulingRules()){
-				// run baseball rules
-				if(calDay.get(Calendar.DAY_OF_WEEK)==Calendar.SUNDAY
-						|| calDay.get(Calendar.DAY_OF_WEEK)==Calendar.SATURDAY){
-					// No rules apply
-				}else if(today.get(Calendar.DAY_OF_WEEK)<=Calendar.THURSDAY || week.after(twoWeeks)){
-					// don't allow older teams to schedule anything before 7:00
-					if(field.getName().contains("FM") && 
-							!team.getCoach().getUserType().equals(UserType.ADMIN) &&
-							(team.getAgeGroup().getName().equals("10U") 
-								|| team.getAgeGroup().getName().equals("12U")
-								|| team.getAgeGroup().getName().equals("14U"))){
-						day.set(16, "Reserved For Younger Teams.");
-						day.set(17, "Reserved For Younger Teams.");
-						day.set(18, "Reserved For Younger Teams.");
-						day.set(19, "Reserved For Younger Teams.");
-					}
-					else if(field.getName().contains("FM") && 
-							!team.getCoach().getUserType().equals(UserType.ADMIN) &&
-							(team.getAgeGroup().getName().equals("6U") 
-								|| team.getAgeGroup().getName().equals("8U"))){
-						day.set(22, "Reserved For Older Teams.");
-						day.set(23, "Reserved For Older Teams.");
-						day.set(24, "Reserved For Older Teams.");
-						day.set(25, "Reserved For Older Teams.");
-					}
-				}
-			}else if(field.getSport().getName().equals("Softball") && 
-					team != null && 
-					team.getSeason().getApplySchedulingRules()){
-				if(calDay.get(Calendar.DAY_OF_WEEK)==Calendar.SUNDAY
-						|| calDay.get(Calendar.DAY_OF_WEEK)==Calendar.SATURDAY){
-					// No rules apply
-				}else if(today.get(Calendar.DAY_OF_WEEK)<=Calendar.WEDNESDAY || week.after(twoWeeks)){
-					// don't allow older teams to schedule little east
-					if(field.getName().contains("Little") &&
-							 !team.getCoach().getUserType().equals(UserType.ADMIN) &&
-							(team.getAgeGroup().getName().equals("10U") 
-								|| team.getAgeGroup().getName().equals("12U")
-								|| team.getAgeGroup().getName().equals("14U"))){
-						day.set(14, "Reserved For Younger Teams.");
-						day.set(15, "Reserved For Younger Teams.");
-						day.set(16, "Reserved For Younger Teams.");
-						day.set(17, "Reserved For Younger Teams.");
-						day.set(18, "Reserved For Younger Teams.");
-						day.set(19, "Reserved For Younger Teams.");
-						day.set(20, "Reserved For Younger Teams.");
-						day.set(21, "Reserved For Younger Teams.");
-						day.set(22, "Reserved For Younger Teams.");
-						day.set(23, "Reserved For Younger Teams.");
-						day.set(24, "Reserved For Younger Teams.");
-						day.set(25, "Reserved For Younger Teams.");
-					}else if(field.getName().contains("Big") && 
-							!team.getCoach().getUserType().equals(UserType.ADMIN) &&
-							(team.getAgeGroup().getName().equals("6U") 
-								|| team.getAgeGroup().getName().equals("8U"))){
-						day.set(14, "Reserved For Older Teams.");
-						day.set(15, "Reserved For Older Teams.");
-						day.set(16, "Reserved For Older Teams.");
-						day.set(17, "Reserved For Older Teams.");
-						day.set(18, "Reserved For Older Teams.");
-						day.set(19, "Reserved For Older Teams.");
-						day.set(20, "Reserved For Older Teams.");
-						day.set(21, "Reserved For Older Teams.");
-						day.set(22, "Reserved For Older Teams.");
-						day.set(23, "Reserved For Older Teams.");
-						day.set(24, "Reserved For Older Teams.");
-						day.set(25, "Reserved For Older Teams.");
-					}
-				}
-			}
-		}
-		
-	}
-
+	
+	// Block Time based on Field Setup Availability
 	protected void addBlockedTimes(ArrayList<String> day, Integer startTime, Integer endTime) {
 		Calendar times = Calendar.getInstance();
 		times.set(Calendar.HOUR_OF_DAY, 9);
 		times.set(Calendar.MINUTE, 0);
 		times.set(Calendar.SECOND, 0);
 		
+		Date now = new Date();
+		
 		for(int x=0; x<26; x++){
-			int currentHour = times.get(Calendar.HOUR_OF_DAY);
-			if(startTime<=currentHour && endTime>currentHour){
+			int loopedHour = times.get(Calendar.HOUR_OF_DAY);
+			if(now.compareTo(times.getTime())>0){
+				day.add("N/A");
+			}
+			else if(startTime<=loopedHour && endTime>loopedHour){
 				day.add(null);
 			}else{
 				day.add("N/A");

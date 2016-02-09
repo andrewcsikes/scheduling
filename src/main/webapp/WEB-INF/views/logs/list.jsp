@@ -31,5 +31,8 @@
 		</tr>
 	</c:forEach>
 	</table>
+	
+	<div style="margin-left: 70%; float: right;"><a href="clear"><img src='/scheduling/images/minus-icon.png' />Clear</a></div>
+	
 </body>
 </html>
