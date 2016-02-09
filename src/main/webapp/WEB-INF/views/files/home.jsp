@@ -1,5 +1,5 @@
 <div class="header">
-<img src="/scheduling/images/Sports_Cards_Banner.jpg">
+<img src="/scheduling/images/banner.png">
 </div>
 
 <table align="center" style="width:600px; border-collapse: collapse;" class="list">

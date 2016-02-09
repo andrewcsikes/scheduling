@@ -11,7 +11,7 @@
 <body>
 
 <div class="header">
-<img src="/scheduling/images/Sports_Cards_Banner.jpg">
+<img src="/scheduling/images/banner.png">
 </div>
 
 <form id="entry" name="entry" action="requestaccount" method="POST"  onsubmit="return validate();">
