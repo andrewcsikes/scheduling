@@ -94,7 +94,7 @@ public class UserModifyController extends DefaultHandlerController{
 		user.setCity(request.getParameter("city"));
 		user.setState(request.getParameter("state"));
 		
-		if(request.getParameter("carrier") != null){
+		if(request.getParameter("carrier") != null && request.getParameter("carrier").length()>0){
 			user.setCarrier(Carrier.toEnumFromCode(Integer.valueOf(request.getParameter("carrier"))));
 		}
 		
