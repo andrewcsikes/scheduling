@@ -20,8 +20,8 @@
 			&nbsp;&nbsp;&nbsp;<input id="proceed" name="submit" class="btn btn-primary" type="submit" value="Delete Message">
 			<br /> <br /><input id="proceed" name="submit" class="btn btn-primary" type="submit" value="Email Baseball">
 			&nbsp;&nbsp;&nbsp;<input id="proceed" name="submit" class="btn btn-primary" type="submit" value="Email Softball">
-<!-- 			<br /> <br /><input id="proceed" name="submit" class="btn btn-primary" type="submit" value="Text Baseball"> -->
-<!-- 			&nbsp;&nbsp;&nbsp;<input id="proceed" name="submit" class="btn btn-primary" type="submit" value="Text Softball"> -->
+			<br /> <br /><input id="proceed" name="submit" class="btn btn-primary" type="submit" value="Text Baseball">
+			&nbsp;&nbsp;&nbsp;<input id="proceed" name="submit" class="btn btn-primary" type="submit" value="Text Softball">
 		</div>
 	</form>
 </div>

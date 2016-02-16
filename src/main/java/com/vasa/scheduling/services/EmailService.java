@@ -12,6 +12,8 @@ import javax.mail.internet.MimeMessage;
 
 import org.springframework.stereotype.Service;
 
+import com.vasa.scheduling.enums.Carrier;
+
 @Service("emailService")
 public class EmailService {
 
@@ -91,6 +93,29 @@ public class EmailService {
 			String password = "flash23";
 			return new javax.mail.PasswordAuthentication(username, password);
 		}
+	}
+	
+	public static String convertToEmail(String phone, Carrier carrier){
+		String email = null;
+		
+		if(carrier == null){
+			email = null;
+		}else if(carrier.equals(Carrier.ATT)){
+			email = phone + "@txt.att.net";
+		}else if(carrier.equals(Carrier.VERIZON)){
+			email = phone + "@vtext.com";
+		}else if(carrier.equals(Carrier.SPRINT)){
+			email = phone + "@messaging.sprintpcs.com";
+		}else if(carrier.equals(Carrier.TMOBIL)){
+			email = phone + "@tmomail.net";
+		}else if(carrier.equals(Carrier.NEXTTEL)){
+			email = phone + "@messaging.nextel.com";
+		}else if(carrier.equals(Carrier.CRICKET)){
+			email = phone + "@mms.mycricket.com";
+		}
+		
+		return email;
+		
 	}
 
 }

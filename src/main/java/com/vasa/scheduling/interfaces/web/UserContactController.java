@@ -160,22 +160,10 @@ public class UserContactController extends DefaultHandlerController{
 				phone = phone.replaceAll(".", "");
 				phone = phone.replaceAll(" ", "");
 				
-				if(u.getCarrier().equals(Carrier.ATT)){
-					phone = phone + "@txt.att.net";
-				}else if(u.getCarrier().equals(Carrier.VERIZON)){
-					phone = phone + "@vtext.com";
-				}else if(u.getCarrier().equals(Carrier.SPRINT)){
-					phone = phone + "@messaging.sprintpcs.com";
-				}else if(u.getCarrier().equals(Carrier.TMOBIL)){
-					phone = phone + "@tmomail.net";
-				}else if(u.getCarrier().equals(Carrier.NEXTTEL)){
-					phone = phone + "@messaging.nextel.com";
-				}else if(u.getCarrier().equals(Carrier.CRICKET)){
-					phone = phone + "@mms.mycricket.com";
-				}
+				String emailAddress = EmailService.convertToEmail(phone, u.getCarrier());
 				
 				try{
-					es.sendEmail(phone, realUser.getEmailAddress(), "Global Alert", message);
+					es.sendEmail(emailAddress, realUser.getEmailAddress(), "Global Alert", message);
 				}catch(Exception e){
 				}
 			}
@@ -192,22 +180,10 @@ public class UserContactController extends DefaultHandlerController{
 				phone = phone.replaceAll(".", "");
 				phone = phone.replaceAll(" ", "");
 				
-				if(u.getCarrier().equals(Carrier.ATT)){
-					phone = phone + "@txt.att.net";
-				}else if(u.getCarrier().equals(Carrier.VERIZON)){
-					phone = phone + "@vtext.com";
-				}else if(u.getCarrier().equals(Carrier.SPRINT)){
-					phone = phone + "@messaging.sprintpcs.com";
-				}else if(u.getCarrier().equals(Carrier.TMOBIL)){
-					phone = phone + "@tmomail.net";
-				}else if(u.getCarrier().equals(Carrier.NEXTTEL)){
-					phone = phone + "@messaging.nextel.com";
-				}else if(u.getCarrier().equals(Carrier.CRICKET)){
-					phone = phone + "@mms.mycricket.com";
-				}
+				String emailAddress = EmailService.convertToEmail(phone, u.getCarrier());
 				
 				try{
-					es.sendEmail(phone, realUser.getEmailAddress(), "Global Alert", message);
+					es.sendEmail(emailAddress, realUser.getEmailAddress(), "Global Alert", message);
 				}catch(Exception e){
 				}
 			}

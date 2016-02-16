@@ -427,14 +427,31 @@ public class ScheduleController extends DefaultHandlerController {
 						// loop through all the coaches for the sport
 						for(Team t : teamService.findTeamsBySport(schedule.getField().getSport())){
 							User u = t.getCoach();
-							if(u.getStatus() == Status.INACTIVE || u.isSkipNotifications()){
+							if(u.getStatus() == Status.INACTIVE){
 								continue;
 							}
+							
 							SimpleDateFormat formatter2 = new SimpleDateFormat("EEE, MMM d hh:mm a");
 							String message = "The practice spot for "+schedule.getField().getName()+" at "+formatter2.format(schedule.getDate())+" was previously scheduled, but is now available.";
-							String emailAddress = u.getEmailAddress();
-							if(emailAddress != null){
-								es.sendEmail(emailAddress, "Time Slot has been made Available", message);
+							
+							if(!u.isSkipNotifications()){
+								String emailAddress = u.getEmailAddress();
+								if(emailAddress != null){
+									es.sendEmail(emailAddress, "Time Slot has been made Available", message);
+								}
+							}
+							
+							if(!u.isSkipTextNotifications()){
+								
+								String phone = u.getPhone();
+								phone = phone.replaceAll("-", "");
+								phone = phone.replaceAll(".", "");
+								phone = phone.replaceAll(" ", "");
+								
+								String emailAddress = EmailService.convertToEmail(phone, u.getCarrier());
+								if(emailAddress != null){
+									es.sendEmail(emailAddress, "Time Slot has been made Available", message);
+								}
 							}
 						}
 					}catch(Exception e){
@@ -479,6 +496,10 @@ public class ScheduleController extends DefaultHandlerController {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		cal.set(Calendar.HOUR_OF_DAY, 23);
+		
+		if(team==null){
+			addBlankDay(day);
+		}
 		
 		if(cal.getTime().compareTo(new Date()) < 0){
 			addBlockedDay(day);

@@ -77,6 +77,13 @@ public class UserModifyController extends DefaultHandlerController{
 			user.setSkipNotifications(false);
 		}
 		
+		String skipText = request.getParameter("textNotifications");
+		if(skipText != null && skipText.equals("True")){
+			user.setSkipTextNotifications(true);
+		}else{
+			user.setSkipTextNotifications(false);
+		}
+		
 		user.setUserName(request.getParameter("username"));
 		user.setPassword(request.getParameter("password"));
 		user.setFirstName(request.getParameter("firstName"));

@@ -83,7 +83,10 @@ public class User {
 	private UserType userType;
 	
 	@NotNull
-	private boolean skipNotifications=false;	
+	private boolean skipNotifications=false;
+	
+	@NotNull
+	private boolean skipTextNotifications=true;
 	
 	public UserType getUserType() {
 		return userType;
@@ -212,5 +215,11 @@ public class User {
 	}
 	public void setSkipNotifications(boolean skipNotifications) {
 		this.skipNotifications = skipNotifications;
+	}
+	public boolean isSkipTextNotifications() {
+		return skipTextNotifications;
+	}
+	public void setSkipTextNotifications(boolean skipNotifications) {
+		this.skipTextNotifications = skipNotifications;
 	}
 }
