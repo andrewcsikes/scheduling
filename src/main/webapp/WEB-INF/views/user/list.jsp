@@ -19,6 +19,7 @@
     <table class="list">
 	<tr class="header">
 		<th>Type</th>
+		<th>Status</th>
 		<th>First Name</th>
 		<th>Last Name</th>
 		<th>Username</th>
@@ -30,6 +31,7 @@
 	<c:forEach var="modifyuser" items="${users}">
 		<tr>
 		    <td><c:out value="${modifyuser.userType.displayName}" /></td>
+		    <td><c:out value="${modifyuser.status.displayName}" /></td>
 			<td><c:out value="${modifyuser.firstName}" /></td>
 			<td><c:out value="${modifyuser.lastName}" /></td>
 			<td><c:out value="${modifyuser.userName}" /></td>
