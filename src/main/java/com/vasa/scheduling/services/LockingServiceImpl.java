@@ -2,6 +2,7 @@ package com.vasa.scheduling.services;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.vasa.scheduling.domain.Fields;
 import com.vasa.scheduling.domain.Season;
+//import com.vasa.scheduling.domain.SportSchedulingRules;
 import com.vasa.scheduling.domain.Team;
 import com.vasa.scheduling.enums.Classification;
 import com.vasa.scheduling.enums.Status;
@@ -19,6 +21,9 @@ public class LockingServiceImpl implements LockingService {
 
 	@Autowired
 	private ScheduleService service;
+	
+//	@Autowired
+//	private RulesService rulesService;
 	
 	@Override
 	public boolean getLocked(Team team, Fields field, Date startOfWeek) {
@@ -123,9 +128,20 @@ public class LockingServiceImpl implements LockingService {
 		}
 		
 		// The week before
-		if(today.compareTo(week)<0 && seasonStarted(season, startOfWeek)){
-			if(today.get(Calendar.DAY_OF_WEEK)<Calendar.THURSDAY){
-				// Lock if before Thursday
+//		if(today.compareTo(week)<0 && seasonStarted(season, startOfWeek)){
+//			if(today.get(Calendar.DAY_OF_WEEK)<Calendar.THURSDAY){
+//				// Lock if before Thursday
+//				return true;
+//			}
+//		}
+		
+		if(today.get(Calendar.DAY_OF_WEEK)<Calendar.WEDNESDAY){
+			// Lock if before Wednesday
+			return true;
+		}
+		else if(today.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY){
+			if(today.get(Calendar.HOUR_OF_DAY) < 20){
+				// Lock if before 8:00 PM
 				return true;
 			}
 		}
@@ -144,26 +160,24 @@ public class LockingServiceImpl implements LockingService {
 		}
 		
 		// The week before
-		if(today.compareTo(week)<0 && seasonStarted(season, startOfWeek)){
-			if(today.get(Calendar.DAY_OF_WEEK)<Calendar.WEDNESDAY){
-				// Lock if before Thursday
+//		if(today.compareTo(week)<0 && seasonStarted(season, startOfWeek)){
+//			if(today.get(Calendar.DAY_OF_WEEK)<Calendar.WEDNESDAY){
+//				// Lock if before Thursday
+//				return true;
+//			}
+//		}
+		
+		if(today.get(Calendar.DAY_OF_WEEK)<Calendar.TUESDAY){
+			// Lock if before Tuesday
+			return true;
+		}
+		else if(today.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY){
+			if(today.get(Calendar.HOUR_OF_DAY) < 20){
+				// Lock if before 8:00 PM
 				return true;
 			}
 		}
 		
-		return false;
-	}
-	
-	private boolean seasonStarted(Season season, Date startOfWeek) {
-		// see if the last day of the week is before the season startDate
-		Calendar today = Calendar.getInstance();
-		today.setTime(season.getStartDate());
-		today.set(Calendar.MINUTE, 0);
-		today.set(Calendar.HOUR, 0);
-		today.set(Calendar.SECOND, 0);
-		if(startOfWeek.after(today.getTime())){
-			return true;
-		}
 		return false;
 	}
 	
@@ -261,6 +275,11 @@ public class LockingServiceImpl implements LockingService {
 			}
 		}
 		
+	}
+	
+	private boolean lockBasedOnRules(){
+//		Collection <SportSchedulingRules> rules = rulesService.findAll();
+		return true;
 	}
 
 }

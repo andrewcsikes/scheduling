@@ -507,7 +507,7 @@ public class ScheduleController extends DefaultHandlerController {
 			if(!field.isAvailableSunday()){
 				addBlockedDay(day);
 			}else if(field.getSundayStartTime() != null){
-				addBlockedTimes(day,field.getSundayStartTime(), field.getSundayEndTime());
+				addBlockedTimes(cal, day,field.getSundayStartTime(), field.getSundayEndTime());
 			}else{
 				addBlankDay(day);
 			}
@@ -515,7 +515,7 @@ public class ScheduleController extends DefaultHandlerController {
 			if(!field.isAvailableMonday()){
 				addBlockedDay(day);
 			}else if(field.getMondayStartTime() != null){
-				addBlockedTimes(day,field.getMondayStartTime(), field.getMondayEndTime());
+				addBlockedTimes(cal, day,field.getMondayStartTime(), field.getMondayEndTime());
 			}else{
 				addBlankDay(day);
 			}
@@ -523,7 +523,7 @@ public class ScheduleController extends DefaultHandlerController {
 			if(!field.isAvailableTuesday()){
 				addBlockedDay(day);
 			}else if(field.getTuesdayStartTime() != null){
-				addBlockedTimes(day,field.getTuesdayStartTime(), field.getTuesdayEndTime());
+				addBlockedTimes(cal, day,field.getTuesdayStartTime(), field.getTuesdayEndTime());
 			}else{
 				addBlankDay(day);
 			}
@@ -531,7 +531,7 @@ public class ScheduleController extends DefaultHandlerController {
 			if(!field.isAvailableWednesday()){
 				addBlockedDay(day);
 			}else if(field.getWednesdayStartTime() != null){
-				addBlockedTimes(day,field.getWednesdayStartTime(), field.getWednesdayEndTime());
+				addBlockedTimes(cal, day,field.getWednesdayStartTime(), field.getWednesdayEndTime());
 			}else{
 				addBlankDay(day);
 			}
@@ -539,7 +539,7 @@ public class ScheduleController extends DefaultHandlerController {
 			if(!field.isAvailableThursday()){
 				addBlockedDay(day);
 			}else if(field.getThursdayStartTime() != null){
-				addBlockedTimes(day,field.getThursdayStartTime(), field.getThursdayEndTime());
+				addBlockedTimes(cal, day,field.getThursdayStartTime(), field.getThursdayEndTime());
 			}else{
 				addBlankDay(day);
 			}
@@ -547,7 +547,7 @@ public class ScheduleController extends DefaultHandlerController {
 			if(!field.isAvailableFriday()){
 				addBlockedDay(day);
 			}else if(field.getFridayStartTime() != null){
-				addBlockedTimes(day,field.getFridayStartTime(), field.getFridayEndTime());
+				addBlockedTimes(cal, day,field.getFridayStartTime(), field.getFridayEndTime());
 			}else{
 				addBlankDay(day);
 			}
@@ -555,7 +555,7 @@ public class ScheduleController extends DefaultHandlerController {
 			if(!field.isAvailableSaturday()){
 				addBlockedDay(day);
 			}else if(field.getSaturdayStartTime() != null){
-				addBlockedTimes(day,field.getSaturdayStartTime(), field.getSaturdayEndTime());
+				addBlockedTimes(cal, day,field.getSaturdayStartTime(), field.getSaturdayEndTime());
 			}else{
 				addBlankDay(day);
 			}
@@ -607,14 +607,16 @@ public class ScheduleController extends DefaultHandlerController {
 	
 	
 	// Block Time based on Field Setup Availability
-	protected void addBlockedTimes(ArrayList<String> day, Integer startTime, Integer endTime) {
+	protected void addBlockedTimes(Calendar cal, ArrayList<String> day, Integer startTime, Integer endTime) {
 		Calendar times = Calendar.getInstance();
+		times.setTime(cal.getTime());
 		times.set(Calendar.HOUR_OF_DAY, 9);
 		times.set(Calendar.MINUTE, 0);
 		times.set(Calendar.SECOND, 0);
 		
-		Date now = new Date();
+		Date now = new Date(); 
 		
+		// TODO: verify this is working correctly
 		for(int x=0; x<26; x++){
 			int loopedHour = times.get(Calendar.HOUR_OF_DAY);
 			if(now.compareTo(times.getTime())>0){

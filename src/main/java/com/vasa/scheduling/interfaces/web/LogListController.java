@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.vasa.scheduling.domain.Log;
 import com.vasa.scheduling.domain.User;
@@ -21,7 +22,7 @@ public class LogListController extends DefaultHandlerController {
 	@Autowired private ScheduleService service;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public String list(Model model, HttpServletRequest request) {
+	public String list(@RequestParam(required=false, value="clear") Boolean clear, Model model, HttpServletRequest request) {
 		
 		User user = verifyUser(request.getSession());
 		model.addAttribute("user", user);
@@ -30,8 +31,12 @@ public class LogListController extends DefaultHandlerController {
 			return "login";
 		}
 		
-		List<Log> logs = service.findAllLogs();	
-	    model.addAttribute("logs", logs);
+		if(clear){
+			service.clearLogs();
+		}else{	
+			List<Log> logs = service.findAllLogs();	
+			model.addAttribute("logs", logs);
+		}
 	    
 	    return "logs/list";
 	}

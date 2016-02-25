@@ -79,6 +79,7 @@ if(userAgent.contains("iPhone") || userAgent.contains("Android")){
        <li><a href='/scheduling/fields/list'><span>Fields</span></a></li>
    	   <li><a href='/scheduling/user/postmessage'><span>System Message</span></a></li>
      <li><a href='/scheduling/messages/list'><span>Important Dates</span></a></li>
+     <li><a href='/scheduling/rules/list'><span>Rules</span></a></li>
    	 </c:when>
      <c:when test='${user.userType.displayName == "Commissioner"}'>
      	<li><a href='/scheduling/team/list'><span>Teams</span></a></li>

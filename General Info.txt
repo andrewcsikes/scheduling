@@ -26,7 +26,9 @@ http://stackoverflow.com/questions/18176185/mysql-connection-tomcat-7-on-openshi
 
 Tailing logs ...
 On the cmd line ...
-rhc tail -a scheduling
+rhc tail -a scheduling    (for all logs) or
+rhc tail -f app-root/logs/jbossews.log* -a scheduling       (for specific log)
+rhc tail -o "-n 20" -a myapp         (for last 20 lines)
 
 Monitoring ...
 https://uptimerobot.com

@@ -269,4 +269,9 @@ public class ScheduleServiceImpl implements ScheduleService {
 	public List<Game> findAllGames() {
 		return gameRepo.findAll();
 	}
+	
+	@Override 
+	public void clearLogs(){
+		logRepo.deleteAll();
+	}
 }

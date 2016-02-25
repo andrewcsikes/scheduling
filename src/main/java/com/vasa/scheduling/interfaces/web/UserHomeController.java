@@ -93,13 +93,6 @@ public class UserHomeController extends DefaultHandlerController{
 			return "login";
 		}
 		
-		if(!user.getUserType().equals(UserType.ADMIN)){
-			Log l = new Log();
-			l.setDescription(user.getFirstName() + " " + user.getLastName() + " logged in");
-			l.setCreationDate(new Date());
-			scheduleService.save(l);
-		}
-		
 		List<Season> season = seasonService.findAll();
 	    model.addAttribute("seasons", season);
 		model.addAttribute("user", user);
