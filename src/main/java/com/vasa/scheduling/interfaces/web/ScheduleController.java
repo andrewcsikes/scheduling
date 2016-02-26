@@ -616,7 +616,6 @@ public class ScheduleController extends DefaultHandlerController {
 		
 		Date now = new Date(); 
 		
-		// TODO: verify this is working correctly
 		for(int x=0; x<26; x++){
 			int loopedHour = times.get(Calendar.HOUR_OF_DAY);
 			if(now.compareTo(times.getTime())>0){

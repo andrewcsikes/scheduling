@@ -1,12 +1,5 @@
 package com.vasa.scheduling.interfaces.web;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.vasa.scheduling.domain.FieldRule;
 import com.vasa.scheduling.domain.Fields;
-import com.vasa.scheduling.domain.Season;
 import com.vasa.scheduling.domain.User;
+import com.vasa.scheduling.enums.Operation;
 import com.vasa.scheduling.enums.Status;
 import com.vasa.scheduling.services.FieldService;
-import com.vasa.scheduling.services.SeasonService;
 import com.vasa.scheduling.services.TeamService;
 
 @RequestMapping("/fields/modify")
@@ -48,7 +41,10 @@ public class FieldModifyController extends DefaultHandlerController{
 		Fields f = service.findById(fieldId);
 		
 		model.addAttribute("modifyfield", f);
+		model.addAttribute("rules", f.getFieldRules());
 		model.addAttribute("sports", teamService.findAllSports());
+		model.addAttribute("ages", teamService.findAllAgegroups());
+		model.addAttribute("operations", Operation.getDisplayNames());
 		return "fields/modify";
 	}
 	
@@ -159,6 +155,45 @@ public class FieldModifyController extends DefaultHandlerController{
 					field.setSaturdayEndTime(Integer.valueOf(request.getParameter("saturdayEnd")));
 			}else{
 				field.setAvailableSaturday(false);
+			}
+			
+			boolean moreRules = true;
+			int count = 1;
+			while(moreRules){
+				String value = request.getParameter("ageGroup"+count);
+				if(value == null){
+					moreRules = false;
+				}else{
+					String id = request.getParameter("ruleId"+count);
+					if(id != null){
+						FieldRule rule = service.findRuleById(Integer.valueOf(id));
+						value = request.getParameter("delete"+count);
+						if(value != null && value.equals("on")){
+							field.removeRule(rule);
+							service.delete(rule);
+						}else{
+							value = request.getParameter("ageGroup"+count);
+							rule.setAgeGroup(teamService.findAgeGroupById(Integer.valueOf(value)));
+							value = request.getParameter("operation"+count);
+							rule.setOperation(Operation.toEnumFromCode(Integer.valueOf(value)));
+							value = request.getParameter("time"+count);
+							rule.setTime(Integer.valueOf(value));
+							service.save(rule);
+						}
+					}else{
+						FieldRule rule = new FieldRule();
+						value = request.getParameter("ageGroup"+count);
+						rule.setAgeGroup(teamService.findAgeGroupById(Integer.valueOf(value)));
+						value = request.getParameter("operation"+count);
+						rule.setOperation(Operation.toEnumFromCode(Integer.valueOf(value)));
+						value = request.getParameter("time"+count);
+						rule.setTime(Integer.valueOf(value));
+						field.addToRules(rule);
+						service.save(rule);
+					}
+						
+				}
+				count++;
 			}
 			
 			service.save(field);

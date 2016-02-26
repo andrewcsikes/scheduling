@@ -31,7 +31,7 @@ public class LogListController extends DefaultHandlerController {
 			return "login";
 		}
 		
-		if(clear){
+		if(clear != null && clear){
 			service.clearLogs();
 		}else{	
 			List<Log> logs = service.findAllLogs();	
