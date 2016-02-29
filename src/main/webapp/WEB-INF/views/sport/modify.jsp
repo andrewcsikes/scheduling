@@ -14,6 +14,30 @@
     <td valign="top">Name:</td>
     <td><input type="text" size="33" name="name" value="${modifysport.name}" /></td>
   </tr>
+  <tr>
+    <td valign="top">Lock Before:</td>
+    <td>
+      <select name="dayOfWeek">
+        <c:forEach items="${days}" var="day">
+          <option value='${day.key}' ${modifysport.dayOfWeek.code == day.key ? 'selected' : ''}>${day.value}</option>
+        </c:forEach>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">Non VASA Teams:</td>
+    <td>
+      <select name="nonVasaDayOfWeek">
+        <c:forEach items="${days}" var="day">
+          <option value='${day.key}' ${modifysport.nonVasaDayOfWeek.code == day.key ? 'selected' : ''}>${day.value}</option>
+        </c:forEach>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">Unlock Time:</td>
+    <td><input type="text" size="2" maxLength='2' name="time" value="${modifysport.time}"/>(24H format)</td>
+  </tr>
 </table>
 <input type="submit" value="Save"> <input type="submit" name="delete" value="Delete">
 </form>

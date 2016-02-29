@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.vasa.scheduling.domain.Sport;
 import com.vasa.scheduling.domain.User;
+import com.vasa.scheduling.enums.DayOfWeek;
 import com.vasa.scheduling.services.SportService;
 
 @RequestMapping("/sport/add")
@@ -29,6 +30,8 @@ public class SportAddController extends DefaultHandlerController{
 			return "login";
 		}
 		
+		model.addAttribute("days", DayOfWeek.getDisplayNames());
+		
 		return "sport/add";
 	}
 	
@@ -45,6 +48,27 @@ public class SportAddController extends DefaultHandlerController{
 		Sport sport = new Sport();
 		
 		sport.setName(request.getParameter("name"));
+		
+		String value = request.getParameter("time");
+		if(value != null){
+			sport.setTime(Integer.valueOf(value));
+		}else{
+			sport.setTime(null);
+		}
+		
+		value = request.getParameter("dayOfWeek");
+		if(value != null){
+			sport.setDayOfWeek(DayOfWeek.toEnumFromCode(Integer.valueOf(value)));
+		}else{
+			sport.setDayOfWeek(null);
+		}
+		
+		value = request.getParameter("nonVasaDayOfWeek");
+		if(value != null){
+			sport.setNonVasaDayOfWeek(DayOfWeek.toEnumFromCode(Integer.valueOf(value)));
+		}else{
+			sport.setNonVasaDayOfWeek(null);
+		}
 		
 		service.save(sport);
 		

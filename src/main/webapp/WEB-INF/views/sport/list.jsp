@@ -21,6 +21,8 @@
     <thead>
 	<tr class="header">
 		<th>Name</th>
+		<th>Unlock Time</th>
+		<th>Non VASA</th>
 		<c:if test='${user.userType.displayName == "ADMIN"}'>
 			<th>Action</th>
 		</c:if>
@@ -29,6 +31,8 @@
 	<c:forEach var="sport" items="${sports}">
 		<tr>
 		    <td><c:out value="${sport.name}" /></td>
+		    <td><c:out value="${sport.dayOfWeek.displayName}" /> <c:out value="${sport.formattedTime}" /></td>
+		    <td><c:out value="${sport.nonVasaDayOfWeek.displayName}" /></td>
 			<c:if test='${user.userType.displayName == "ADMIN"}'>
 			  <td><a href="modify?sport=${sport.id}">Edit</a></td>
 			</c:if>

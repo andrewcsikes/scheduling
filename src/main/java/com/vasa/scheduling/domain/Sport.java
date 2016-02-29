@@ -8,6 +8,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.vasa.scheduling.enums.DayOfWeek;
+
 @Entity
 @Table(name="SPORT")
 public class Sport {
@@ -19,6 +21,12 @@ public class Sport {
 	
 	@NotNull
 	private String name;
+	
+	private DayOfWeek dayOfWeek;
+	
+	private DayOfWeek nonVasaDayOfWeek;
+	
+	private Integer time;
 
 	public Integer getId() {
 		return id;
@@ -35,6 +43,42 @@ public class Sport {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public DayOfWeek getDayOfWeek() {
+		return dayOfWeek;
+	}
+
+	public void setDayOfWeek(DayOfWeek dayOfWeek) {
+		this.dayOfWeek = dayOfWeek;
+	}
+
+	public DayOfWeek getNonVasaDayOfWeek() {
+		return nonVasaDayOfWeek;
+	}
+
+	public void setNonVasaDayOfWeek(DayOfWeek nonVasaDayOfWeek) {
+		this.nonVasaDayOfWeek = nonVasaDayOfWeek;
+	}
+
+	public Integer getTime() {
+		return time;
+	}
+
+	public void setTime(Integer time) {
+		this.time = time;
+	}
 	
-	
+	public String getFormattedTime(){
+		if(getTime() != null){
+			if(getTime() > 12){
+				return getTime()-12 + " PM";
+			}else if(getTime() == 12){
+				return getTime() + " PM";
+			}else{
+				return getTime() + " AM";
+			}
+		}else{
+			return null;
+		}
+	}
 }

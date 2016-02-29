@@ -85,8 +85,12 @@ public class FieldModifyController extends DefaultHandlerController{
 				field.setAvailableSunday(true);
 				if(request.getParameter("sundayStart") != null && request.getParameter("sundayStart").length()>0)
 					field.setSundayStartTime(Integer.valueOf(request.getParameter("sundayStart")));
+				else
+					field.setSundayStartTime(null);
 				if(request.getParameter("sundayEnd") != null && request.getParameter("sundayEnd").length()>0)
 					field.setSundayEndTime(Integer.valueOf(request.getParameter("sundayEnd")));
+				else
+					field.setSundayStartTime(null);
 			}else{
 				field.setAvailableSunday(false);
 			}
@@ -96,8 +100,12 @@ public class FieldModifyController extends DefaultHandlerController{
 				field.setAvailableMonday(true);
 				if(request.getParameter("mondayStart") != null && request.getParameter("mondayStart").length()>0)
 					field.setMondayStartTime(Integer.valueOf(request.getParameter("mondayStart")));
+				else
+					field.setMondayStartTime(null);
 				if(request.getParameter("mondayEnd") != null && request.getParameter("mondayEnd").length()>0)
 					field.setMondayEndTime(Integer.valueOf(request.getParameter("mondayEnd")));
+				else
+					field.setMondayEndTime(null);
 			}else{
 				field.setAvailableMonday(false);
 			}
@@ -107,8 +115,12 @@ public class FieldModifyController extends DefaultHandlerController{
 				field.setAvailableTuesday(true);
 				if(request.getParameter("tuesdayStart") != null && request.getParameter("tuesdayStart").length()>0)
 					field.setTuesdayStartTime(Integer.valueOf(request.getParameter("tuesdayStart")));
+				else
+					field.setTuesdayStartTime(null);
 				if(request.getParameter("tuesdayEnd") != null && request.getParameter("tuesdayEnd").length()>0)
 					field.setTuesdayEndTime(Integer.valueOf(request.getParameter("tuesdayEnd")));
+				else
+					field.setTuesdayEndTime(null);
 			}else{
 				field.setAvailableTuesday(false);
 			}
@@ -118,8 +130,12 @@ public class FieldModifyController extends DefaultHandlerController{
 				field.setAvailableWednesday(true);
 				if(request.getParameter("wednesdayStart") != null && request.getParameter("wednesdayStart").length()>0)
 					field.setWednesdayStartTime(Integer.valueOf(request.getParameter("wednesdayStart")));
+				else
+					field.setWednesdayStartTime(null);
 				if(request.getParameter("wednesdayEnd") != null && request.getParameter("wednesdayEnd").length()>0)
 					field.setWednesdayEndTime(Integer.valueOf(request.getParameter("wednesdayEnd")));
+				else
+					field.setWednesdayEndTime(null);
 			}else{
 				field.setAvailableWednesday(false);
 			}
@@ -129,8 +145,12 @@ public class FieldModifyController extends DefaultHandlerController{
 				field.setAvailableThursday(true);
 				if(request.getParameter("thursdayStart") != null && request.getParameter("thursdayStart").length()>0)
 					field.setThursdayStartTime(Integer.valueOf(request.getParameter("thursdayStart")));
+				else
+					field.setThursdayStartTime(null);
 				if(request.getParameter("thursdayEnd") != null && request.getParameter("thursdayEnd").length()>0)
 					field.setThursdayEndTime(Integer.valueOf(request.getParameter("thursdayEnd")));
+				else
+					field.setThursdayEndTime(null);
 			}else{
 				field.setAvailableThursday(false);
 			}
@@ -140,8 +160,12 @@ public class FieldModifyController extends DefaultHandlerController{
 				field.setAvailableFriday(true);
 				if(request.getParameter("fridayStart") != null && request.getParameter("fridayStart").length()>0)
 					field.setFridayStartTime(Integer.valueOf(request.getParameter("fridayStart")));
+				else
+					field.setFridayStartTime(null);
 				if(request.getParameter("fridayEnd") != null && request.getParameter("fridayEnd").length()>0)
 					field.setFridayEndTime(Integer.valueOf(request.getParameter("fridayEnd")));
+				else
+					field.setFridayEndTime(null);
 			}else{
 				field.setAvailableFriday(false);
 			}
@@ -151,8 +175,12 @@ public class FieldModifyController extends DefaultHandlerController{
 				field.setAvailableSaturday(true);
 				if(request.getParameter("saturdayStart") != null && request.getParameter("saturdayStart").length()>0)
 					field.setSaturdayStartTime(Integer.valueOf(request.getParameter("saturdayStart")));
+				else
+					field.setSaturdayStartTime(null);
 				if(request.getParameter("saturdayEnd") != null && request.getParameter("saturdayEnd").length()>0)
 					field.setSaturdayEndTime(Integer.valueOf(request.getParameter("saturdayEnd")));
+				else
+					field.setSaturdayEndTime(null);
 			}else{
 				field.setAvailableSaturday(false);
 			}
@@ -178,6 +206,7 @@ public class FieldModifyController extends DefaultHandlerController{
 							rule.setOperation(Operation.toEnumFromCode(Integer.valueOf(value)));
 							value = request.getParameter("time"+count);
 							rule.setTime(Integer.valueOf(value));
+							rule.setMessage(request.getParameter("message"+count));
 							service.save(rule);
 						}
 					}else{
@@ -188,6 +217,7 @@ public class FieldModifyController extends DefaultHandlerController{
 						rule.setOperation(Operation.toEnumFromCode(Integer.valueOf(value)));
 						value = request.getParameter("time"+count);
 						rule.setTime(Integer.valueOf(value));
+						rule.setMessage(request.getParameter("message"+count));
 						field.addToRules(rule);
 						service.save(rule);
 					}

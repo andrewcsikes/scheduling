@@ -37,6 +37,8 @@ public class FieldRule {
 	
 	@NotNull
 	private Integer time;
+	
+	private String message;
 
 	public Integer getId() {
 		return id;
@@ -76,6 +78,14 @@ public class FieldRule {
 
 	public void setTime(Integer time) {
 		this.time = time;
+	}
+	
+	public String getMessage(){
+		return message;
+	}
+	
+	public void setMessage(String m){
+		message = m;
 	}
 	
 }

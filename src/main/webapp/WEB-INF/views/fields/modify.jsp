@@ -301,7 +301,14 @@
       </select>
         
       <input type='text' size='2' maxlength='2' name='time${count}' value="${rule.time}"> (24H format)
+      
+      <br />
+      Message: <input type="text" name='message${count}' size='20' maxLength='45' value="${rule.message}">
       <input type="checkbox" name='delete${count}'> Delete
+      </td></tr><tr><td>&nbsp;
+      
+    </td>
+  </tr>
 
   <c:set var="count" value="${count + 1}" scope="page"/>
 
@@ -335,7 +342,9 @@ $(document).ready(function(){
         
         var time = "<input type='text' size='2' maxlength='2' name='time"+count+"'>";
         
-        $('#ruleTable > tbody:last-child').append("<tr><td>"+ag+" "+op+" "+time+" (24H format)</td></tr>");
+        var message = "<input type='text' name='message"+count+"' size='20' maxLength='45'>";
+        
+        $('#ruleTable > tbody:last-child').append("<tr><td>"+ag+" "+op+" "+time+" (24H format) <br />Message: "+message+"</td></tr><tr><td>&nbsp;</td></tr>");
         count++;
     });
 });

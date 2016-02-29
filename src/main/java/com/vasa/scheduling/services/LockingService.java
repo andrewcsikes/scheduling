@@ -9,7 +9,7 @@ import com.vasa.scheduling.domain.Team;
 public interface LockingService {
 
 	boolean getLocked(Team team, Fields field, Date startOfWeek);
-
 	void setBlockedTimesBasedOnRules(Fields field, Team team, Date date, ArrayList<String> day);
+	void lockFieldTimesBasedOnRules(Fields field, Team team, Date date, ArrayList<String> day);
 
 }
