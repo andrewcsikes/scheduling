@@ -54,7 +54,7 @@ public class UserRequestAccountController extends DefaultHandlerController{
 		user.setPhone(request.getParameter("phone"));
 		user.setPostalCode(request.getParameter("postalCode"));
 		
-		//user.setLastLogin(new Date());
+		user.setLastLogin(new Date());
 		user.setLoginFailures(0);
 		user.setMemberSince(new Date());
 		
