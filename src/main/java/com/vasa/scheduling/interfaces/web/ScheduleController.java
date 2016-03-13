@@ -407,6 +407,7 @@ public class ScheduleController extends DefaultHandlerController {
 			User user = verifyUser(request.getSession());
 			
 			if(schedule != null && 
+					user.getTeam() != null && 
 					schedule.getTeam().getId().equals(user.getTeam().getId())){
 				service.delete(schedule);
 				

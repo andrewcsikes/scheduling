@@ -243,8 +243,7 @@ public class LockingServiceImpl implements LockingService {
 				field.getSport().getNonVasaDayOfWeek() != null){
 			lockDay = field.getSport().getNonVasaDayOfWeek().getCode();
 		}else if(team.getSport().getId() != field.getSport().getId() &&  
-			!field.getName().contains("Batting") &&
-			team.getSport().getName().equals("Softball")){
+			!field.getName().contains("Batting")){
 			// softball can't schedule baseball fields until after baseball gets a chance.
 			lockDay++;
 		}
