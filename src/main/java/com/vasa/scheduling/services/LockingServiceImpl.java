@@ -243,6 +243,7 @@ public class LockingServiceImpl implements LockingService {
 		}
 		
 		int lockDay = field.getSport().getDayOfWeek().getCode();
+		int unlockDay = field.getSport().getNonVasaDayOfWeek().getCode() + 1;
 		if(team.getClassification().equals(Classification.NON_VASA) && 
 				field.getSport().getNonVasaDayOfWeek() != null){
 			lockDay = field.getSport().getNonVasaDayOfWeek().getCode();
@@ -264,7 +265,7 @@ public class LockingServiceImpl implements LockingService {
 				if(calDay.get(Calendar.DAY_OF_WEEK)==Calendar.SUNDAY
 						|| calDay.get(Calendar.DAY_OF_WEEK)==Calendar.SATURDAY){
 					// No rules apply
-				}else if(today.get(Calendar.DAY_OF_WEEK)<=lockDay || week.after(twoWeeks)){
+				}else if(today.get(Calendar.DAY_OF_WEEK)<=unlockDay || week.after(twoWeeks)){
 					if(rule.getOperation() == Operation.BEFORE){
 						for(int x=0; x<=25; x++){
 							int hourValue = x/2+9;
