@@ -41,7 +41,8 @@
 					<li>6U and 8U are limited to 1 hour practices with a max of 1 practice/week</li>
 					<li>10U and 12U are limited to 1 1/2 hour practices with a max of 1 practice/week</li>
 					<li>On Saturday of the week prior to your practice, you can add more time based on what's available</li>
-					<li>Schedule is locked until the Thursday prior to the week being scheduled</li>
+					<li>The Schedule is locked for all fields until Tuesday @ 10PM prior to the week being scheduled for Baseball fields.</li>
+					<li>The Schedule is locked for Softball fields until Wednesday @ 10PM prior to the week being scheduled.</li>
 					<li>10U, 12U, and 14U are not allowed to schedule anything before 7:00 PM until the Saturday prior to the week</li>
 				</ul>
 			</p>
@@ -55,7 +56,8 @@
 					<li>6U and 8U are limited to 1 hour practices with a max of 1 practice/week</li>
 					<li>10U and 12U are limited to 1 1/2 hour practices with a max of 1 practice/week</li>
 					<li>On Saturday of the week prior to your practice, you can add more time based on what's available</li>
-					<li>Schedule is locked until the Wednesday prior to the week being scheduled.</li>
+					<li>The Schedule is locked for all fields until Tuesday @ 10PM prior to the week being scheduled for Softball fields.</li>
+					<li>The Schedule is locked for Baseball fields until Wednesday @ 10PM prior to the week being scheduled.</li>
 					<li>6U and 8U are not allowed to schedule anything on Big East until the Saturday prior to the week.</li>
 					<li>10U, 12U, and 14U are not allowed to schedule anything on Little East until the Saturday prior to the week.</li>
 				</ul>

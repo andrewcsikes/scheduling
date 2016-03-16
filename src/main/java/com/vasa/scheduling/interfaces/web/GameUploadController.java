@@ -87,15 +87,17 @@ public class GameUploadController extends DefaultHandlerController{
 	            ArrayList<String> errors = new ArrayList<String>();
 	            
 	            try{
+	            	int gameNumber=1;
 	            	List<Game> schedules = converter.readCsv(scheduleService, teamService, br, errors);
 	            	for(Game s : schedules){
 	            		try{
 	            			scheduleService.save(s);
+	            			gameNumber++;
 	            		}catch(Exception e){
 	            			if(e.getMessage().contains("UNIQUE")){
 		            			errors.add("Time slot already taken for "+s.toString());
 	            			}else{
-	            				errors.add(e.getCause()+ ": "+ e.getMessage());
+	            				errors.add(e.getCause()+ ": "+ e.getMessage() +" at line "+gameNumber);
 	            			}
 	            		}
 	            	}
