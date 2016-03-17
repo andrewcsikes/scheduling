@@ -243,7 +243,7 @@ public class LockingServiceImpl implements LockingService {
 		}
 		
 		int lockDay = field.getSport().getDayOfWeek().getCode();
-		int unlockDay = field.getSport().getNonVasaDayOfWeek().getCode() + 1;
+		int unlockDay = field.getSport().getDayOfWeek().getCode() + 2;
 		if(team.getClassification().equals(Classification.NON_VASA) && 
 				field.getSport().getNonVasaDayOfWeek() != null){
 			lockDay = field.getSport().getNonVasaDayOfWeek().getCode();
