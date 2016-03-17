@@ -36,7 +36,10 @@ public class FieldRule {
 	private Operation operation;
 	
 	@NotNull
-	private Integer time;
+	private Integer time=1;
+	
+	@NotNull
+	private Integer minute=0;
 	
 	private String message;
 
@@ -78,6 +81,14 @@ public class FieldRule {
 
 	public void setTime(Integer time) {
 		this.time = time;
+	}
+	
+	public Integer getMinute() {
+		return minute;
+	}
+
+	public void setMinute(Integer time) {
+		this.minute = time;
 	}
 	
 	public String getMessage(){

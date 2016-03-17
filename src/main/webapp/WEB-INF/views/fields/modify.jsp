@@ -300,7 +300,8 @@
         </c:forEach>
       </select>
         
-      <input type='text' size='2' maxlength='2' name='time${count}' value="${rule.time}"> (24H format)
+      <input type='text' size='2' maxlength='2' name='time${count}' value="${rule.time}">
+      <input type='text' size='2' maxlength='2' name='minute${count}' value="${rule.minute}"> (24H format)
       
       <br />
       Message: <input type="text" name='message${count}' size='20' maxLength='45' value="${rule.message}">
@@ -340,11 +341,12 @@ $(document).ready(function(){
         op +="<option value='${oper.key}'>${oper.value}</option>";
         op +="</c:forEach></select>";
         
-        var time = "<input type='text' size='2' maxlength='2' name='time"+count+"'>";
+        var time = "<input type='text' size='2' maxlength='2' name='time"+count+"'> ";
+        var minute = "<input type='text' size='2' maxlength='2' name='minute"+count+"'>";
         
         var message = "<input type='text' name='message"+count+"' size='20' maxLength='45'>";
         
-        $('#ruleTable > tbody:last-child').append("<tr><td>"+ag+" "+op+" "+time+" (24H format) <br />Message: "+message+"</td></tr><tr><td>&nbsp;</td></tr>");
+        $('#ruleTable > tbody:last-child').append("<tr><td>"+ag+" "+op+" "+time+minute+" (24H format)<br />Message: "+message+"</td></tr><tr><td>&nbsp;</td></tr>");
         count++;
     });
 });

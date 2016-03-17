@@ -243,7 +243,7 @@ public class LockingServiceImpl implements LockingService {
 		}
 		
 		int lockDay = field.getSport().getDayOfWeek().getCode();
-		int unlockDay = field.getSport().getDayOfWeek().getCode() + 1;
+		int unlockDay = field.getSport().getDayOfWeek().getCode() + 2;
 		if(team.getClassification().equals(Classification.NON_VASA) && 
 				field.getSport().getNonVasaDayOfWeek() != null){
 			lockDay = field.getSport().getNonVasaDayOfWeek().getCode();
@@ -269,14 +269,20 @@ public class LockingServiceImpl implements LockingService {
 					if(rule.getOperation() == Operation.BEFORE){
 						for(int x=0; x<=25; x++){
 							int hourValue = x/2+9;
-							if(hourValue<rule.getTime()){
+							int minuteValue = x % 2 * 30;
+							int scheduleTime = hourValue * 100 + minuteValue;
+							int ruleTime = rule.getTime() * 100 + rule.getMinute();
+							if(scheduleTime<ruleTime){
 								day.set(x, rule.getMessage()!=null?rule.getMessage():"Reserved");
 							}
 						}
 					}else if(rule.getOperation() == Operation.AFTER){
 						for(int x=0; x<=25; x++){
 							int hourValue = x/2+9;
-							if(hourValue>=rule.getTime()){
+							int minuteValue = x % 2 * 30;
+							int scheduleTime = hourValue * 100 + minuteValue;
+							int ruleTime = rule.getTime() * 100 + rule.getMinute();
+							if(scheduleTime>ruleTime){
 								day.set(x, rule.getMessage()!=null?rule.getMessage():"Reserved");
 							}
 						}

@@ -206,6 +206,8 @@ public class FieldModifyController extends DefaultHandlerController{
 							rule.setOperation(Operation.toEnumFromCode(Integer.valueOf(value)));
 							value = request.getParameter("time"+count);
 							rule.setTime(Integer.valueOf(value));
+							value = request.getParameter("minute"+count);
+							rule.setMinute(Integer.valueOf(value));
 							rule.setMessage(request.getParameter("message"+count));
 							service.save(rule);
 						}
@@ -217,6 +219,8 @@ public class FieldModifyController extends DefaultHandlerController{
 						rule.setOperation(Operation.toEnumFromCode(Integer.valueOf(value)));
 						value = request.getParameter("time"+count);
 						rule.setTime(Integer.valueOf(value));
+						value = request.getParameter("minute"+count);
+						rule.setMinute(Integer.valueOf(value));
 						rule.setMessage(request.getParameter("message"+count));
 						field.addToRules(rule);
 						service.save(rule);
