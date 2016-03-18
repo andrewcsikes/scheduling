@@ -596,9 +596,12 @@ public class ScheduleController extends DefaultHandlerController {
 			}
 			
 			for(int x=0; x<multiple; x++){
-				if(x==0)
-					day.set(slotNumber+x, g.getAgeGroup().getName()+" Game: "+g.getHomeTeam()+" vs "+g.getAwayTeam());
-				else
+				if(x==0){
+					if(g.getAgeGroup() == null)
+						day.set(slotNumber+x, g.getHomeTeam());
+					else
+						day.set(slotNumber+x, g.getAgeGroup().getName()+" Game: "+g.getHomeTeam()+" vs "+g.getAwayTeam());
+				}else
 					day.set(slotNumber+x, "Game");
 			}
 			
