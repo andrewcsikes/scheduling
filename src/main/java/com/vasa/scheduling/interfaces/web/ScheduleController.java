@@ -598,11 +598,15 @@ public class ScheduleController extends DefaultHandlerController {
 			for(int x=0; x<multiple; x++){
 				if(x==0){
 					if(g.getAgeGroup() == null)
-						day.set(slotNumber+x, g.getHomeTeam());
+						day.set(slotNumber+x, g.getHomeTeam() + "<font color='#FFFF00'>Game</font>");
 					else
 						day.set(slotNumber+x, g.getAgeGroup().getName()+" Game: "+g.getHomeTeam()+" vs "+g.getAwayTeam());
-				}else
-					day.set(slotNumber+x, "Game");
+				}else{
+					if(g.getAgeGroup() == null)
+						day.set(slotNumber+x, "<font color='#FFFF00'>Game</font>");
+					else
+						day.set(slotNumber+x, "Game");
+				}		
 			}
 			
 		}
