@@ -72,7 +72,7 @@ public class UserRequestAccountController extends DefaultHandlerController{
 		
 		
 		try{
-			es.sendEmail(emailAddress, "New User Request", message.toString());
+			es.sendEmail(emailAddress, "New User Request", message.toString(), "text/html");
 			model.addAttribute("loginerror", "Your request has been emailed to the Scheduler.");
 		}catch(Exception e){
 			model.addAttribute("loginerror", e.getCause() +": "+e.getMessage());

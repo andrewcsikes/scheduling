@@ -91,7 +91,7 @@ public class UserAddController extends DefaultHandlerController{
 				"<br /><br />Your username is "+user.getUserName()+"<br />Your password is "+user.getPassword();
 		message += " email address: "+user.getEmailAddress();
 		try{
-			es.sendEmail(emailAddress, "New User Account for VASA Field Scheduling", message);
+			es.sendEmail(emailAddress, "New User Account for VASA Field Scheduling", message, "text/html");
 			model.addAttribute("loginerror", "Your request has been emailed to the Scheduler.");
 		}catch(Exception e){
 			model.addAttribute("loginerror", e.getCause() +": "+e.getMessage());

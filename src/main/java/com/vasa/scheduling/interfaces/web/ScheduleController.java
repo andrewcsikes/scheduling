@@ -426,35 +426,41 @@ public class ScheduleController extends DefaultHandlerController {
 				if(today.compareTo(week)>0 && today.compareTo(slot)<0){
 					try{
 						// loop through all the coaches for the sport
-						for(Team t : teamService.findTeamsBySport(schedule.getField().getSport())){
-							User u = t.getCoach();
-							if(u.getStatus() == Status.INACTIVE){
-								continue;
-							}
+//						for(Team t : teamService.findTeamsBySport(schedule.getField().getSport())){
+						User u = user;
+//							User u = t.getCoach();
+//							if(u.getStatus() == Status.INACTIVE){
+//								continue;
+//							}
 							
 							SimpleDateFormat formatter2 = new SimpleDateFormat("EEE, MMM d hh:mm a");
 							String message = "The practice spot for "+schedule.getField().getName()+" at "+formatter2.format(schedule.getDate())+" was previously scheduled, but is now available.";
 							
-							if(!u.isSkipNotifications()){
+//							if(!u.isSkipNotifications()){
 								String emailAddress = u.getEmailAddress();
 								if(emailAddress != null){
-									es.sendEmail(emailAddress, "Time Slot has been made Available", message);
+									es.sendEmail(emailAddress, "Time Slot has been made Available", message, "text/html");
 								}
-							}
+//							}
 							
-							if(!u.isSkipTextNotifications()){
+//							if(!u.isSkipTextNotifications()){
 								
 								String phone = u.getPhone();
-								phone = phone.replaceAll("-", "");
-								phone = phone.replaceAll(".", "");
-								phone = phone.replaceAll(" ", "");
+								if(phone.indexOf("-")>=0)
+									phone = phone.replaceAll("-", "");
+								if(phone.indexOf(".")>0)
+									phone = phone.replaceAll(".", "");
+								if(phone.indexOf(" ")>0)
+									phone = phone.replaceAll(" ", "");
+								if(phone.indexOf("_")>0)
+									phone = phone.replaceAll("_", "");
 								
-								String emailAddress = EmailService.convertToEmail(phone, u.getCarrier());
+								emailAddress = EmailService.convertToEmail(phone, u.getCarrier());
 								if(emailAddress != null){
-									es.sendEmail(emailAddress, "Time Slot has been made Available", message);
+									es.sendEmail(emailAddress, "New Slot Available", message, "text/plain");
 								}
-							}
-						}
+//							}
+//						}
 					}catch(Exception e){
 						model.addAttribute("error", e.getCause() +": "+e.getMessage());
 					}
@@ -475,7 +481,7 @@ public class ScheduleController extends DefaultHandlerController {
 					String message = "Your practice for "+schedule.getField().getName()+" at "+formatter2.format(schedule.getDate())+" was removed by "+user.getFirstName()+" "+user.getLastName();
 					String emailAddress = schedule.getTeam().getCoach().getEmailAddress();
 					if(emailAddress != null){
-						es.sendEmail(emailAddress, "Practice removed", message);
+						es.sendEmail(emailAddress, "Practice removed", message, "text/html");
 					}
 				}catch(Exception e){
 					model.addAttribute("error", e.getCause() +": "+e.getMessage());
