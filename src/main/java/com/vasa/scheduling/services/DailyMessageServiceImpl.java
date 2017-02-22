@@ -24,7 +24,7 @@ public class DailyMessageServiceImpl implements DailyMessageService {
 		Weather w = new Weather();
 		
 		addImportandDateMessages(w);
-		addWeather(w, model, sunday);
+		//addWeather(w, model, sunday);
 	}
 
 	private void addWeather(Weather w, Model model, Calendar sunday) {
