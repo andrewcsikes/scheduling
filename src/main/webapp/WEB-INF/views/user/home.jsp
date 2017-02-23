@@ -26,6 +26,7 @@
 	<li>6U and 8U are limited to 1 1/2 hour practices with a max of 3 hours/week</li>
 	<li>10U and 12U are limited to 2 hour practices with a max of 4 hours/week</li>
 	<li>Batting Cages do not count against your practice times.</li>
+	<li>Batting Cages - please only schedule in one hour increments and only schedule one bay.</li>
 	<li>Non-VASA teams can not schedule until the Friday before.</li>
 </ul>
 
