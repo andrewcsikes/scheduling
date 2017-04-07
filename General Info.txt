@@ -1,9 +1,10 @@
 SQL Database port forwarding ...
 rhc port-forward -a scheduling
+password - flash23
 
 
 Remote URL ...
-http://scheduling-vanalstyne.rhcloud.com/
+http://scheduling-vanalstyne.rhcloud.com/scheduling
 
 
 Local URL ...
@@ -37,10 +38,6 @@ https://uptimerobot.com
 Disk size used ...
 On the cmd line ...
 rhc app-show scheduling --gears quota
-
-
-admin8xbeEqe
-Q5aY9pRyaIhw
 
 
 last activity ...
