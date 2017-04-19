@@ -57,7 +57,7 @@ $( "#datepicker" ).datepicker();
 		<th>Age Group</th>
 		<th>Home Team</th>
 		<th>Away Team</th>
-		<c:if test='${user.userType.displayName == "ADMIN"}'>
+		<c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "Commissioner"}'>
 			<th>Action</th>
 		</c:if>
 	</tr>
@@ -74,7 +74,7 @@ $( "#datepicker" ).datepicker();
 		    <td><c:out value="${game.ageGroup.name}" /></td>
 		    <td><c:out value="${game.homeTeam}" /></td>
 		    <td><c:out value="${game.awayTeam}" /></td>
-			<c:if test='${user.userType.displayName == "ADMIN"}'>
+			<c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "Commissioner"}'>
 			  <td><a href="modify?game=${game.id}">Edit</a></td>
 			</c:if>
 		</tr>
