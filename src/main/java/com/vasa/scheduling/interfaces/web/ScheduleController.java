@@ -72,6 +72,21 @@ public class ScheduleController extends DefaultHandlerController {
 		
 	    return "schedule/calendar";
 	}
+	
+	@RequestMapping(value="/calendar2", method = RequestMethod.GET)
+	public String list2(@RequestParam(required=false, value="date") String date, Model model, HttpServletRequest request) {
+		
+		User user = verifyUser(request.getSession());
+		model.addAttribute("user", user);
+		
+		if(user== null){
+			return "login";
+		}
+		
+		buildCalendar(date, model, user);
+		
+	    return "schedule/calendar3";
+	}
 
 	protected void buildCalendar(String date, Model model, User user) {
 		Calendar sunday = Calendar.getInstance();
@@ -606,7 +621,7 @@ public class ScheduleController extends DefaultHandlerController {
 						day.set(slotNumber+x, g.getHomeTeam() + "<font color='#FFFF00'>Game</font>");
 					else
 						day.set(slotNumber+x, g.getAgeGroup().getName()+" Game: "+g.getHomeTeam()+" vs "+g.getAwayTeam());
-				}else{
+				}else if(slotNumber + x < 26){
 					if(g.getAgeGroup() == null)
 						day.set(slotNumber+x, "<font color='#FFFF00'>Game</font>");
 					else
