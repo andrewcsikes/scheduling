@@ -11,24 +11,104 @@
 <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="/resources/demos/style.css">
 
+	<style>
+		th#date::before{
+			content: "+";
+			font-size: 20px;
+			position: absolute;
+			text-align: center;
+			right: 30%;
+		}
+		th#date-clicked::before{
+			content: "+";
+			font-size: 20px;
+			position: absolute;
+			text-align: center;
+			right: 30%;
+			transform: rotate(315deg);
+		}
+	</style>
 
 	<script>
 	$(function() {
 		$( "#datepicker" ).datepicker();
 		$('table#schedule').find('tbody').hide();
+		$('table#schedule').find('tr#fields').hide();
 	});
 	
 	function showHide(div){
 		var $table = $(div).closest('table');
 		var $rows = $table.find('tbody');
+		var $header = $table.find('tr#fields');
+		var $th = $(div).find('th');
 
 	    if($rows.is(':visible')) {
 	      $rows.hide();
+		  $header.hide();
+		  $th.attr('id', 'date');
 	    }else{
 	      $rows.show();
+		  $header.show();
+		  $th.attr('id', 'date-clicked');
 	    }
   	}
+$(document).ready(function(){
+		
+		hideDay(2);
+		hideDay(3);
+		hideDay(4);
+		hideDay(5);
+		hideDay(6);
+		
+	});
 	
+	function hideDay(day){
+
+		$("table.list").eq(day).find("tr:nth-child(1)").find("td").hide();
+		$("table.list").eq(day).find("tr:nth-child(1)").find("th:nth-child(2)").hide();
+		
+		$("table.list").eq(day).find("tr:nth-child(2)").find("td").hide();
+		$("table.list").eq(day).find("tr:nth-child(2)").find("th:nth-child(1)").hide();
+
+		$("table.list").eq(day).find("tr:nth-child(3)").find("td").hide();
+		$("table.list").eq(day).find("tr:nth-child(3)").find("th:nth-child(1)").hide();
+
+		$("table.list").eq(day).find("tr:nth-child(4)").find("td").hide();
+		$("table.list").eq(day).find("tr:nth-child(4)").find("th:nth-child(1)").hide();
+
+		$("table.list").eq(day).find("tr:nth-child(5)").find("td").hide();
+		$("table.list").eq(day).find("tr:nth-child(5)").find("th:nth-child(1)").hide();
+
+		$("table.list").eq(day).find("tr:nth-child(6)").find("td").hide();
+		$("table.list").eq(day).find("tr:nth-child(6)").find("th:nth-child(1)").hide();
+
+		$("table.list").eq(day).find("tr:nth-child(7)").find("td").hide();
+		$("table.list").eq(day).find("tr:nth-child(7)").find("th:nth-child(1)").hide();
+
+		$("table.list").eq(day).find("tr:nth-child(8)").find("td").hide();
+		$("table.list").eq(day).find("tr:nth-child(8)").find("th:nth-child(1)").hide();
+
+		$("table.list").eq(day).find("tr:nth-child(9)").find("td").hide();
+		$("table.list").eq(day).find("tr:nth-child(9)").find("th:nth-child(1)").hide();
+
+		$("table.list").eq(day).find("tr:nth-child(10)").find("td").hide();
+		$("table.list").eq(day).find("tr:nth-child(10)").find("th:nth-child(1)").hide();
+
+		$("table.list").eq(day).find("tr:nth-child(11)").find("td").hide();
+		$("table.list").eq(day).find("tr:nth-child(11)").find("th:nth-child(1)").hide();
+
+		$("table.list").eq(day).find("tr:nth-child(12)").find("td").hide();
+		$("table.list").eq(day).find("tr:nth-child(12)").find("th:nth-child(1)").hide();
+
+		$("table.list").eq(day).find("tr:nth-child(13)").find("td").hide();
+		$("table.list").eq(day).find("tr:nth-child(13)").find("th:nth-child(1)").hide();
+
+		$("table.list").eq(day).find("tr:nth-child(14)").find("td").hide();
+		$("table.list").eq(day).find("tr:nth-child(14)").find("th:nth-child(1)").hide();
+
+		$("table.list").eq(day).find("tr:nth-child(15)").find("td").hide();
+		$("table.list").eq(day).find("tr:nth-child(15)").find("th:nth-child(1)").hide();	
+	}
 	</script>
 
 </head>
@@ -137,26 +217,26 @@ if((user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 	</c:if>
 	
 	<table id="schedule" class="list">
-	<tr class="header">
 	
 	<%
 	java.util.Map<String,java.util.Map<String,java.util.ArrayList<String>>> schedule = (java.util.Map<String,java.util.Map<String,java.util.ArrayList<String>>>)request.getAttribute("schedule");
 	
-	out.println("<thead><tr class='header' onclick='showHide(this);'>");
-	out.println("<th width='100px' colspan='"+fields.size()+"'>Sunday "+format1.format(scheduleDay.getTime())+"</th>");
-	out.println("</tr></thead>");
-	out.println("<tbody style='height:300px; flex: 1 1 auto; display: block; overflow-y: scroll; table-layout: fixed;'>");
-	out.println("<tr class='header' style='width:100%; display: table; table-layout: fixed;'><td width='70px'>&nbsp;</td>");
+	out.println("<thead><tr class='header' onclick='showHide(this);' style='cursor: pointer; opacity: 0.75;'>");
+	out.println("<th id='date' width='100px' colspan='"+(fields.size()+1)+"'>Sunday "+format1.format(scheduleDay.getTime())+"</th></tr>");
+	
+	out.println("<tr class='header' id='fields' style='width:100%; display: table; table-layout: fixed; margin-top:0px; margin-bottom:0px;'><td width='70px'>&nbsp;</td>");
 	
 	for(com.vasa.scheduling.domain.Fields field:fields){
 		out.println("<th>"+field.getName()+"</th>");
 	}
 	
-	out.println("</tr><tr>");
+	out.println("</tr></thead>");
+	out.println("<tbody style='height:300px; flex: 1 1 auto; display: block; overflow-y: scroll; table-layout: fixed;'>");
+	out.println("<tr style='width:100%; display: table; table-layout: fixed;'>");
 	
 	out.println(printDay(user, scheduleDay, "Sunday", fields, schedule, request));
 	scheduleDay.add(java.util.Calendar.DAY_OF_MONTH, 1);
-	out.println("</table>");
+	out.println("</tbody></table>");
 	
 	%>
 	<c:if test="${MondayWeather != null }">
@@ -168,23 +248,23 @@ if((user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 	</c:if>
 	
 	<table id="schedule" class="list">
-	<tr class="header">
 	<%
-	out.println("<thead><tr class='header' onclick='showHide(this);'>");
-	out.println("<th width='100px' colspan='"+fields.size()+"'>Monday "+format1.format(scheduleDay.getTime())+"</th>");
-	out.println("</tr></thead>");
-	out.println("<tbody style='height:300px; flex: 1 1 auto; display: block; overflow-y: scroll; table-layout: fixed;'>");
-	out.println("<tr class='header' style='width:100%; display: table; table-layout: fixed;'><td width='70px'>&nbsp;</td>");
+	out.println("<thead><tr class='header' onclick='showHide(this);' style='cursor: pointer; opacity: 0.75;'>");
+	out.println("<th id='date' width='100px' colspan='"+(fields.size()+1)+"'>Monday "+format1.format(scheduleDay.getTime())+"</th></tr>");
+	
+	out.println("<tr class='header' id='fields' style='width:100%; display: table; table-layout: fixed; margin-top:0px; margin-bottom:0px;'><td width='70px'>&nbsp;</td>");
 	
 	for(com.vasa.scheduling.domain.Fields field:fields){
 		out.println("<th>"+field.getName()+"</th>");
 	}
 	
-	out.println("</tr><tr>");
+	out.println("</tr></thead>");
+	out.println("<tbody style='height:300px; flex: 1 1 auto; display: block; overflow-y: scroll; table-layout: fixed;'>");
+	out.println("<tr style='width:100%; display: table; table-layout: fixed;'>");
 	
 	out.println(printDay(user, scheduleDay, "Monday", fields, schedule, request));
 	scheduleDay.add(java.util.Calendar.DAY_OF_MONTH, 1);
-	out.println("</table>");
+	out.println("</tbody></table>");
 	
 	%>
 	<c:if test="${TuesdayWeather != null }">
@@ -196,25 +276,23 @@ if((user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 	</c:if>
 	
 	<table id="schedule" class="list">
-	<tr class="header">
-		<th> </th>
-		<th> </th>
 	<%
-	out.println("<thead><tr class='header' onclick='showHide(this);'>");
-	out.println("<th width='100px' colspan='"+fields.size()+"'>Tuesday "+format1.format(scheduleDay.getTime())+"</th>");
-	out.println("</tr></thead>");
-	out.println("<tbody style='height:300px; flex: 1 1 auto; display: block; overflow-y: scroll; table-layout: fixed;'>");
-	out.println("<tr class='header' style='width:100%; display: table; table-layout: fixed;'><td width='70px'>&nbsp;</td>");
+	out.println("<thead><tr class='header' onclick='showHide(this);' style='cursor: pointer; opacity: 0.75;'>");
+	out.println("<th id='date' width='100px' colspan='"+(fields.size()+1)+"'>Tuesday "+format1.format(scheduleDay.getTime())+"</th></tr>");
+	
+	out.println("<tr class='header' id='fields' style='width:100%; display: table; table-layout: fixed; margin-top:0px; margin-bottom:0px;'><td width='70px'>&nbsp;</td>");
 	
 	for(com.vasa.scheduling.domain.Fields field:fields){
 		out.println("<th>"+field.getName()+"</th>");
 	}
 	
-	out.println("</tr><tr>");
+	out.println("</tr></thead>");
+	out.println("<tbody style='height:300px; flex: 1 1 auto; display: block; overflow-y: scroll; table-layout: fixed;'>");
+	out.println("<tr style='width:100%; display: table; table-layout: fixed;'>");
 	
 	out.println(printDay(user, scheduleDay, "Tuesday", fields, schedule, request));
 	scheduleDay.add(java.util.Calendar.DAY_OF_MONTH, 1);
-	out.println("</table>");
+	out.println("</tbody></table>");
 	
 	%>
 	<c:if test="${WednesdayWeather != null }">
@@ -226,25 +304,23 @@ if((user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 	</c:if>
 	
 	<table id="schedule" class="list">
-	<tr class="header">
-		<th> </th>
-		<th> </th>
 	<%
-	out.println("<thead><tr class='header' onclick='showHide(this);'>");
-	out.println("<th width='100px' colspan='"+fields.size()+"'>Wednesday "+format1.format(scheduleDay.getTime())+"</th>");
-	out.println("</tr></thead>");
-	out.println("<tbody style='height:300px; flex: 1 1 auto; display: block; overflow-y: scroll; table-layout: fixed;'>");
-	out.println("<tr class='header' style='width:100%; display: table; table-layout: fixed;'><td width='70px'>&nbsp;</td>");
+	out.println("<thead><tr class='header' onclick='showHide(this);' style='cursor: pointer; opacity: 0.75;'>");
+	out.println("<th id='date' width='100px' colspan='"+(fields.size()+1)+"'>Wednesday "+format1.format(scheduleDay.getTime())+"</th></tr>");
+	
+	out.println("<tr class='header' id='fields' style='width:100%; display: table; table-layout: fixed; margin-top:0px; margin-bottom:0px;'><td width='70px'>&nbsp;</td>");
 	
 	for(com.vasa.scheduling.domain.Fields field:fields){
 		out.println("<th>"+field.getName()+"</th>");
 	}
 	
-	out.println("</tr><tr>");
+	out.println("</tr></thead>");
+	out.println("<tbody style='height:300px; flex: 1 1 auto; display: block; overflow-y: scroll; table-layout: fixed;'>");
+	out.println("<tr style='width:100%; display: table; table-layout: fixed;'>");
 	
 	out.println(printDay(user, scheduleDay, "Wednesday", fields, schedule, request));
 	scheduleDay.add(java.util.Calendar.DAY_OF_MONTH, 1);
-	out.println("</table>");
+	out.println("</tbody></table>");
 	
 	%>
 	<c:if test="${ThursdayWeather != null }">
@@ -256,25 +332,23 @@ if((user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 	</c:if>
 	
 	<table id="schedule" class="list">
-	<tr class="header">
-		<th> </th>
-		<th> </th>
 	<%
-	out.println("<thead><tr class='header' onclick='showHide(this);'>");
-	out.println("<th width='100px' colspan='"+fields.size()+"'>Thursday "+format1.format(scheduleDay.getTime())+"</th>");
-	out.println("</tr></thead>");
-	out.println("<tbody style='height:300px; flex: 1 1 auto; display: block; overflow-y: scroll; table-layout: fixed;'>");
-	out.println("<tr class='header' style='width:100%; display: table; table-layout: fixed;'><td width='70px'>&nbsp;</td>");
+	out.println("<thead><tr class='header' onclick='showHide(this);' style='cursor: pointer; opacity: 0.75;'>");
+	out.println("<th id='date' width='100px' colspan='"+(fields.size()+1)+"'>Thursday "+format1.format(scheduleDay.getTime())+"</th></tr>");
+	
+	out.println("<tr class='header' id='fields' style='width:100%; display: table; table-layout: fixed; margin-top:0px; margin-bottom:0px;'><td width='70px'>&nbsp;</td>");
 	
 	for(com.vasa.scheduling.domain.Fields field:fields){
 		out.println("<th>"+field.getName()+"</th>");
 	}
 	
-	out.println("</tr><tr>");
+	out.println("</tr></thead>");
+	out.println("<tbody style='height:300px; flex: 1 1 auto; display: block; overflow-y: scroll; table-layout: fixed;'>");
+	out.println("<tr style='width:100%; display: table; table-layout: fixed;'>");
 	
 	out.println(printDay(user, scheduleDay, "Thursday", fields, schedule, request));
 	scheduleDay.add(java.util.Calendar.DAY_OF_MONTH, 1);
-	out.println("</table>");
+	out.println("</tbody></table>");
 	
 	%>
 	<c:if test="${FridayWeather != null }">
@@ -286,25 +360,23 @@ if((user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 	</c:if>
 	
 	<table id="schedule" class="list">
-	<tr class="header">
-		<th> </th>
-		<th> </th>
 	<%
-	out.println("<thead><tr class='header' onclick='showHide(this);'>");
-	out.println("<th width='100px' colspan='"+fields.size()+"'>Friday "+format1.format(scheduleDay.getTime())+"</th>");
-	out.println("</tr></thead>");
-	out.println("<tbody style='height:300px; flex: 1 1 auto; display: block; overflow-y: scroll; table-layout: fixed;'>");
-	out.println("<tr class='header' style='width:100%; display: table; table-layout: fixed;'><td width='70px'>&nbsp;</td>");
+	out.println("<thead><tr class='header' onclick='showHide(this);' style='cursor: pointer; opacity: 0.75;'>");
+	out.println("<th id='date' width='100px' colspan='"+(fields.size()+1)+"'>Friday "+format1.format(scheduleDay.getTime())+"</th></tr>");
+	
+	out.println("<tr class='header' id='fields' style='width:100%; display: table; table-layout: fixed; margin-top:0px; margin-bottom:0px;'><td width='70px'>&nbsp;</td>");
 	
 	for(com.vasa.scheduling.domain.Fields field:fields){
 		out.println("<th>"+field.getName()+"</th>");
 	}
 	
-	out.println("</tr><tr>");
+	out.println("</tr></thead>");
+	out.println("<tbody style='height:300px; flex: 1 1 auto; display: block; overflow-y: scroll; table-layout: fixed;'>");
+	out.println("<tr style='width:100%; display: table; table-layout: fixed;'>");
 	
 	out.println(printDay(user, scheduleDay, "Friday", fields, schedule, request));
 	scheduleDay.add(java.util.Calendar.DAY_OF_MONTH, 1);
-	out.println("</table>");
+	out.println("</tbody></table>");
 	
 	%>
 	<c:if test="${SaturdayWeather != null }">
@@ -316,25 +388,23 @@ if((user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 	</c:if>
 	
 	<table id="schedule" class="list">
-	<tr class="header">
-		<th> </th>
-		<th> </th>
 	<%
-	out.println("<thead><tr class='header' onclick='showHide(this);'>");
-	out.println("<th width='100px' colspan='"+fields.size()+"'>Saturday "+format1.format(scheduleDay.getTime())+"</th>");
-	out.println("</tr></thead>");
-	out.println("<tbody style='height:300px; flex: 1 1 auto; display: block; overflow-y: scroll; table-layout: fixed;'>");
-	out.println("<tr class='header' style='width:100%; display: table; table-layout: fixed;'><td width='70px'>&nbsp;</td>");
+	out.println("<thead><tr class='header' onclick='showHide(this);' style='cursor: pointer; opacity: 0.75;'>");
+	out.println("<th id='date' width='100px' colspan='"+(fields.size()+1)+"'>Saturday "+format1.format(scheduleDay.getTime())+"</th></tr>");
+	
+	out.println("<tr class='header' id='fields' style='width:100%; display: table; table-layout: fixed; margin-top:0px; margin-bottom:0px;'><td width='70px'>&nbsp;</td>");
 	
 	for(com.vasa.scheduling.domain.Fields field:fields){
 		out.println("<th>"+field.getName()+"</th>");
 	}
 	
-	out.println("</tr><tr>");
+	out.println("</tr></thead>");
+	out.println("<tbody style='height:300px; flex: 1 1 auto; display: block; overflow-y: scroll; table-layout: fixed;'>");
+	out.println("<tr style='width:100%; display: table; table-layout: fixed;'>");
 	
 	out.println(printDay(user, scheduleDay, "Saturday", fields, schedule, request));
 	scheduleDay.add(java.util.Calendar.DAY_OF_MONTH, 1);
-	out.println("</table>");
+	out.println("</tbody></table>");
 	
 	%>
 	
