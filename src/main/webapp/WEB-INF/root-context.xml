@@ -32,8 +32,9 @@
 	
   <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
     <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-<!--     <property name="url" value="jdbc:mysql://127.0.0.1:3306/scheduling" /> -->
-    <property name="url" value="jdbc:mysql://127.3.244.2:3306/scheduling" />
+<!--     <property name="url" value="jdbc:mysql://127.0.0.1:3306/scheduling" /> --><!--  Openshift v2 -->
+<!--     <property name="url" value="jdbc:mysql://127.3.244.2:3306/scheduling" /> --><!--  Local -->
+    <property name="url" value="jdbc:mysql://172.31.62.117:3306/scheduling" />
     <property name="username" value="admin8xbeEqe"/>
     <property name="password" value="Q5aY9pRyaIhw"/>
 <!--    <property name="username" value="${OPENSHIFT_MYSQL_DB_USERNAME}" /> -->
