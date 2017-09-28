@@ -148,10 +148,10 @@ public class BaseballPositionsController {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void main(String[] args){
 		
-		String pitcher = "Garrett";
-		String catcher = "Brady";
-		String bench1 = "Conner";
-		String bench2 = "Luke";
+		String pitcher = "Nick";
+		String catcher = "Tucker";
+		String bench1 = "James";
+		String bench2 = "Tucker";
 		
 		BaseballPositions bp = buildPositions(pitcher,catcher,bench1,bench2);
 		
