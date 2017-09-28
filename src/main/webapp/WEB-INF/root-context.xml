@@ -53,7 +53,7 @@
 <!-- 				<prop key="hibernate.dialect">${database.hibernate.dialect}</prop> -->
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
 <!-- 				<prop key="hibernate.hbm2ddl.auto">${database.hibernate.hbm2ddl.auto}</prop> -->
-				<prop key="hibernate.hbm2ddl.auto">validate</prop>
+				<prop key="hibernate.hbm2ddl.auto">none</prop>
 				<prop key="org.hibernate.envers.audit_table_prefix">a_</prop>
 				<prop key="hibernate.listeners.envers.autoRegister">false</prop>
 			</props>
