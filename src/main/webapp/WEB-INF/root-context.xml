@@ -32,8 +32,8 @@
 	
   <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
     <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-<!--     <property name="url" value="jdbc:mysql://127.0.0.1:3306/scheduling" /> --><!--  Openshift v2 -->
-<!--     <property name="url" value="jdbc:mysql://127.3.244.2:3306/scheduling" /> --><!--  Local -->
+<!--     <property name="url" value="jdbc:mysql://127.0.0.1:3306/scheduling" /> --><!--  Local -->
+<!--     <property name="url" value="jdbc:mysql://127.3.244.2:3306/scheduling" /> --><!--  Openshift v2 -->
     <property name="url" value="jdbc:mysql://172.31.62.117:3306/scheduling" />
     <property name="username" value="admin8xbeEqe"/>
     <property name="password" value="Q5aY9pRyaIhw"/>
@@ -50,8 +50,10 @@
 		</property> 		
 		<property name="jpaProperties">
 			<props>
-				<prop key="hibernate.dialect">${database.hibernate.dialect}</prop>
-				<prop key="hibernate.hbm2ddl.auto">${database.hibernate.hbm2ddl.auto}</prop>
+<!-- 				<prop key="hibernate.dialect">${database.hibernate.dialect}</prop> -->
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+<!-- 				<prop key="hibernate.hbm2ddl.auto">${database.hibernate.hbm2ddl.auto}</prop> -->
+				<prop key="hibernate.hbm2ddl.auto">validate</prop>
 				<prop key="org.hibernate.envers.audit_table_prefix">a_</prop>
 				<prop key="hibernate.listeners.envers.autoRegister">false</prop>
 			</props>
