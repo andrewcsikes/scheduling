@@ -20,7 +20,7 @@ $( "#datepicker" ).datepicker();
 </head>
 <body>
 
-<script src="/scheduling/scripts/sorttable.js"></script>
+<script src="/scripts/sorttable.js"></script>
 	
 <form id="entry" name="entry" action="list" method="POST">
 <table class="search">
@@ -46,7 +46,7 @@ $( "#datepicker" ).datepicker();
 
     <div style="width: 100%; overflow: hidden;">
     	<div style="width: 10%px; float: left;"><h1>List of Games</h1></div>
-    	<div style="margin-left: 70%; float: right;"><a href="add"><img src='/scheduling/images/plus-icon.png' />Add Game</a></div>
+    	<div style="margin-left: 70%; float: right;"><a href="add"><img src='/images/plus-icon.png' />Add Game</a></div>
 	</div>
     
     <table class="list">

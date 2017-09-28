@@ -5,13 +5,13 @@
 <head>
 	<title>VASA Scheduler</title>
 	
-	<link href="/scheduling/styles/style.css" rel="stylesheet" type="text/css" />
+	<link href="/styles/style.css" rel="stylesheet" type="text/css" />
 	
 </head>
 <body>
 
 <div class="header">
-<img src="/scheduling/images/banner.png">
+<img src="/images/banner.png">
 </div>
 
 <form id="entry" name="entry" action="requestaccount" method="POST"  onsubmit="return validate();">

@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<script src="/scheduling/scripts/sorttable.js"></script>
+<script src="/scripts/sorttable.js"></script>
 
 <form id="entry" name="entry" action="list" method="POST">
 <table class="search">

@@ -5,18 +5,18 @@
 <head>
 	<title>VASA Scheduler</title>
 	
-	<link href="/scheduling/styles/style.css" rel="stylesheet" type="text/css" />
+	<link href="/styles/style.css" rel="stylesheet" type="text/css" />
 	
 </head>
 <body>
 
 <div class="header">
-<img src="/scheduling/images/banner.png">
+<img src="/images/banner.png">
 </div>
 
 <div class="loginbox">
 	<h3>Welcome!</h3>
-	<form id="login" name="login" action="/scheduling/user/forgotpassword" method="POST" onsubmit="return validate();">
+	<form id="login" name="login" action="/user/forgotpassword" method="POST" onsubmit="return validate();">
 		<label for="username">Username</label>
 		<input id="username" type="text" name="username" style="width: 150px">
 		<div class="form-actions">

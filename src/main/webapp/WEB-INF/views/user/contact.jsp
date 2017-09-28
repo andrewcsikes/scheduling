@@ -5,14 +5,14 @@
 <head>
 	<title>VASA Scheduler</title>
 	
-	<link href="/scheduling/styles/style.css" rel="stylesheet" type="text/css" />
+	<link href="/styles/style.css" rel="stylesheet" type="text/css" />
 	
 </head>
 <body>
 
 <div class="loginbox">
 	<h3>Send Private Message To </br> ${name}!</h3>
-	<form id="contact" name="contact" action="/scheduling/user/contact" method="POST" onsubmit="return validate();">
+	<form id="contact" name="contact" action="/user/contact" method="POST" onsubmit="return validate();">
 		<input type="hidden" name="username" value="${username}" />
 		<label for="Message">Message</label>
 		<textarea rows="10" cols="35" name="message"></textarea>

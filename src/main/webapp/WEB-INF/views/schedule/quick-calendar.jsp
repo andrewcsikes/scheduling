@@ -9,7 +9,7 @@
 <body>
 
 <div class="header">
-<img src="/scheduling/images/banner.png">
+<img src="/images/banner.png">
 </div>
 
 <c:if test="${error != null}">
@@ -34,9 +34,9 @@ for(com.vasa.scheduling.domain.Fields field:fields){
 %>
 	
 	<div style="width: 100%; overflow: hidden;">
-    	<div style="width: 100px; float: left;"><a href="/scheduling/schedule/calendar/quick?date=<%out.println(format1.format(addDay.getTime()));%>"><b>Previous Week</b></a></div>
+    	<div style="width: 100px; float: left;"><a href="/schedule/calendar/quick?date=<%out.println(format1.format(addDay.getTime()));%>"><b>Previous Week</b></a></div>
     	 <% addDay.add(java.util.Calendar.DAY_OF_MONTH, 14); %>
-    	<div style="margin-left: 80%; float: right;"><a href="/scheduling/schedule/calendar/quick?date=<%out.println(format1.format(addDay.getTime()));%>"><b>Next Week</b></a></div>
+    	<div style="margin-left: 80%; float: right;"><a href="/schedule/calendar/quick?date=<%out.println(format1.format(addDay.getTime()));%>"><b>Next Week</b></a></div>
 	</div>
 	
 	<table class="list" width="100%">

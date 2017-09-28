@@ -144,7 +144,7 @@ if((user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 
 %>
 
-<form id="entry" name="entry" action="/scheduling/schedule/calendar/add" method="POST">
+<form id="entry" name="entry" action="/schedule/calendar/add" method="POST">
 <table class="search">
 <tbody>
 <tr><td colspan="11">Commissioner Quick Practice Entry</td></tr>
@@ -195,9 +195,9 @@ if((user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 <% } %>
 
 	<div style="width: 100%; overflow: hidden;">
-    	<div style="width: 100px; float: left;"><a href="/scheduling/schedule/calendar?date=<%out.println(format1.format(addDay.getTime()));%>"><b>Previous Week</b></a></div>
+    	<div style="width: 100px; float: left;"><a href="/schedule/calendar?date=<%out.println(format1.format(addDay.getTime()));%>"><b>Previous Week</b></a></div>
         <% addDay.add(java.util.Calendar.DAY_OF_MONTH, 14); %>
-    	<div style="margin-left: 80%; float: right;"><a href="/scheduling/schedule/calendar?date=<%out.println(format1.format(addDay.getTime()));%>"><b>Next Week</b></a></div>
+    	<div style="margin-left: 80%; float: right;"><a href="/schedule/calendar?date=<%out.println(format1.format(addDay.getTime()));%>"><b>Next Week</b></a></div>
 	</div>
 	
 	<table class="list" width="100%">
@@ -456,21 +456,21 @@ if((user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 					if(hour==null) hour="&nbsp;";
 					else if(user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 							user.getUserType().equals(com.vasa.scheduling.enums.UserType.COMMISSIONER)){
-						hour="<a href='/scheduling/schedule/calendar/delete?date="+format2.format(time.getTime())+"&field="+field.getName()+"'><img src='/scheduling/images/minus-icon.png' /></a> "+hour;
+						hour="<a href='/schedule/calendar/delete?date="+format2.format(time.getTime())+"&field="+field.getName()+"'><img src='/images/minus-icon.png' /></a> "+hour;
 					}
 					out.append("<td>"+hour+"</td>");
 				}
 				else if(hour == null && (user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 						user.getUserType().equals(com.vasa.scheduling.enums.UserType.COACH) ||
 						user.getUserType().equals(com.vasa.scheduling.enums.UserType.COMMISSIONER))){
-					out.append("<td><a href='/scheduling/schedule/calendar/add?date="+format2.format(time.getTime())+"&field="+field.getName()+"'><img src='/scheduling/images/plus-icon.png' /></a>");
+					out.append("<td><a href='/schedule/calendar/add?date="+format2.format(time.getTime())+"&field="+field.getName()+"'><img src='/images/plus-icon.png' /></a>");
 					
 // 					// Display the list of teams
 // 					if((user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 // 							user.getUserType().equals(com.vasa.scheduling.enums.UserType.COMMISSIONER))){
 						
 // 						java.util.List<com.vasa.scheduling.domain.Team> teams = (java.util.List<com.vasa.scheduling.domain.Team>)request.getAttribute("teams");
-// 						out.append("<form id='entry' name='entry' action='/scheduling/schedule/calendar/add' method='POST'><select name='team' style='max-width:40%;'>");
+// 						out.append("<form id='entry' name='entry' action='/schedule/calendar/add' method='POST'><select name='team' style='max-width:40%;'>");
 // 						for(com.vasa.scheduling.domain.Team t:teams){
 // 							out.append("<option value='"+t.getId()+"'>" + t.getName()+" - "+t.getCoach().getLastName()+"</option>");
 // 						}
@@ -488,7 +488,7 @@ if((user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 					if(user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) || 
 							user.getUserType().equals(com.vasa.scheduling.enums.UserType.COMMISSIONER) || 
 							hour.equals(user.getTeam().getName() + " - " + user.getLastName() + " - " + user.getTeam().getAgeGroup().getName())){
-						out.append("<td><a href='/scheduling/schedule/calendar/delete?date="+format2.format(time.getTime())+"&field="+field.getName()+"'><img src='/scheduling/images/minus-icon.png' /></a> "+hour+"</td>");
+						out.append("<td><a href='/schedule/calendar/delete?date="+format2.format(time.getTime())+"&field="+field.getName()+"'><img src='/images/minus-icon.png' /></a> "+hour+"</td>");
 					}else{
 						out.append("<td>"+hour+"</td>");
 					}

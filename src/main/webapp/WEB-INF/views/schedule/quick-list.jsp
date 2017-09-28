@@ -10,10 +10,10 @@
 <body>
 
 <div class="header">
-<img src="/scheduling/images/banner.png">
+<img src="/images/banner.png">
 </div>
 
-<script src="/scheduling/scripts/sorttable.js"></script>
+<script src="/scripts/sorttable.js"></script>
 
 <form id="entry" name="entry" action="quick" method="POST">
 <table class="search">

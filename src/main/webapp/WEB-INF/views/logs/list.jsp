@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<script src="/scheduling/scripts/sorttable.js"></script>
+<script src="/scripts/sorttable.js"></script>
 
     <table class="list">
     <thead>
@@ -32,7 +32,7 @@
 	</c:forEach>
 	</table>
 	
-	<div style="margin-left: 70%; float: right;"><a href="list?clear=true"><img src='/scheduling/images/minus-icon.png' />Clear</a></div>
+	<div style="margin-left: 70%; float: right;"><a href="list?clear=true"><img src='/images/minus-icon.png' />Clear</a></div>
 	
 </body>
 </html>

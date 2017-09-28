@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<script src="/scheduling/scripts/sorttable.js"></script>
+<script src="/scripts/sorttable.js"></script>
 
 <form id="entry" name="entry" action="list" method="POST">
 <table class="search">
@@ -48,7 +48,7 @@
     <div style="width: 100%; overflow: hidden;">
     	<div style="width: 10%px; float: left;"><h1>List of Teams</h1></div>
     	<c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "Commissioner"}'>
-    		<div style="margin-left: 70%; float: right;"><a href="add"><img src='/scheduling/images/plus-icon.png' />Add Team</a></div>
+    		<div style="margin-left: 70%; float: right;"><a href="add"><img src='/images/plus-icon.png' />Add Team</a></div>
     	</c:if>
 	</div>
     
@@ -78,7 +78,7 @@
 			<c:if test='${user.userType.displayName == "ADMIN" || user.userType.displayName == "Commissioner"}'>
 			  <td><a href="modify?team=${team.id}">Edit</a></td>
 			</c:if>
-			<td><a href="/scheduling/user/contact?username=${team.coach.userName}&name=${team.coach.firstName}%20${team.coach.lastName}">Contact</a></td>
+			<td><a href="/user/contact?username=${team.coach.userName}&name=${team.coach.firstName}%20${team.coach.lastName}">Contact</a></td>
 		</tr>
 	</c:forEach>
 	</table>

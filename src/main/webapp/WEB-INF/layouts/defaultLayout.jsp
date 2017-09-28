@@ -5,8 +5,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title><tiles:insertAttribute name="title" ignore="true" /></title>
-<link href="/scheduling/styles/style.css" rel="stylesheet" type="text/css" />
-<link href="/scheduling/styles/menu.css" rel="stylesheet" type="text/css" />
+<link href="/styles/style.css" rel="stylesheet" type="text/css" />
+<link href="/styles/menu.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <table border="0" cellpadding="2" cellspacing="2" align="center">

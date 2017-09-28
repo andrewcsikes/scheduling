@@ -32,9 +32,9 @@ for(com.vasa.scheduling.domain.Fields field:fields){
 %>
 	
 	<div style="width: 100%; overflow: hidden;">
-    	<div style="width: 100px; float: left;"><a href="/scheduling/schedule/basketball?date=<%out.println(format1.format(addDay.getTime()));%>"><b>Previous Week</b></a></div>
+    	<div style="width: 100px; float: left;"><a href="/schedule/basketball?date=<%out.println(format1.format(addDay.getTime()));%>"><b>Previous Week</b></a></div>
     	 <% addDay.add(java.util.Calendar.DAY_OF_MONTH, 14); %>
-    	<div style="margin-left: 80%; float: right;"><a href="/scheduling/schedule/basketball?date=<%out.println(format1.format(addDay.getTime()));%>"><b>Next Week</b></a></div>
+    	<div style="margin-left: 80%; float: right;"><a href="/schedule/basketball?date=<%out.println(format1.format(addDay.getTime()));%>"><b>Next Week</b></a></div>
 	</div>
 	
 	<table class="list">
@@ -219,14 +219,14 @@ for(com.vasa.scheduling.domain.Fields field:fields){
 				else if(hour == null && (user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 						user.getUserType().equals(com.vasa.scheduling.enums.UserType.COACH) ||
 						user.getUserType().equals(com.vasa.scheduling.enums.UserType.COMMISSIONER))){
-					out.append("<td><a href='/scheduling/schedule/basketball/add?date="+format2.format(time.getTime())+"&field="+field.getName()+"'><img src='/scheduling/images/plus-icon.png' /></a>");
+					out.append("<td><a href='/schedule/basketball/add?date="+format2.format(time.getTime())+"&field="+field.getName()+"'><img src='/images/plus-icon.png' /></a>");
 					
 					// Display the list of teams
 					if((user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) ||
 							user.getUserType().equals(com.vasa.scheduling.enums.UserType.COMMISSIONER))){
 						
 						java.util.List<com.vasa.scheduling.domain.Team> teams = (java.util.List<com.vasa.scheduling.domain.Team>)request.getAttribute("teams");
-						out.append("<form id='entry' name='entry' action='/scheduling/schedule/basketball/add' method='POST'><select name='team' style='max-width:40%;'>");
+						out.append("<form id='entry' name='entry' action='/schedule/basketball/add' method='POST'><select name='team' style='max-width:40%;'>");
 						for(com.vasa.scheduling.domain.Team t:teams){
 							out.append("<option value='"+t.getId()+"'>"+t.getName()+" - "+t.getCoach().getLastName()+"</option>");
 						}
@@ -242,7 +242,7 @@ for(com.vasa.scheduling.domain.Fields field:fields){
 					if(user.getUserType().equals(com.vasa.scheduling.enums.UserType.ADMIN) || 
 							user.getUserType().equals(com.vasa.scheduling.enums.UserType.COMMISSIONER) || 
 							hour.equals(user.getTeam().getName() + " - " + user.getLastName() + " - " + user.getTeam().getAgeGroup().getName())){
-						out.append("<td><a href='/scheduling/schedule/basketball/delete?date="+format2.format(time.getTime())+"&field="+field.getName()+"'><img src='/scheduling/images/minus-icon.png' /></a> "+hour+"</td>");
+						out.append("<td><a href='/schedule/basketball/delete?date="+format2.format(time.getTime())+"&field="+field.getName()+"'><img src='/images/minus-icon.png' /></a> "+hour+"</td>");
 					}else{
 						out.append("<td>"+hour+"</td>");
 					}

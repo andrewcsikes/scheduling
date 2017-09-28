@@ -316,7 +316,7 @@
 </c:forEach>
 
 </table>
-<a><img src='/scheduling/images/plus-icon.png' /> Add Rule</a>
+<a><img src='/images/plus-icon.png' /> Add Rule</a>
 </td>
 </tr>
 </table>
